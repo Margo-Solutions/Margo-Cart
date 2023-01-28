@@ -12,7 +12,7 @@ export default function App() {
     e.preventDefault();
     try {
         const body = { handleliste };
-        const response = await fetch("http://localhost:5000/handleliste", {
+        const response = await fetch("http://10.0.2.2:5000/handleliste", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
