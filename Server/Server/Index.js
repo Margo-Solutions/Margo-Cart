@@ -11,15 +11,15 @@ app.use(express.json());
 
 // ROUTES //
 
-// create a todo //
-app.post('/handleliste', async (req, res) => {
+// create a user //
+app.post('/margodatabase', async (req, res) => {
     try {
-        const { handleliste } = req.body;
-        const newHandleliste = await pool.query(
-            'INSERT INTO handleliste (handleliste) VALUES($1) RETURNING *', 
-            [handleliste]
+        const { kunder } = req.body;
+        const newKunde = await pool.query(
+            'INSERT INTO kunder (navn) VALUES($1) RETURNING *', 
+            [kunder]
         );
-        res.json(newHandleliste.rows[0]);
+        res.json(newKunde.rows[0]);
         } catch (err) {3
         console.error(err.message);
     }   

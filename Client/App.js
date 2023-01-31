@@ -6,13 +6,13 @@ import { useState, useEffect } from 'react';
 
 
 export default function App() {
-  const [handleliste, sethandleliste] = useState('');
+  const [kunder, setnavn] = useState('');
   const 
   onsubmitform = async(e) => {
     e.preventDefault();
     try {
-        const body = { handleliste };
-        const response = await fetch("http://10.0.2.2:5000/handleliste", {
+        const body = { kunder };
+        const response = await fetch("http://10.0.2.2:5000/margodatabase", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
@@ -31,8 +31,8 @@ export default function App() {
         style={{height: 40}}
         placeholder="Type here to insert data!"
         let food = "ost"
-        value={handleliste}
-        onChangeText={newText => sethandleliste(newText)}
+        value={kunder}
+        onChangeText={newText => setnavn(newText)}
     
       />
       </View>

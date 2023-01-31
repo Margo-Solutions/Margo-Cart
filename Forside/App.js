@@ -1,6 +1,7 @@
 import LoginScreen from "./Screens/LoginScreen";
 import RegisterScreen from "./Screens/RegisterScreen";
 import GlemtPassordScreen from "./Screens/GlemtPassordScreen";
+import HjemmesideScreen from "./Screens/HjemmesideScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -20,6 +21,10 @@ export default function App() {
           name="login"
           component={LoginScreen}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Hjemmeside"
+          component={HjemmesideScreen}
         />
         <Stack.Screen
           name="Tilbake"

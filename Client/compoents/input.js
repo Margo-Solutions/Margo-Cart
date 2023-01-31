@@ -7,7 +7,7 @@ export default function Input() {
         try {
         e.preventDefault();
         const body = { text };
-        const response = await fetch("http://localhost:5000/handleliste", {
+        const response = await fetch("http://localhost:5000/margodatabase", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
