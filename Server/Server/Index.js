@@ -14,10 +14,10 @@ app.use(express.json());
 // create a user //
 app.post('/margodatabase', async (req, res) => {
     try {
-        const { kunder } = req.body;
+        const { navn, email, passord } = req.body;
         const newKunde = await pool.query(
-            'INSERT INTO kunder (navn) VALUES($1) RETURNING *', 
-            [kunder]
+            'INSERT INTO kunder (navn, email, passord) VALUES($1, $2, $3) RETURNING *', 
+            [navn, email, passord]
         );
         res.json(newKunde.rows[0]);
         } catch (err) {3
