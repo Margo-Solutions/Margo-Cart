@@ -41,12 +41,14 @@ export default function RegisterScreen({ navigation }) {
                         <TextInput
                             style={styles.textInput}
                             placeholder="Passord"
+                            secureTextEntry={true}
                         />
                     </View>
                     <View style={styles.outIconContainer}>
                         <TextInput
                             style={styles.textInput}
                             placeholder="Bekreft Passord"
+                            secureTextEntry={true}
                         />
                     </View>
                 </View>

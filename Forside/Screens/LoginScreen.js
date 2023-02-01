@@ -44,6 +44,7 @@ export default function LoginScreen({ navigation }) {
                         <TextInput
                             style={styles.textInput}
                             placeholder="Passord"
+                            secureTextEntry={true}
                         />
                     </View>
                 </View>
