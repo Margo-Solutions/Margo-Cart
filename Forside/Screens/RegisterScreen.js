@@ -1,8 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, Image } from 'react-native';
+import { useState } from 'react';
+import { TextInput } from 'react-native-paper';
+import { StyleSheet, Text, View, Button, TouchableOpacity, Image } from 'react-native';
 import { StackActions } from '@react-navigation/native';
 
 export default function RegisterScreen({ navigation }) {
+
+    const [passwordVisible, setPasswordVisible] = useState(true);
+
+
     return (
         <View style={styles.Container}>
             <View style={styles.toppContainer}>
@@ -41,14 +47,26 @@ export default function RegisterScreen({ navigation }) {
                         <TextInput
                             style={styles.textInput}
                             placeholder="Passord"
-                            secureTextEntry={true}
+                            secureTextEntry={passwordVisible}
+                            right={
+                                <TextInput.Icon
+                                    icon={passwordVisible ? 'eye' : 'eye-off'}
+                                    onPress={() => setPasswordVisible(!passwordVisible)}
+                                />
+                            }
                         />
                     </View>
                     <View style={styles.outIconContainer}>
                         <TextInput
                             style={styles.textInput}
-                            placeholder="Bekreft Passord"
-                            secureTextEntry={true}
+                            placeholder="Passord"
+                            secureTextEntry={passwordVisible}
+                            right={
+                                <TextInput.Icon
+                                    icon={passwordVisible ? 'eye' : 'eye-off'}
+                                    onPress={() => setPasswordVisible(!passwordVisible)}
+                                />
+                            }
                         />
                     </View>
                 </View>
@@ -106,10 +124,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: 'center',
         alignSelf: 'center',
-        borderRadius: 8,
-        width: 270,
+        borderRadius: 5,
+        height: 30,
+        width: 260,
         padding: 5,
-        margin: '10%',
+        margin: '15%',
         right: '40%'
     },
     brukercontainer: {

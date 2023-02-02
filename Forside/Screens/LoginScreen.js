@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
+import Entypo from "react-native-vector-icons/Entypo";
+import { TextInput } from 'react-native-paper';
 import {
     View,
-    TextInput,
     Text,
     Button,
     TouchableOpacity,
@@ -15,6 +16,9 @@ export default function LoginScreen({ navigation }) {
     function mybutton() {
         Alert.alert('you clicked', 'logg inn', [{ text: 'OK' }]);
     }
+
+    const [passwordVisible, setPasswordVisible] = useState(true);
+
 
     return (
         <View style={styles.Container}>
@@ -44,7 +48,13 @@ export default function LoginScreen({ navigation }) {
                         <TextInput
                             style={styles.textInput}
                             placeholder="Passord"
-                            secureTextEntry={true}
+                            secureTextEntry={passwordVisible}
+                            right={
+                                <TextInput.Icon
+                                    icon={passwordVisible ? 'eye' : 'eye-off'}
+                                    onPress={() => setPasswordVisible(!passwordVisible)}
+                                />
+                            }
                         />
                     </View>
                 </View>
@@ -105,10 +115,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#8FD6F2',
         fontSize: 20,
         textAlign: 'center',
-        borderRadius: 8,
-        width: 270,
+        borderRadius: 5,
+        height: 30,
+        width: 260,
         padding: 5,
-        margin: '10%',
+        margin: '15%',
         right: '40%'
     },
     brukercontainer: {
