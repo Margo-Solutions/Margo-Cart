@@ -29,7 +29,13 @@ export default function OpHandleliste({navigation}) {
                 <Text style={styles.opacityText}>Legg til varer</Text>
               </TouchableOpacity>
             </View>
-                <View style={styles.buttonStyle}> 
+            <View style={styles.buttonStyleSave}> 
+                <Button
+                    title="Lagre"
+                    color = "#8FD6F2"
+                />
+                </View>
+                <View style={styles.buttonStyleNavigation}> 
                 <Button
                     title="Naviger"
                     color = "#8FD6F2"
@@ -79,15 +85,20 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     alignItems: 'center',
   },
-  buttonStyle: {
+  buttonStyleNavigation: {
     height: 35,
     width: 255, 
-    marginTop: 350,
+    marginTop: 10,
   },
   secondButtonStyle: {
     backgroundColor: 'transparent',
   },
   opacityText: {
     color: '#646161'
-  }
+  },
+  buttonStyleSave: {
+    height: 35,
+    width: 255, 
+    marginTop: 350,
+  },
 });
