@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { TextInput } from 'react-native-paper';
-import { StyleSheet, Text, View, Button, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, Image, Alert } from 'react-native';
 import { StackActions } from '@react-navigation/native';
 
 export default function RegisterScreen({ navigation }) {
@@ -14,6 +14,10 @@ export default function RegisterScreen({ navigation }) {
         onsubmitform = async (e) => {
             e.preventDefault();
             try {
+                if(navn == 0 | email == 0 | passord == 0){Alert.alert("Alle felt på fylles inn.")}
+                else{
+                    navigation.navigate("login")
+                };
                 const body = { navn, email, passord };
                 const response = await fetch("http://10.0.2.2:5000/margodatabase", {
                     method: "POST",
@@ -45,7 +49,6 @@ export default function RegisterScreen({ navigation }) {
                         <TextInput
                             style={styles.textInput}
                             placeholder="Fullt navn"
-                            let food="ost"
                             value={navn}
                             onChangeText={newText => setnavn(newText)}
                         />
@@ -58,7 +61,6 @@ export default function RegisterScreen({ navigation }) {
                         <TextInput
                             style={styles.textInput}
                             placeholder="E-mail"
-                            let food="ost"
                             value={email}
                             onChangeText={newText => setemail(newText)}
                         />
@@ -71,7 +73,6 @@ export default function RegisterScreen({ navigation }) {
                         <TextInput
                             style={styles.textInput}
                             placeholder="Passord"
-                            let food="ost"
                             value={passord}
                             onChangeText={newText => setpassord(newText)}
                             secureTextEntry={passwordVisible}
@@ -106,7 +107,7 @@ export default function RegisterScreen({ navigation }) {
                     <View>
                         <TouchableOpacity
                             style={styles.button}
-                            onPress={onsubmitform}> 
+                            onPress={onsubmitform}>
                             <Text
                                 style={styles.loginInfoText}>
                                 Registrer

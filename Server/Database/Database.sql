@@ -11,9 +11,9 @@ CREATE DATABASE margodatabase;
 
 CREATE TABLE kunder (
   id SERIAL PRIMARY KEY,
-  navn VARCHAR(240),
-  email VARCHAR(240),
-  Passord VARCHAR(240)
+  navn VARCHAR(240) NOT NULL CHECK (navn <> ''),
+  email VARCHAR(240) NOT NULL CHECK (email <> ''),
+  passord VARCHAR(240) NOT NULL CHECK (passord <> '')
 );
 
 
