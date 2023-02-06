@@ -10,10 +10,15 @@ export default function RegisterScreen({ navigation }) {
     const [navn, setnavn] = useState('');
     const [email, setemail] = useState('');
     const [passord, setpassord] = useState('');
+    const [bekreftpassord, setbekreftpassord] = useState('');
     const
         onsubmitform = async (e) => {
             e.preventDefault();
             try {
+                if(passord != bekreftpassord){
+                    Alert.alert("passorene er ikke like!.")
+                    throw null;
+                }
                 if(navn == 0 | email == 0 | passord == 0){Alert.alert("Alle felt på fylles inn.")}
                 else{
                     navigation.navigate("login")
@@ -30,6 +35,8 @@ export default function RegisterScreen({ navigation }) {
                 console.error(err.message);
             }
         }
+
+ 
 
     return (
         <View style={styles.Container}>
@@ -88,6 +95,8 @@ export default function RegisterScreen({ navigation }) {
                         <TextInput
                             style={styles.textInput}
                             placeholder=" Bekreft Passord"
+                            value={bekreftpassord}
+                            onChangeText={newText => setbekreftpassord(newText)}
                             secureTextEntry={passwordVisible}
                             right={
                                 <TextInput.Icon
