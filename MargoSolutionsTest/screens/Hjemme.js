@@ -13,7 +13,7 @@ export default function Hjemme({navigation}) {
           <View style={styles.test}>
             <View style={styles.buttonContainer}>
               <View style={styles.button}>
-                <Button title="Lag Handleliste" color="#8FD6F2" onPress={() => navigation.navigate("Handle Liste") } />
+                <Button title="Lag Handleliste" color="#8FD6F2" onPress={() => navigation.navigate("Handlelister") } />
               </View>
               <View style={styles.button}>
                 <Button title="Finn Vare" color="#8FD6F2" />

@@ -21,10 +21,14 @@ export default function App() {
      }
     
 }} >
-        <Drawer.Screen name='Home' component={Hjemme} />
-        <Drawer.Screen name='Handle Liste' component={Handleliste}/>
-        <Drawer.Screen name='Opprett Handleliste' component={OpHandleliste} />
-        <Drawer.Screen name='Legg til Varer' component={Varer} />
+        <Drawer.Screen name='Hjemme' component={Hjemme} />
+        <Drawer.Screen name='Handlelister' component={Handleliste}/>
+        <Drawer.Screen name='Opprett Handleliste' component={OpHandleliste}  options={{
+                  drawerItemStyle: { display: 'none' }
+        }} />
+        <Drawer.Screen name='Legg til Varer' component={Varer}  options={{
+                  drawerItemStyle: { display: 'none' }
+        }}/>
       </Drawer.Navigator>
     </NavigationContainer>
   );
