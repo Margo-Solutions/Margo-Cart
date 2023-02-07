@@ -11,7 +11,7 @@ git clone https://github.com/Martinkopland/Margo-Solutions.git
 ```
 git pull --rebase
 ```
-# for å legget til kode i Gitbub
+# For å legge til kode i Gitbub
 ```
 git add -A
 git commit -m "skriv melding her"
@@ -24,7 +24,7 @@ npm install
 npm start
 ```
 
-# dependencies for Client filen
+# Dependencies for Client filen
 express, pg, og cors er for kommunikasjon med server 
 ```
 npm install install express pg cors 
@@ -62,7 +62,7 @@ for å starte serveren
 npx expo start
 ```
 
-# dependencies for server
+# Dependencies for server
 express, pg, og cors er for kommunikasjon med app 
 ```
 npm install install express pg cors 
