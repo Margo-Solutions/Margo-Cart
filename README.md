@@ -1,18 +1,77 @@
 # Margo-Solutions
 Bacheloroppgave/Studentbedrift
 
-Install the required packages in your React Native project:
+# Clone repo
+```
+git clone https://github.com/Martinkopland/Margo-Solutions.git
+```
+# For å pulle fra Github når noen har gjort endringer
+```
+git pull --rebase
+```
+# for å legget til kode i Gitbub
+```
+git add -A
+git commit -m "skriv melding her"
+git push
+```
+## Første gang du laster ned koden så må du starte et nytt expo prosjekt for appen (for clientside)
+```
+npm install
+npm start
+```
 
+# dependencies for Client
+express, pg, og cors er for kommunikasjon med server 
+```
+npm install install express pg cors 
+```
+async storage lagring av lokal data
+```
+ npm install @react-navigation/native @react-navigation/native-stack
+```
+dotenv brukes for å lagre enviorment variabler
+```
+npm install dotenv
+```
+navigation
+```
 npm install @react-navigation/native
-
-Installing dependencies into an Expo managed project​
-In your project directory, run:
-
+```
+```
 npx expo install react-native-screens react-native-safe-area-context
-
-Installing the native stack navigator library​
-The libraries we've installed so far are the building blocks and shared foundations for navigators, 
-and each navigator in React Navigation lives in its own library. 
-To use the native stack navigator, we need to install @react-navigation/native-stack :
-
+```
+```
 npm install @react-navigation/native-stack
+```
+## Første gang for server 
+skriv inn og trykk enter helt til den sier press Y/N
+```
+npm init
+```
+Nodemon er får å kjøre serveren
+```
+npm install nodemon
+```
+for å starte serveren
+```
+npx expo start
+```
+
+# dependencies for server
+express, pg, og cors er for kommunikasjon med app 
+```
+npm install install express pg cors 
+```
+async storage lagring av lokal data
+```
+ npm install @react-navigation/native @react-navigation/native-stack
+```
+dotenv brukes for å lagre enviorment variabler
+```
+npm install dotenv
+```
+jsonwebtoken og bcyrpt er for kryptering av passord
+```
+npm install jsonwebtoken bcyrpt
+```
