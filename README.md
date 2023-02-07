@@ -25,9 +25,9 @@ npm start
 ```
 
 # Dependencies for Client filen
-express, pg, og cors er for kommunikasjon med server 
 ```
-npm install install express pg cors 
+npm i express pg cors
+```
 ```
 async storage lagring av lokal data
 ```
@@ -46,6 +46,44 @@ npx expo install react-native-screens react-native-safe-area-context
 ```
 ```
 npm install @react-navigation/native-stack
+```
+
+#for Margosolutiontest
+Verktøy som ble brukt er nvm (versjonskontroll verktøy for node.js ikke nødvendig)
+```
+https://github.com/nvm-sh/nvm
+```
+Installasjon for nvm (velger selv øsnket verson)
+```
+nvm install && nvm use 
+```
+Navigation drawer
+```
+npm install @react-navigation/drawer
+```
+```
+npx expo install react-native-gesture-handler react-native-reanimated
+```
+Importering av navigation
+```
+import 'react-native-gesture-handler';
+import { NavigationContainer } from "@react-navigation/native";
+import { createDrawerNavigator } from '@react-navigation/drawer';
+```
+Sjekk at babek.config.js filen er riktig
+```
+2	plugins: [
+3	      'react-native-reanimated/plugin',
+4	      '@babel/plugin-proposal-export-namespace-from',
+5	    ],
+```
+For å starte med navigation drawer for første gang
+```
+npx expo start --clear 
+```
+Kommunikasjon med server
+```
+npm i express pg cors
 ```
 
 ## Første gang for server 
