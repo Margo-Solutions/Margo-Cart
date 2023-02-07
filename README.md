@@ -28,7 +28,6 @@ npm start
 ```
 npm i express pg cors
 ```
-```
 async storage lagring av lokal data
 ```
  npm install @react-navigation/native @react-navigation/native-stack
