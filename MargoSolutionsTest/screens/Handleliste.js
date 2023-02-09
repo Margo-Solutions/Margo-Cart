@@ -1,7 +1,33 @@
+import * as React from 'react';
+import { useState, useEffect } from 'react';
+import { StyleSheet, Button, View, Image, Text, FlatList, TouchableOpacity } from 'react-native';
 
-import { StyleSheet, Button, View, Image, Text } from 'react-native';
 
 export default function Handleliste({navigation}) {
+  const [handleliste, setHandleliste] = useState([]); //brukt for å liste database variabler 
+  const ListHandlelister = async () => {
+    try {
+      const response = await fetch("http://10.0.2.2:5000/margosolutions/handlelister");
+      const handleliste= await response.json();
+
+      setHandleliste(handleliste);
+    } catch (err) {
+      console.error(err.message);
+      
+    }
+  };
+    useEffect(() => {
+      ListHandlelister();
+    }, []);
+  
+  
+    const pressHandler = (vare_id, handleliste_id, handleliste_tittel) =>{
+      navigation.navigate('Opprett Handleliste',{
+        itemID: vare_id,
+        handlelisteID: handleliste_id,
+        handlelisteTittel: handleliste_tittel
+      });
+    };
   return (
     <View style={styles.container}>
       <View>
@@ -21,9 +47,17 @@ export default function Handleliste({navigation}) {
         </View>
       </View>
       <View style={styles.listContainer}>
-          <Text style={styles.textStyle}>
-            Du har ingen handleliste/r
-          </Text>
+      <FlatList data={handleliste} renderItem={(itemData) => {
+            return(
+              <TouchableOpacity onPress={()=>pressHandler(itemData.item.vare_id, itemData.item.handleliste_id, itemData.item.handleliste_tittel)}>
+              <View style={styles.listItem}>
+                <Text style={styles.listText}>{itemData.item.handleliste_tittel}</Text>
+              </View>
+              </TouchableOpacity>
+            );
+          }}
+            alwaysBounceVertical={false}
+           />
         </View>
     </View>
   );
@@ -66,5 +100,15 @@ const styles = StyleSheet.create({
   textStyle: {  
     textAlign: 'center',
     fontSize: 20,
-  }
+  },
+  listText: {
+    color: 'white',
+    fontSize: 20,
+  },
+  listItem: {
+    margin: 8,
+    padding: 6,
+    borderRadius: 10,
+    backgroundColor: '#5e0acc',
+  },
 });

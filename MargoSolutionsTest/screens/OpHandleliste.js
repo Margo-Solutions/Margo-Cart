@@ -1,12 +1,49 @@
-import { StyleSheet, TextInput, View, Image, Button, Text, TouchableOpacity } from 'react-native';
+import * as React from 'react';
+import { useState, useEffect } from 'react';
+import { StyleSheet, TextInput, View, Image, Button, Text, TouchableOpacity, FlatList } from 'react-native';
 
 
-export default function OpHandleliste({navigation}) {
-
-  function titleInputHandler(enteredText) {
-    console.log(enteredText);
+export default function OpHandleliste({navigation, route}) {
+  const [handleliste_tittel, setHandlelisteTittel] = useState('');
+  const [listVarer, setListVarer] = useState ([]);
+  const {itemID, handlelisteID, handlelisteTittel} = route.params;
+  const
+  onsubmitform = async(e) => {
+    e.preventDefault();
+    try {
+      const body = { handleliste_tittel };
+      const response = await fetch("http://10.0.2.2:5000/margosolutions/handlelister:handleliste_tittel", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+      });
+      window.location = "/";
+    } catch (err) {
+      console.error(err.message);
+      
+    }
   };
 
+  const ListHandlelister = async () => {
+    try {
+      const response = await fetch("http://10.0.2.2:5000/margosolutions/handlelister");
+      const listVarer= await response.json();
+
+      setListVarer(listVarer);
+    } catch (err) {
+      console.error(err.message);
+      
+    }
+  };
+    useEffect(() => {
+      ListHandlelister();
+    }, []);
+
+    const pressHandler = (handleliste_id) =>{
+      navigation.navigate('Legg til Varer',{
+        handlelisteID: handleliste_id,
+      });
+    };
   return (
     <View style={styles.container}>
       <View>
@@ -20,19 +57,36 @@ export default function OpHandleliste({navigation}) {
                 <TextInput 
                 style={styles.textInput}
                 placeholder="Legg til Tittel"
-                onChangeText={titleInputHandler}
+                value={handleliste_tittel}
+                onChangeText={newText => setHandlelisteTittel(newText)}
                 />
             </View>
           <View style={styles.buttonContainer}>
+          <FlatList data={listVarer} removeClippedSubviews={false} renderItem={(itemData) => {
+            return(
+        
+              <View style={styles.listItem}>
+                <Text style={styles.listText}>{itemData.item.vare_id}</Text>
+              </View>
+              
+            );
+          }}
+            alwaysBounceVertical={false}
+           />
             <View>
-              <TouchableOpacity style={styles.secondButtonStyle} onPress={() => navigation.navigate("Legg til Varer") }>
+              <TouchableOpacity style={styles.secondButtonStyle} onPress={() => pressHandler(handlelisteID) }>
                 <Text style={styles.opacityText}>Legg til varer</Text>
               </TouchableOpacity>
             </View>
+            <Text>itemID: {JSON.stringify(itemID)}</Text>
+            <Text>handlelisteID: {JSON.stringify(handlelisteID)}</Text>
+            <Text>handlelisteTittel: {JSON.stringify(handlelisteTittel)}</Text>
+            <Text>{route.params.message}</Text>
             <View style={styles.buttonStyleSave}> 
                 <Button
                     title="Lagre"
                     color = "#8FD6F2"
+                    onPress={onsubmitform}
                 />
                 </View>
                 <View style={styles.buttonStyleNavigation}> 
@@ -99,6 +153,16 @@ const styles = StyleSheet.create({
   buttonStyleSave: {
     height: 35,
     width: 255, 
-    marginTop: 350,
+    marginTop: 150,
+  },
+  listText: {
+    color: 'white',
+    fontSize: 20,
+  },
+  listItem: {
+    margin: 8,
+    padding: 6,
+    borderRadius: 10,
+    backgroundColor: '#5e0acc',
   },
 });

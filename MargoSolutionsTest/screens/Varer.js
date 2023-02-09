@@ -4,18 +4,21 @@ import { useState, useEffect } from 'react';
 import { StyleSheet, Button, View, TextInput, Image, FlatList, Text, TouchableOpacity } from 'react-native';
 
 
-export default function Varer({navigation}) {
+export default function Varer({navigation, route}) {
   
-  const [handleliste, sethandleliste] = useState('');
-  const [todos, setTodos] = useState([]);
+  const [vare_navn, setVareNavn] = useState(''); // legger til varer
+  const [vare, setVare] = useState([]); // lister varer
+  const [navn, setNavn] = useState('');
+  const [email, setEmail] = useState('');
+  const {handlelisteID} = route.params;
 
 
   const
   onsubmitform = async(e) => {
     e.preventDefault();
     try {
-      const body = { handleliste };
-      const response = await fetch("http://10.0.2.2:5000/varer", {
+      const body = { vare_navn };
+      const response = await fetch("http://10.0.2.2:5000/margosolutions/varer", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)
@@ -27,25 +30,47 @@ export default function Varer({navigation}) {
     }
   };
 
-  const ListTodos = async () => {
+  const ListVarer = async () => {
     try {
-      const response = await fetch("http://10.0.2.2:5000/varer");
-      const todos = await response.json();
+      const response = await fetch("http://10.0.2.2:5000/margosolutions/varer");
+      const vare = await response.json();
 
-      setTodos(todos);
+      setVare(vare);
     } catch (err) {
       console.error(err.message);
       
     }
   };
 
-  const pressHandler = (handleliste) =>{
-    console.log(handleliste);
+  const UpdateVare = async e =>{
+    e.preventDefault();
+    try {
+      const body = {navn, email};
+      const response = await fetch(`http://10.0.2.2:5000/margosolutions/handlelister/`,
+      {
+        method: "PUT",
+        headers: {"Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      }
+      );
+      window.location ="/";
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+
+
+
+  const pressHandler = (vare_navn) =>{
+    setNavn(vare_navn);
+    UpdateVare;
   }
 
 
   useEffect(() => {
-    ListTodos();
+    ListVarer();
+    setEmail(handlelisteID)
   }, []);
 
 
@@ -62,26 +87,24 @@ export default function Varer({navigation}) {
           <TextInput 
                 style={styles.textInput}
                 placeholder=""
-                value={handleliste}
-                onChangeText={newText => sethandleliste(newText)}
+                value={vare_navn}
+                onChangeText={newText => setVareNavn(newText)}
                 />
           <Button title = "Add Vare" onPress={onsubmitform} />
           </View>      
           <View style={styles.listContainer}>
-          <FlatList data={todos}  renderItem={(itemData) => {
+          <FlatList data={vare} renderItem={(itemData) => {
             return(
-            <TouchableOpacity onPress={()=>pressHandler(itemData.item.handleliste)}>
+            <TouchableOpacity onPress={()=>pressHandler(itemData.item.vare_id)}>
               <View style={styles.listItem}>
-                <Text style={styles.listText}>{itemData.item.handleliste}</Text>
+                <Text style={styles.listText}>{itemData.item.vare_navn}</Text>
               </View>
               </TouchableOpacity>
             );
           }}
-          keyExtractor={(item, index) => {
-            return item.id;
-          }}
             alwaysBounceVertical={false}
            />
+           <Text>handlelisteID: {JSON.stringify(handlelisteID)}</Text>
           </View>
         </View>
     );

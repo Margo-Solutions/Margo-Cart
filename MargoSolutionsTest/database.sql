@@ -10,3 +10,7 @@ CREATE TABLE varer(
     vare_id SERIAL PRIMARY KEY,
     vare_navn VARCHAR(255)
 );
+
+
+ALTER TABLE handlelister 
+ALTER COLUMN vare_id 
