@@ -11,7 +11,7 @@ git clone https://github.com/Martinkopland/Margo-Solutions.git
 ```
 git pull --rebase
 ```
-# For å legge til kode i Gitbub
+# For å legge til kode i Github
 ```
 git add -A
 git commit -m "skriv melding her"
@@ -46,7 +46,9 @@ npx expo install react-native-screens react-native-safe-area-context
 ```
 npm install @react-navigation/native-stack
 ```
-
+```
+npm install react-native-paper react-native-vector-icons
+```
 #for Margosolutiontest
 Verktøy som ble brukt er nvm (versjonskontroll verktøy for node.js ikke nødvendig)
 ```
