@@ -1,7 +1,10 @@
+
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
-import { TextInput } from 'react-native-paper';
 import { StyleSheet, Text, View, Button, TouchableOpacity, Image, Alert } from 'react-native';
+import { useState, useEffect, useContext } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from '../context/Authcontex';
+import { TextInput } from 'react-native-paper';
 import { StackActions } from '@react-navigation/native';
 
 export default function RegisterScreen({ navigation }) {
@@ -11,6 +14,7 @@ export default function RegisterScreen({ navigation }) {
     const [email, setemail] = useState('');
     const [passord, setpassord] = useState('');
     const [bekreftpassord, setbekreftpassord] = useState('');
+    const {setAuth} = useContext(AuthContext);
     const
         onsubmitform = async (e) => {
             e.preventDefault();
@@ -19,16 +23,23 @@ export default function RegisterScreen({ navigation }) {
                     Alert.alert("passorene er ikke like!.")
                     throw null;
                 }
-                if(navn == 0 | email == 0 | passord == 0){Alert.alert("Alle felt på fylles inn.")}
-                else{
-                    navigation.navigate("login")
-                };
+                if(navn == 0 | email == 0 | passord == 0){Alert.alert("Alle felt på fylles inn.")};
+
                 const body = { navn, email, passord };
-                const response = await fetch("http://10.0.2.2:5000/margodatabase", {
+                 const response = await fetch("http://10.0.2.2:5000/margodatabase/register", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body)
                 });
+                const parseRes = await response.json();
+                
+                if (parseRes.token) {
+                AsyncStorage.setItem("token", parseRes.token);
+                setAuth(true);
+            }
+          else {
+              console.log("error");
+          }
                 // console.log(response);  
             }
             catch (err) {

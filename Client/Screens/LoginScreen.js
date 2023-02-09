@@ -1,24 +1,40 @@
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
-import Entypo from "react-native-vector-icons/Entypo";
+import { Button, StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import { useState, useEffect, useContext } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from '../context/Authcontex';
 import { TextInput } from 'react-native-paper';
-import {
-    View,
-    Text,
-    Button,
-    TouchableOpacity,
-    StyleSheet,
-    Image,
-} from 'react-native';
 
 export default function LoginScreen({ navigation }) {
-
-    function mybutton() {
-        Alert.alert('you clicked', 'logg inn', [{ text: 'OK' }]);
-    }
-
+    const [email, setemail] = useState('');
+    const [passord, setpassord] = useState('');
     const [passwordVisible, setPasswordVisible] = useState(true);
-
+    const { setAuth } = useContext(AuthContext);
+    const
+      onsubmitform = async (e) => {
+        e.preventDefault();
+        try {
+          const body = {email, passord };
+          const response = await fetch("http://10.0.2.2:5000/margodatabase/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+          });
+          const parseRes = await response.json();
+       // console.log(parseRes);
+          if (parseRes.token) {
+            AsyncStorage.setItem("token", parseRes.token);
+              setAuth(true);
+          }
+          else {
+              console.log("no token");
+          }
+          }
+        catch (err) {
+          console.error(err.message);
+        }
+      }
 
     return (
         <View style={styles.Container}>
@@ -37,7 +53,9 @@ export default function LoginScreen({ navigation }) {
                         />
                         <TextInput
                             style={styles.textInput}
-                            placeholder="Brukernavn"
+                            placeholder="Email"
+                            value={email}
+                            onChangeText={newText => setemail(newText)}
                         />
                     </View>
                     <View style={styles.iconContainer}>
@@ -48,6 +66,8 @@ export default function LoginScreen({ navigation }) {
                         <TextInput
                             style={styles.textInput}
                             placeholder="Passord"
+                            value={passord}
+                            onChangeText={newText => setpassord(newText)}
                             secureTextEntry={passwordVisible}
                             right={
                                 <TextInput.Icon
@@ -63,7 +83,7 @@ export default function LoginScreen({ navigation }) {
                 <View>
                     <TouchableOpacity
                         style={styles.buttonGlemtPassord}
-                        onPress={() => navigation.navigate("GlemtPassord")}>
+                        >
                         <Text
                             style={styles.glemtPassordText}>
                             Glemt passord eller brukernavn
@@ -73,7 +93,7 @@ export default function LoginScreen({ navigation }) {
                 <View>
                     <TouchableOpacity
                         style={styles.button1}
-                        onPress={() => navigation.navigate("Hjemmeside")}>
+                        onPress={onsubmitform}>
                         <Text
                             style={styles.loginInfoText}>
                             Logg Inn
@@ -83,7 +103,7 @@ export default function LoginScreen({ navigation }) {
                 <View>
                     <TouchableOpacity
                         style={styles.button1}
-                        onPress={() => navigation.navigate("Tilbake")}>
+                        onPress={() => navigation.navigate("Register")}>
                         <Text
                             style={styles.loginInfoText}>
                             Registrer

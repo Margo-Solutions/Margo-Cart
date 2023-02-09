@@ -1,7 +1,10 @@
 
 import { StyleSheet, View, Button, Image,Text } from 'react-native';
+import React, { useContext } from 'react';
+import { AuthContext } from '../context/Authcontex';
 
 export default function HjemmesideScreen({ navigation }) {
+  const {logout} = useContext(AuthContext);
   return (
     <View style={styles.container}>
       <View>
@@ -23,7 +26,7 @@ export default function HjemmesideScreen({ navigation }) {
               <Button title="Innstlinger" color="#8FD6F2" />
             </View>
             <View style={styles.button}>
-              <Button title="Kontakt" color="#8FD6F2" />
+              <Button title="logout" color="#8FD6F2" onPress={logout}/>
             </View>
          </View>
         </View>
