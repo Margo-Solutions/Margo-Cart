@@ -10,6 +10,7 @@ import Home from '../Screens/HjemmesideScreen';
 import LagHandlelister from "../Screens/LagHandlelister";
 import { AuthContext } from '../context/Authcontex';
 import handleliste from "../Screens/Handleliste";
+import Varer from "../Screens/Varer";
 
 
 const Drawer = createDrawerNavigator();
@@ -18,6 +19,7 @@ const Navigation = () => {
     const { isAuthenticated } = React.useContext(AuthContext);
     return (
         <NavigationContainer>
+<<<<<<< HEAD
             <Drawer.Navigator screenOptions={{
                 headerTransparent: true,
                 headerTitle: "",
@@ -41,6 +43,23 @@ const Navigation = () => {
                         </>
                     )}
             </Drawer.Navigator>
+=======
+        <Stack.Navigator>
+        {isAuthenticated ? (
+            <>
+            <Stack.Screen name="Home" component={Home} options ={{headerShown:false}}/>
+            <Stack.Screen name="LagHandlelister"  component={LagHandlelister} options ={{headerShown:false}} />
+            <Stack.Screen name="Handleliste"  component={handleliste} options ={{headerShown:false}}/>
+            <Stack.Screen name="Varer"  component={Varer} options ={{headerShown:false}}/>
+            </>
+            ) : (
+                <>
+            <Stack.Screen name="Login"  component={login} options ={{headerShown:false}}/> 
+            <Stack.Screen name="Register" component={register} options ={{headerShown:false}}/>  
+            </>
+            )}
+        </Stack.Navigator>
+>>>>>>> 3087c51d27ccf73eee2a9a048fadeb7de6ffe4df
         </NavigationContainer>
     );
 };

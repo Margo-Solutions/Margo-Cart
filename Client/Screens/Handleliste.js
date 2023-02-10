@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { StyleSheet, TextInput, View, Image, Button, Text, TouchableOpacity, FlatList } from 'react-native';
 
 
+
 export default function Handleliste({navigation, route}) {
     const [handleliste_tittel, setHandlelisteTittel] = useState(''); // legger til handlelister
     const [handleliste, setHandleliste] = useState([]); // lister handlelister
@@ -36,6 +37,13 @@ export default function Handleliste({navigation, route}) {
             console.error(err.message);
         }
         };
+
+        const pressHandler = (handleliste_id) =>{
+            navigation.navigate('Varer',{
+              handlelisteID: handleliste_id
+            });
+          };
+
     useEffect(() => {
         getHandlelisteName(handlelisteID);
         ListVarer(handlelisteID);
@@ -53,16 +61,15 @@ export default function Handleliste({navigation, route}) {
                 <Text style={styles.textStyle}> {handleliste_tittel} </Text>
             </View>
             <View style={styles.line} />
-            <View style={styles.inputContainer}>
-                <TextInput 
-                style={styles.textInput}
-                placeholder="Legg til vare"
-                />
+            <View>
+              <TouchableOpacity style={styles.secondButtonStyle} onPress={()=> pressHandler(handlelisteID) }>
+                <Text style={styles.opacityText}>Legg til varer</Text>
+              </TouchableOpacity>
             </View>
             <View style={styles.listContainer}>
             <FlatList data={handleliste} renderItem={(itemData) => {
             return(
-              <TouchableOpacity onPress={()=>pressHandler(itemData.item.vare_navn)}>
+              <TouchableOpacity>
               <View style={styles.listItem}>
                 <Text style={styles.listText}>{itemData.item.vare_navn}</Text>
               </View>
@@ -125,4 +132,15 @@ const styles = StyleSheet.create({
       borderRadius: 10,
       backgroundColor: '#5e0acc',
     },
+    secondButtonStyle: {
+        backgroundColor: 'transparent',
+      },
+      opacityText: {
+        color: '#646161'
+      },
+      buttonStyleSave: {
+        height: 35,
+        width: 255, 
+        marginTop: 150,
+      },
   });
