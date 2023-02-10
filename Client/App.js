@@ -13,7 +13,6 @@ import Navigation from './components/navigation';
 
 //components
 
-const Stack = createNativeStackNavigator();
 
 export default function App() {
 

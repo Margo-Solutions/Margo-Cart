@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../context/Authcontex';
 import { TextInput } from 'react-native-paper';
 
+
 export default function LoginScreen({ navigation }) {
     const [email, setemail] = useState('');
     const [passord, setpassord] = useState('');
@@ -83,6 +84,7 @@ export default function LoginScreen({ navigation }) {
                 <View>
                     <TouchableOpacity
                         style={styles.buttonGlemtPassord}
+                        onPress={() => navigation.navigate("GlemtPassord")}
                         >
                         <Text
                             style={styles.glemtPassordText}>
