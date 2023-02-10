@@ -2,6 +2,7 @@
 import { StyleSheet, View, Button, Image,Text } from 'react-native';
 import React, { useContext } from 'react';
 import { AuthContext } from '../context/Authcontex';
+import LagHandlelister from './LagHandlelister';
 
 export default function HjemmesideScreen({ navigation }) {
   const {logout} = useContext(AuthContext);
@@ -17,7 +18,7 @@ export default function HjemmesideScreen({ navigation }) {
         <View style={styles.test}>
           <View style={styles.buttonContainer}>
             <View style={styles.button}>
-              <Button title="Lag Handleliste" color="#8FD6F2" />
+              <Button title="Lag Handleliste" color="#8FD6F2" onPress={() => navigation.navigate("LagHandlelister")}/>
             </View>
             <View style={styles.button}>
               <Button title="Finn Vare" color="#8FD6F2" />
