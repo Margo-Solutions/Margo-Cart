@@ -4,7 +4,9 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import login from '../Screens/LoginScreen';
 import register from '../Screens/RegisterScreen';
 import Home from '../Screens/HjemmesideScreen';
+import LagHandlelister from "../Screens/LagHandlelister";
 import { AuthContext } from '../context/Authcontex';
+import handleliste from "../Screens/Handleliste";
 
 
 const Stack = createNativeStackNavigator();
@@ -15,7 +17,11 @@ const Navigation = () => {
         <NavigationContainer>
         <Stack.Navigator>
         {isAuthenticated ? (
-            <Stack.Screen name="Home" component={Home} />
+            <>
+            <Stack.Screen name="Home" component={Home} options ={{headerShown:false}}/>
+            <Stack.Screen name="LagHandlelister"  component={LagHandlelister} options ={{headerShown:false}} />
+            <Stack.Screen name="Handleliste"  component={handleliste} options ={{headerShown:false}}/>
+            </>
             ) : (
                 <>
             <Stack.Screen name="Login"  component={login} /> 
