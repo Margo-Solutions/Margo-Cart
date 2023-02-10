@@ -104,8 +104,6 @@ npm install expo
 ```
 for å starte serveren
 ```
-
-```
 npx expo start
 ```
 
