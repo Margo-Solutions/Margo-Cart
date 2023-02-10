@@ -172,7 +172,7 @@ app.post('/margodatabase/handlelister/registrer', async (req, res) => {
     }   
 });
  // legge til varer i handleliste //
-app.post('/margodatabase/handleliste', async (req, res) => {
+app.post('/margodatabase/handleliste/varer', async (req, res) => {
     try {
         const {handleliste_id, vare_id} = req.body;
         const newVare = await pool.query(

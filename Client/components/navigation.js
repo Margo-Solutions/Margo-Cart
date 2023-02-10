@@ -7,6 +7,7 @@ import Home from '../Screens/HjemmesideScreen';
 import LagHandlelister from "../Screens/LagHandlelister";
 import { AuthContext } from '../context/Authcontex';
 import handleliste from "../Screens/Handleliste";
+import Varer from "../Screens/Varer";
 
 
 const Stack = createNativeStackNavigator();
@@ -21,11 +22,12 @@ const Navigation = () => {
             <Stack.Screen name="Home" component={Home} options ={{headerShown:false}}/>
             <Stack.Screen name="LagHandlelister"  component={LagHandlelister} options ={{headerShown:false}} />
             <Stack.Screen name="Handleliste"  component={handleliste} options ={{headerShown:false}}/>
+            <Stack.Screen name="Varer"  component={Varer} options ={{headerShown:false}}/>
             </>
             ) : (
                 <>
-            <Stack.Screen name="Login"  component={login} /> 
-            <Stack.Screen name="Register" component={register} />  
+            <Stack.Screen name="Login"  component={login} options ={{headerShown:false}}/> 
+            <Stack.Screen name="Register" component={register} options ={{headerShown:false}}/>  
             </>
             )}
         </Stack.Navigator>
