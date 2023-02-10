@@ -90,6 +90,10 @@ npm i express pg cors
 ```
 
 ## Første gang for server 
+gå inn i server mappe
+```
+cd cd Margo-Cart/Server/server
+```
 skriv inn og trykk enter helt til den sier press Y/N
 ```
 npm init
@@ -122,5 +126,12 @@ npm install dotenv
 ```
 jsonwebtoken og bcyrpt er for kryptering av passord
 ```
-npm install jsonwebtoken bcyrpt
+npm install jsonwebtoken bcrypt
 ```
+
+# Starte Server
+For å starte server
+```
+npx nodemon
+```
+
