@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { StyleSheet, Button, View, TextInput, Image, FlatList, Text, TouchableOpacity } from 'react-native';
 
 
+
 export default function Varer({navigation, route}) {
   
   const [vare_navn, setVareNavn] = useState(''); // legger til varer
@@ -60,18 +61,23 @@ export default function Varer({navigation, route}) {
   };
 
 
+  
 
-
-  const pressHandler = (vare_navn) =>{
-    setNavn(vare_navn);
-    UpdateVare;
+  const pressHandler = (vare_test) =>{
+    setNavn(vare_test);
+    //setEmail(handlelisteID); //oppdateres etter 1 ekstra klikk? 
+    console.log(navn)
+    console.log(email)
+    console.log(handlelisteID)
+    console.log(vare_test)
   }
+
 
 
   useEffect(() => {
     ListVarer();
-    setEmail(handlelisteID)
-  }, []);
+     setEmail(handlelisteID)
+  }, [handlelisteID]);
 
 
     return (

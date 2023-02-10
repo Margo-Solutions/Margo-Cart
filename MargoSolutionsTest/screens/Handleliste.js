@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { StyleSheet, Button, View, Image, Text, FlatList, TouchableOpacity } from 'react-native';
 
 
-export default function Handleliste({navigation}) {
+export default function Handleliste({navigation, route}) {
   const [handleliste, setHandleliste] = useState([]); //brukt for å liste database variabler 
   const ListHandlelister = async () => {
     try {
@@ -28,6 +28,13 @@ export default function Handleliste({navigation}) {
         handlelisteTittel: handleliste_tittel
       });
     };
+
+    const secondPressHandler=() =>{
+      navigation.navigate('Opprett Handleliste',{
+
+      });
+    };
+
   return (
     <View style={styles.container}>
       <View>
@@ -42,7 +49,7 @@ export default function Handleliste({navigation}) {
           <Button
           title = "Opprett handleliste"
           color = "#CADCFF"
-          onPress={() => navigation.navigate("Opprett Handleliste") }
+          onPress={() => secondPressHandler() }
           />
         </View>
       </View>
