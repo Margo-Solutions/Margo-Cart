@@ -11,6 +11,9 @@ import LagHandlelister from "../Screens/LagHandlelister";
 import { AuthContext } from '../context/Authcontex';
 import handleliste from "../Screens/Handleliste";
 import Varer from "../Screens/Varer";
+import HjemmesideScreen from '../Screens/HjemmesideScreen';
+import FinnButikkKart from '../Screens/FinnButikkKart';
+
 
 
 const Drawer = createDrawerNavigator();
@@ -29,16 +32,19 @@ const Navigation = () => {
             }} >
                 {isAuthenticated ? (
                     <>
-                        <Drawer.Screen name="Home" component={Home}  />
+                        <Drawer.Screen name="HjemmeSide" component={HjemmesideScreen} />
+                        <Drawer.Screen name="Handlelister" component={handleliste} />
                         <Drawer.Screen name="LagHandlelister" component={LagHandlelister} />
-                        <Drawer.Screen name="Handleliste" component={handleliste} />
+                        <Drawer.Screen name="Varer" component={Varer} />
+                        <Drawer.Screen name="Finn Butikk" component={FinnButikkKart} />
+                        
                     </>
                 ) :
                     (
                         <>
                             <Drawer.Screen name="Login" component={login} options={{ drawerLockMode: 'locked-closed', headerShown: false }} />
-                            <Drawer.Screen name="Register" component={register} options={{drawerLockMode: 'locked-closed', headerShown: false}}/>
-                            <Drawer.Screen name="GlemtPassord" component={GlemtPassordScreen} options={{drawerLockMode: 'locked-closed', headerShown: false}}/>
+                            <Drawer.Screen name="Register" component={register} options={{ drawerLockMode: 'locked-closed', headerShown: false }} />
+                            <Drawer.Screen name="GlemtPassord" component={GlemtPassordScreen} options={{ drawerLockMode: 'locked-closed', headerShown: false }} />
                         </>
                     )}
             </Drawer.Navigator>
