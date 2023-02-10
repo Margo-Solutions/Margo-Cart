@@ -20,6 +20,7 @@ git push
 
 ## Første gang du laster ned koden så må du starte et nytt expo prosjekt for appen (for clientside)
 ```
+cd Margo-Cart/Client
 npm install
 npm start
 ```
