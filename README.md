@@ -90,6 +90,10 @@ npm i express pg cors
 ```
 
 ## Første gang for server 
+gå inn i server mappe
+```
+cd cd Margo-Cart/Server/server
+```
 skriv inn og trykk enter helt til den sier press Y/N
 ```
 npm init
