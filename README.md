@@ -98,6 +98,10 @@ Nodemon er får å kjøre serveren
 ```
 npm install nodemon
 ```
+for å laste ned expo i server
+```
+npm install expo
+```
 for å starte serveren
 ```
 npx expo start
