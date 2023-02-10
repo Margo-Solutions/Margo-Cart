@@ -5,7 +5,7 @@ Bacheloroppgave/Studentbedrift
 
 # Clone repo
 ```
-git clone https://github.com/Martinkopland/Margo-Solutions.git
+https://github.com/Margo-Solutions/Margo-Cart.git
 ```
 # For å pulle fra Github når noen har gjort endringer
 ```
