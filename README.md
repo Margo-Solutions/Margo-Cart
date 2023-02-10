@@ -126,5 +126,5 @@ npm install dotenv
 ```
 jsonwebtoken og bcyrpt er for kryptering av passord
 ```
-npm install jsonwebtoken bcyrpt
+npm install jsonwebtoken bcrypt
 ```
