@@ -128,3 +128,10 @@ jsonwebtoken og bcyrpt er for kryptering av passord
 ```
 npm install jsonwebtoken bcrypt
 ```
+
+# Starte Server
+For å starte server
+```
+npx nodemon
+```
+
