@@ -9,7 +9,7 @@ import GlemtPassordScreen from '../Screens/GlemtPassordScreen';
 import Home from '../Screens/HjemmesideScreen';
 import LagHandlelister from "../Screens/LagHandlelister";
 import { AuthContext } from '../context/Authcontex';
-import handleliste from "../Screens/Handleliste";
+import Handleliste from "../Screens/Handleliste";
 import Varer from "../Screens/Varer";
 import HjemmesideScreen from '../Screens/HjemmesideScreen';
 import FinnButikkKart from '../Screens/FinnButikkKart';
@@ -33,7 +33,7 @@ const Navigation = () => {
                 {isAuthenticated ? (
                     <>
                         <Drawer.Screen name="HjemmeSide" component={HjemmesideScreen} />
-                        <Drawer.Screen name="Handlelister" component={handleliste} />
+                        <Drawer.Screen name="Handleliste" component={Handleliste} />
                         <Drawer.Screen name="LagHandlelister" component={LagHandlelister} />
                         <Drawer.Screen name="Varer" component={Varer} />
                         <Drawer.Screen name="Finn Butikk" component={FinnButikkKart} />
