@@ -5,7 +5,7 @@ Bacheloroppgave/Studentbedrift
 
 # Clone repo
 ```
-git clone https://github.com/Martinkopland/Margo-Solutions.git
+https://github.com/Margo-Solutions/Margo-Cart.git
 ```
 # For å pulle fra Github når noen har gjort endringer
 ```
@@ -20,6 +20,7 @@ git push
 
 ## Første gang du laster ned koden så må du starte et nytt expo prosjekt for appen (for clientside)
 ```
+cd Margo-Cart/Client
 npm install
 npm start
 ```
@@ -89,6 +90,10 @@ npm i express pg cors
 ```
 
 ## Første gang for server 
+gå inn i server mappe
+```
+cd cd Margo-Cart/Server/server
+```
 skriv inn og trykk enter helt til den sier press Y/N
 ```
 npm init
@@ -96,6 +101,10 @@ npm init
 Nodemon er får å kjøre serveren
 ```
 npm install nodemon
+```
+for å laste ned expo i server
+```
+npm install expo
 ```
 for å starte serveren
 ```
@@ -117,5 +126,12 @@ npm install dotenv
 ```
 jsonwebtoken og bcyrpt er for kryptering av passord
 ```
-npm install jsonwebtoken bcyrpt
+npm install jsonwebtoken bcrypt
 ```
+
+# Starte Server
+For å starte server
+```
+npx nodemon
+```
+

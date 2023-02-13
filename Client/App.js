@@ -7,7 +7,6 @@ import { HandProvider } from './context/listeHandler';
 
 //components
 
-const Stack = createNativeStackNavigator();
 
 export default function App() {
 
