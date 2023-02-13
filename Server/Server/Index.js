@@ -249,18 +249,20 @@ app.put('/margodatabase/varer/:id', async (req, res) => {
 app.get('/margodatabase/handleliste/:handleliste_id', async (req, res) => {
     try {
         const { handleliste_id } = req.params;
-        const handleliste = await pool.query('SELECT varer.vare_navn FROM handleliste INNER JOIN varer ON handleliste.vare_id=varer.vare_id WHERE handleliste.handleliste_id=$1;', [handleliste_id]);
+        const handleliste = await pool.query('SELECT varer.vare_navn, handleliste.id FROM handleliste INNER JOIN varer ON handleliste.vare_id=varer.vare_id WHERE handleliste.handleliste_id=$1;', [handleliste_id]);
         res.json(handleliste.rows);
+        console.log(handleliste.rows);
     } catch (err) {
         console.error(err.message);
     }
 });
 
 // delete a vare //
-app.delete('/margodatabase/varer/:id', async (req, res) => {
+app.delete('/margodatabase/handleliste/remove/', async (req, res) => {
     try {
-        const { id } = req.params;
-        const deleteVare = await pool.query('DELETE FROM varer WHERE id = $1', [id]);
+        const { id } = req.body;
+        console.log(id);
+        const deleteVare = await pool.query('DELETE FROM handleliste WHERE id = $1', [id]);
         res.json('Vare was deleted!');
     } catch (err) {
         console.error(err.message);

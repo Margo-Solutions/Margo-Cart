@@ -1,40 +1,30 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { StyleSheet, TextInput, View, Image, Button, Text, TouchableOpacity, FlatList } from 'react-native';
+import { handContext } from '../context/listeHandler';
 
 
 
 export default function Handleliste({navigation, route}) {
-    const [handleliste_tittel, setHandlelisteTittel] = useState(''); // legger til handlelister
-    const [handleliste, setHandleliste] = useState([]); // lister handlelister
+   // const [handleliste_tittel, setHandlelisteTittel] = useState(''); // legger til handlelister
     const {handlelisteID} = route.params;
+    const {handleliste_tittel, getHandlelisteName, ListVarerHandleliste, handleliste } = useContext(handContext);
 
-    const getHandlelisteName = async (id) => {
+    const removeItem = async (id) => {
         try {
-            
-            const response = await fetch(`http://10.0.2.2:5000/margodatabase/handlelister/${id}`, {
-                method: "GET",
+            const body = { id };
+            console.log(body);
+            const response = await fetch(`http://10.0.2.2:5000/margodatabase/handleliste/remove/`, {
+                method: "DELETE",
                 headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
             });
-            const jsonData = await response.json();
-            setHandlelisteTittel(jsonData.handleliste_tittel);
-            console.log(jsonData);
-        } catch (err) {
-            console.error(err.message);
-        }
-    };
-
-    const ListVarer = async (id) => {
-        try {
-            const response = await fetch(`http://10.0.2.2:5000/margodatabase/handleliste/${id}`, {
-                method: "GET",
-                headers: { "Content-Type": "application/json" },
-                });
-            const handleliste = await response.json();
-    
-            setHandleliste(handleliste);
-        } catch (err) {
-            console.error(err.message);
+            const parseRes = await response.json();
+            console.log(parseRes);
+            ListVarerHandleliste(handlelisteID);
+            
+        }catch (err) {
+                console.error(err.message);
         }
         };
 
@@ -46,7 +36,7 @@ export default function Handleliste({navigation, route}) {
 
     useEffect(() => {
         getHandlelisteName(handlelisteID);
-        ListVarer(handlelisteID);
+        ListVarerHandleliste(handlelisteID);
     }, []);
   return (
     <View style={styles.container}>
@@ -69,7 +59,7 @@ export default function Handleliste({navigation, route}) {
             <View style={styles.listContainer}>
             <FlatList data={handleliste} renderItem={(itemData) => {
             return(
-              <TouchableOpacity>
+              <TouchableOpacity onPress={()=> removeItem(itemData.item.id)} >
               <View style={styles.listItem}>
                 <Text style={styles.listText}>{itemData.item.vare_navn}</Text>
               </View>

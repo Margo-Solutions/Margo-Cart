@@ -1,13 +1,14 @@
 
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { StyleSheet, Button, View, TextInput, Image, FlatList, Text, TouchableOpacity } from 'react-native';
-
+import { handContext } from '../context/listeHandler';
 export default function Varer({navigation, route}) {
   const [vare_navn, setVareNavn] = useState(''); // legger til varer
   const [vare, setVare] = useState([]); // lister varer
   const [handleliste_id, setHandlelisteID] = useState('');    
   const {handlelisteID} = route.params;
+  const {ListVarerHandleliste} = useContext(handContext);
 
   const ListVarer = async () => {
     try {
@@ -31,7 +32,7 @@ export default function Varer({navigation, route}) {
         });
         const parseRes = await response.json();
         console.log(parseRes);
-        ListVarer();
+        ListVarerHandleliste(handlelisteID);
     }catch (err) {
             console.error(err.message);
     }
