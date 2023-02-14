@@ -174,10 +174,10 @@ app.post('/margodatabase/handlelister/registrer', async (req, res) => {
  // legge til varer i handleliste //
 app.post('/margodatabase/handleliste/varer', async (req, res) => {
     try {
-        const {handleliste_id, vare_id} = req.body;
+        const {handleliste_id, vare_id, antall} = req.body;
         const newVare = await pool.query(
-            'INSERT INTO handleliste(handleliste_id, vare_id) VALUES($1, $2) RETURNING *',  
-            [handleliste_id, vare_id]
+            'INSERT INTO handleliste(handleliste_id, vare_id, antall) VALUES($1, $2, $3) RETURNING *',  
+            [handleliste_id, vare_id, antall]
         );
         res.json(newVare.rows[0]);
         } catch (err) {3
@@ -206,13 +206,12 @@ app.get('/margodatabase/handlelister', async (req, res) => {
 }); 
 
 // get a vare //
-app.get('/margodatabase/varer/:id', async (req, res) => {
+app.get('/margodatabase/varer/Search/:vare_navn', async (req, res) => {
+    console.log(req.params);
     try {
-        const { id } = req.params;
-        const varer = await pool.query('SELECT * FROM varer WHERE vare_id = $1', [id]);
-
-        res.json(varer.rows[0])
-
+        const { vare_navn } = req.params;
+        const varer = await pool.query("SELECT * FROM varer WHERE vare_navn LIKE '%" + vare_navn + "%'");
+        res.json(varer.rows);
     }     
     catch (err) {
         console.error(err.message);
@@ -249,13 +248,14 @@ app.put('/margodatabase/varer/:id', async (req, res) => {
 app.get('/margodatabase/handleliste/:handleliste_id', async (req, res) => {
     try {
         const { handleliste_id } = req.params;
-        const handleliste = await pool.query('SELECT varer.vare_navn, handleliste.id FROM handleliste INNER JOIN varer ON handleliste.vare_id=varer.vare_id WHERE handleliste.handleliste_id=$1;', [handleliste_id]);
+        const handleliste = await pool.query('SELECT varer.vare_navn, handleliste.id, antall FROM handleliste INNER JOIN varer ON handleliste.vare_id=varer.vare_id WHERE handleliste.handleliste_id=$1;', [handleliste_id]);
         res.json(handleliste.rows);
         console.log(handleliste.rows);
     } catch (err) {
         console.error(err.message);
     }
 });
+
 
 // delete a vare //
 app.delete('/margodatabase/handleliste/remove/', async (req, res) => {
@@ -280,6 +280,52 @@ app.delete('/margodatabase/handlelister/:handleliste_id', async (req, res) => {
     }
 });
 
+//------------------------------------update handleliste------------------------------------//
+
+// check if vare is in handleliste //
+app.get('/margodatabase/handleliste/check/:handleliste_id/:vare_id', async (req, res) => {
+    try {
+        const { handleliste_id } = req.params;
+        const { vare_id } = req.params;
+        const handleliste = await pool.query('SELECT * FROM handleliste WHERE handleliste_id = $1 AND vare_id = $2', [handleliste_id, vare_id]);
+        console.log(handleliste.rows);
+        if (handleliste.rows.length > 0) { // sjekke om varen er i handlelisten
+            res.json(handleliste.rows[0]);
+        } else {
+        res.json(handleliste.rows);
+        }
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+// update a handleliste //
+
+app.put('/margodatabase/handlelister/update/:antall/:vare_id', async (req, res) => {
+    try {
+        const { antall } = req.params;
+        const { vare_id } = req.params;
+        const { handleliste_id} = req.body;
+        console.log(antall, vare_id, handleliste_id);
+        const updateHandleliste = await pool.query('UPDATE handleliste SET antall = $1 WHERE handleliste_id = $2 AND vare_id=$3', [antall, handleliste_id, vare_id]);
+        res.json('Handleliste was updated!');
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.put('/margodatabase/handlelister/update/handleliste/:antall/:id', async (req, res) => {
+    try {
+        const { antall } = req.params;
+        const { id } = req.params;
+        const { handleliste_id} = req.body;
+        console.log(antall, id, handleliste_id);
+        const updateHandleliste = await pool.query('UPDATE handleliste SET antall = $1 WHERE handleliste_id = $2 AND id=$3', [antall, handleliste_id, id]);
+        res.json('Handleliste was updated!');
+    } catch (err) {
+        console.error(err.message);
+    }
+});
 
     // listen to port //
 app.listen(PORT, "0.0.0.0", () => {

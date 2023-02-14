@@ -8,7 +8,19 @@ import { handContext } from '../context/listeHandler';
 export default function Handleliste({navigation, route}) {
    // const [handleliste_tittel, setHandlelisteTittel] = useState(''); // legger til handlelister
     const {handlelisteID} = route.params;
-    const {handleliste_tittel, getHandlelisteName, ListVarerHandleliste, handleliste } = useContext(handContext);
+    const {handleliste_tittel, getHandlelisteName, ListVarerHandleliste, handleliste, updateHandleliste } = useContext(handContext);
+
+    const updateOrRemove = async (id, antall) => {
+        let Numb = antall - 1;
+        if (antall == 1) {
+            removeItem(id);
+        }
+            else {
+                updateHandleliste(Numb, id, handlelisteID);
+                console.log(Numb, id, handlelisteID, "update");
+            }
+        ListVarerHandleliste(handlelisteID);
+        };
 
     const removeItem = async (id) => {
         try {
@@ -59,9 +71,9 @@ export default function Handleliste({navigation, route}) {
             <View style={styles.listContainer}>
             <FlatList data={handleliste} renderItem={(itemData) => {
             return(
-              <TouchableOpacity onPress={()=> removeItem(itemData.item.id)} >
+              <TouchableOpacity onPress={()=> updateOrRemove(itemData.item.id, itemData.item.antall)} >
               <View style={styles.listItem}>
-                <Text style={styles.listText}>{itemData.item.vare_navn}</Text>
+                <Text style={styles.listText}>{itemData.item.vare_navn} {itemData.item.antall}</Text>
               </View>
               </TouchableOpacity>
             );

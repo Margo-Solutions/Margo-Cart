@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { useState, useEffect, useContext } from 'react';
 import { StyleSheet, Button, View, TextInput, Image, FlatList, Text, TouchableOpacity } from 'react-native';
+import { set } from 'react-native-reanimated';
 import { handContext } from '../context/listeHandler';
 export default function Varer({navigation, route}) {
   const [vare_navn, setVareNavn] = useState(''); // legger til varer
@@ -20,11 +21,67 @@ export default function Varer({navigation, route}) {
       
     }
   };
+  const SearchVarer = async (vare_navn) => {
+    if (vare_navn == ''){
+        ListVarer();
+    }
+    else{
+    try {
+        const response = await fetch(`http://10.0.2.2:5000/Margodatabase/varer/Search/${vare_navn}`, {
+            method: "GET",
+        });
+        const vare = await response.json();
+        console.log(vare);
+        setVare(vare);
+
+      } catch (err) {
+        console.error(err.message);
+        
+      }
+    }
+    };
+
+  const updateVare = async (antall, vare_id) => {
+    try {
+        const body = { handleliste_id};
+        const response = await fetch(`http://10.0.2.2:5000/Margodatabase/handlelister/update/${antall}/${vare_id}` ,{
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        }
+        );
+        const vare = await response.json();
+      } catch (err) {
+        console.error(err.message);
+        
+      }
+    };
+
+  const checkHandleliste = async (handleliste_id, vare_id) => {
+    try{
+    const response = await fetch(`http://10.0.2.2:5000/margodatabase/handleliste/check/${handleliste_id}/${vare_id}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        });
+    const handleliste = await response.json();
+    console.log(handleliste.antall);
+    if (handleliste.antall > 0){
+        let antall = handleliste.antall + 1;
+        updateVare(antall, vare_id);
+    }
+    else{
+        AddVare(vare_id);
+    }
+    }
+    catch (err) {
+        console.error(err.message);
+    }
+}
 
   const AddVare = async (vare_id) => {
     try {
-        
-        const body = { handleliste_id, vare_id };
+        const antall = 1;
+        const body = { handleliste_id, vare_id, antall };
         const response = await fetch("http://10.0.2.2:5000/Margodatabase/handleliste/varer", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -33,10 +90,12 @@ export default function Varer({navigation, route}) {
         const parseRes = await response.json();
         console.log(parseRes);
         ListVarerHandleliste(handlelisteID);
+  
     }catch (err) {
             console.error(err.message);
     }
     };
+
         
   useEffect(() => {
     ListVarer();
@@ -60,14 +119,14 @@ export default function Varer({navigation, route}) {
                 value={vare_navn}
                 onChangeText={newText => setVareNavn(newText)}
                 />
-          <Button title = "Søk etter vare"/>
+          <Button title = "Søk etter vare" onPress={() =>SearchVarer(vare_navn)}/>
           </View>      
           <View style={styles.listContainer}>
           <FlatList data={vare} renderItem={(itemData) => {
             return(
-            <TouchableOpacity onPress={() => AddVare(itemData.item.vare_id)}>
+            <TouchableOpacity onPress={() => checkHandleliste(handleliste_id, itemData.item.vare_id)}>
               <View style={styles.listItem}>
-                <Text style={styles.listText}>{itemData.item.vare_navn}</Text>
+                <Text style={styles.listText}>{itemData.item.vare_navn} </Text>
               </View>
               </TouchableOpacity>
             );

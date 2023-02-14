@@ -9,6 +9,7 @@ export const HandProvider = ({ children }) => {
     const [vare_navn, setVareNavn] = useState(''); // legger til varer
     const [vare, setVare] = useState([]); // lister varer
     const [handleliste_id, setHandlelisteID] = useState('');  
+    const [antall, setAntall] = useState(1);
 
     const getHandlelisteName = async (id) => {
         try {
@@ -18,7 +19,6 @@ export const HandProvider = ({ children }) => {
             });
             const jsonData = await response.json();
             setHandlelisteTittel(jsonData.handleliste_tittel);
-            console.log(jsonData);
         } catch (err) {
             console.error(err.message);
         }
@@ -31,13 +31,30 @@ export const HandProvider = ({ children }) => {
                 headers: { "Content-Type": "application/json" },
                 });
             const handleliste = await response.json();
-    
+            
             setHandleliste(handleliste);
         } catch (err) {
             console.error(err.message);
         }
         };
 
+        const updateHandleliste = async (antall, id, handleliste_id ) => {
+            try {
+                const body = { handleliste_id};
+                const response = await fetch(`http://10.0.2.2:5000/Margodatabase/handlelister/update/handleliste/${antall}/${id}` ,{
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(body)
+                }
+                );
+                const vare = await response.json();
+                console.log(vare);
+              } catch (err) {
+                console.error(err.message);
+                
+              }
+            };
+    
     return (
         <handContext.Provider
             value={{
@@ -52,7 +69,8 @@ export const HandProvider = ({ children }) => {
                 setVare,
                 handleliste_id,
                 setHandlelisteID,
-                ListVarerHandleliste
+                ListVarerHandleliste,
+                updateHandleliste,
             }}
         >
             {children}

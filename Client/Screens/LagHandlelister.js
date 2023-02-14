@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { StyleSheet, TextInput, View, Image, Button, Text, TouchableOpacity, FlatList } from 'react-native';
+import { handContext } from '../context/listeHandler';
 
 
 export default function LagHandlelister({navigation}) {
   const [handleliste_tittel, setHandlelisteTittel] = useState('');
   const [handleliste, setList] = useState ([]);
+  const {ListVarerHandleliste, getHandlelisteName} = useContext(handContext);
 
   const make_handleliste = async(e) => {
     e.preventDefault();
@@ -27,16 +29,18 @@ export default function LagHandlelister({navigation}) {
     try {
         const response = await fetch("http://10.0.2.2:5000/margodatabase/handlelister");
         const handleliste = await response.json();
-
         setList(handleliste);
     } catch (err) {
         console.error(err.message);
     }
     };
+
     const pressHandler = (handleliste_id, handleliste_tittel) =>{
+        ListVarerHandleliste(handleliste_id)
+        getHandlelisteName(handleliste_id)
         navigation.navigate('Handleliste',{
           handlelisteID: handleliste_id,
-          handlelisteTittel: handleliste_tittel
+          handlelisteTittel: handleliste_tittel,
         });
       };
   
