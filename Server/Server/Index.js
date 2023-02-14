@@ -326,9 +326,23 @@ app.put('/margodatabase/handlelister/update/handleliste/:antall/:id', async (req
         console.error(err.message);
     }
 });
+// get a kunde //
+app.get('/margodatabase/kunder/get/:email', async (req, res) => {
+    try {
+        const { email } = req.params;
+        console.log(email);
+        const kunde = await pool.query('SELECT handlelister.handleliste_tittel, handlelister.handleliste_id FROM handlelister INNER JOIN kunder ON handlelister.kunde_id=kunder.id WHERE kunder.email=$1;', [email]);
+        res.json(kunde.rows);
+        console.log(kunde.rows);
+    }
+    catch (err) {
+        console.error(err.message);
+    }
+});
 
     // listen to port //
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`Example app listening at http://localhost:${PORT}`)
     }
 );
+

@@ -6,6 +6,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [email, setmail] = useState('');
 
     const setAuth = (value) => {
         setIsAuthenticated(value);
@@ -28,6 +29,7 @@ export const AuthProvider = ({ children }) => {
       }
       const logout = async() => {
         AsyncStorage.removeItem('token');
+        AsyncStorage.removeItem('email');
         setIsAuthenticated(false);
         console.log(await AsyncStorage.getItem('token'))
         console.log('logged out');
@@ -45,6 +47,8 @@ export const AuthProvider = ({ children }) => {
                 setAuth,
                 isAuth,
                 logout,
+                email,
+                setmail
             }}
         >
             {children}

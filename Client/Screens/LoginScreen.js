@@ -11,7 +11,7 @@ export default function LoginScreen({ navigation }) {
     const [email, setemail] = useState('');
     const [passord, setpassord] = useState('');
     const [passwordVisible, setPasswordVisible] = useState(true);
-    const { setAuth } = useContext(AuthContext);
+    const { setAuth, setmail } = useContext(AuthContext);
     const
       onsubmitform = async (e) => {
         e.preventDefault();
@@ -27,6 +27,7 @@ export default function LoginScreen({ navigation }) {
           if (parseRes.token) {
             AsyncStorage.setItem("token", parseRes.token);
               setAuth(true);
+            AsyncStorage.setItem("email", email);
           }
           else {
               console.log("no token");

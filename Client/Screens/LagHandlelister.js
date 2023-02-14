@@ -1,13 +1,16 @@
 import * as React from 'react';
 import { useState, useEffect, useContext } from 'react';
 import { StyleSheet, TextInput, View, Image, Button, Text, TouchableOpacity, FlatList } from 'react-native';
+import { AuthContext } from '../context/Authcontex';
 import { handContext } from '../context/listeHandler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function LagHandlelister({navigation}) {
   const [handleliste_tittel, setHandlelisteTittel] = useState('');
   const [handleliste, setList] = useState ([]);
   const {ListVarerHandleliste, getHandlelisteName} = useContext(handContext);
+  const {email} = useContext(AuthContext);
 
   const make_handleliste = async(e) => {
     e.preventDefault();
@@ -27,6 +30,7 @@ export default function LagHandlelister({navigation}) {
 
     const ListHandlelister = async () => {
     try {
+    
         const response = await fetch("http://10.0.2.2:5000/margodatabase/handlelister");
         const handleliste = await response.json();
         setList(handleliste);
@@ -34,6 +38,18 @@ export default function LagHandlelister({navigation}) {
         console.error(err.message);
     }
     };
+
+    const ListHandleliste = async (mail) => {
+        try {
+            mail = await AsyncStorage.getItem('email');
+            const response = await fetch(`http://10.0.2.2:5000/margodatabase/kunder/get/${mail}`);
+            const handleliste = await response.json();
+            setList(handleliste);
+        } catch (err) {
+            console.error(err.message);
+        }
+        };
+
 
     const pressHandler = (handleliste_id, handleliste_tittel) =>{
         ListVarerHandleliste(handleliste_id)
@@ -45,7 +61,7 @@ export default function LagHandlelister({navigation}) {
       };
   
     useEffect(() => {
-    ListHandlelister();
+        ListHandleliste();
     }, []);
   return (
     <View style={styles.container}>

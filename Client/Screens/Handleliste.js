@@ -47,6 +47,7 @@ export default function Handleliste({navigation, route}) {
           };
 
     useEffect(() => {
+        console.log(handlelisteID);
         getHandlelisteName(handlelisteID);
         ListVarerHandleliste(handlelisteID);
     }, []);
