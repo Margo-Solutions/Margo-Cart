@@ -7,12 +7,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function LagHandlelister({navigation}) {
-  const [handleliste_tittel, setHandlelisteTittel] = useState('');
-  const [handleliste, setList] = useState ([]);
+  const [handleliste_tittel, setHandlelisteTittel] = useState(''); // handleliste tittel use state
+  const [handleliste, setList] = useState ([]);  // list handlelister use state
   const {ListVarerHandleliste, getHandlelisteName} = useContext(handContext);
   const {email} = useContext(AuthContext);
 
-  const make_handleliste = async(e) => {
+  const make_handleliste = async(e) => { //create a handleliste
     e.preventDefault();
     try {
       const body = { handleliste_tittel };
@@ -28,7 +28,7 @@ export default function LagHandlelister({navigation}) {
     }
   };
 
-    const ListHandlelister = async () => {
+    const ListHandlelister = async () => { //listing handlelister
     try {
     
         const response = await fetch("http://10.0.2.2:5000/margodatabase/handlelister");
@@ -51,7 +51,7 @@ export default function LagHandlelister({navigation}) {
         };
 
 
-    const pressHandler = (handleliste_id, handleliste_tittel) =>{
+    const pressHandler = (handleliste_id, handleliste_tittel) =>{ // press handler to handle handleliter button press
         ListVarerHandleliste(handleliste_id)
         getHandlelisteName(handleliste_id)
         navigation.navigate('Handleliste',{
@@ -60,7 +60,7 @@ export default function LagHandlelister({navigation}) {
         });
       };
   
-    useEffect(() => {
+    useEffect(() => { // useEffect to refresh the data
         ListHandlelister();
     }, []);
     return (
@@ -101,33 +101,26 @@ export default function LagHandlelister({navigation}) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container: { // top bar container
     flex: 1,
     backgroundColor: '#66A2BA',
   },
-  image: {
+  image: { // image styling
     width: 130,
     height: 130,
     flexDirection: 'row',
     alignSelf: 'flex-end',
   },
-  line: {
+  line: { // top line style
     borderBottomColor: 'black',
     borderBottomWidth: StyleSheet.hairlineWidth,
     bottom: 25,
   },
-  buttonContainer: {
-    borderRadius: 10,
-    overflow: 'hidden',
-    width: 350,
-    height: 35,
-    textAlign: 'center',
-  },
-  inputContainer: {
+  inputContainer: { // view style for input title container
     justifyContent: 'center',
     alignItems: 'center',
   },
-  textInput: {
+  textInput: { // text input style for input title container
     width: 350,
     height: 35,
     borderColor: '#e4d0ff',
@@ -138,23 +131,19 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
   },
-  listContainer: {
+  listContainer: { // base container
     flex: 1,
     marginTop: 20,
     marginBottom: 20,
     backgroundColor: "#CADCFF",
     justifyContent:'center',
   },
-  textStyle: {  
-    textAlign: 'center',
-    fontSize: 20,
-  },
-  listText: {
+  listText: { // text style inside flatlist
     color: '#646161',
     fontSize: 20,
     textAlign: 'center',
   },
-  listItem: {
+  listItem: { // view style for the text inside flatlist
     margin: 8,
     padding: 6,
     borderRadius: 10,

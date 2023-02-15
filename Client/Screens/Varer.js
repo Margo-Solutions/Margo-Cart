@@ -2,16 +2,15 @@
 import * as React from 'react';
 import { useState, useEffect, useContext } from 'react';
 import { StyleSheet, Button, View, TextInput, Image, FlatList, Text, TouchableOpacity } from 'react-native';
-import { set } from 'react-native-reanimated';
 import { handContext } from '../context/listeHandler';
 export default function Varer({navigation, route}) {
-  const [vare_navn, setVareNavn] = useState(''); // legger til varer
-  const [vare, setVare] = useState([]); // lister varer
-  const [handleliste_id, setHandlelisteID] = useState('');    
-  const {handlelisteID} = route.params;
+  const [vare_navn, setVareNavn] = useState(''); // searching for items
+  const [vare, setVare] = useState([]); // listing items use state
+  const [handleliste_id, setHandlelisteID] = useState('');  //use state for updating handleliste id 
+  const {handlelisteID} = route.params; // getting handleliste id from previous screen
   const {ListVarerHandleliste} = useContext(handContext);
 
-  const ListVarer = async () => {
+  const ListVarer = async () => { // listing items
     try {
       const response = await fetch("http://10.0.2.2:5000/Margodatabase/varer");
       const vare = await response.json();
@@ -21,7 +20,7 @@ export default function Varer({navigation, route}) {
       
     }
   };
-  const SearchVarer = async (vare_navn) => {
+  const SearchVarer = async (vare_navn) => { // searching for items
     if (vare_navn == ''){
         ListVarer();
     }
@@ -41,7 +40,7 @@ export default function Varer({navigation, route}) {
     }
     };
 
-  const updateVare = async (antall, vare_id) => {
+  const updateVare = async (antall, vare_id) => { // updating items
     try {
         const body = { handleliste_id};
         const response = await fetch(`http://10.0.2.2:5000/Margodatabase/handlelister/update/${antall}/${vare_id}` ,{
@@ -78,7 +77,7 @@ export default function Varer({navigation, route}) {
     }
 }
 
-  const AddVare = async (vare_id) => {
+  const AddVare = async (vare_id) => { // adding items
     try {
         const antall = 1;
         const body = { handleliste_id, vare_id, antall };
@@ -97,7 +96,7 @@ export default function Varer({navigation, route}) {
     };
 
         
-  useEffect(() => {
+  useEffect(() => { // use effect to refresh the data
     ListVarer();
     setHandlelisteID(handlelisteID);
   }, []);
@@ -112,7 +111,7 @@ export default function Varer({navigation, route}) {
              />
           </View>
           <View style={styles.line} />
-          <View style={styles.inputContainer}>
+          <View style={styles.searchingContainer}>
           <TextInput 
                 style={styles.textInput}
                 placeholder=""
@@ -138,33 +137,33 @@ export default function Varer({navigation, route}) {
     );
 }
 const styles = StyleSheet.create({
-        container: {
+        container: { // top bar container
           flex: 1,
           backgroundColor: '#66A2BA',
         },
-        image: {
+        image: { // image styling 
           width: 130,
           height: 130,
           flexDirection: 'row',
           alignSelf: 'flex-end',
         },
-        line: {
+        line: { // top line style
             borderBottomColor: 'black',
             borderBottomWidth: StyleSheet.hairlineWidth,
             bottom: 25,
           },
-          listContainer: {
+          listContainer: { //base container
             flex: 1,
             marginTop: 20,
             marginBottom: 20,
             backgroundColor: "#CADCFF",
             justifyContent:'center',
           },
-          inputContainer: {
+          searchingContainer: { // searching input bar container
             justifyContent: 'center',
             alignItems: 'center',
-          },
-          textInput: {
+          }, 
+          textInput: { // text input style for search container
             width: 350,
             height: 35,
             borderColor: '#e4d0ff',
@@ -175,12 +174,12 @@ const styles = StyleSheet.create({
             textAlign: 'center',
             fontSize: 20,
           },
-          listText: {
+          listText: { //text styles inside flatlist
             color: '#646161',
             fontSize: 20,
             textAlign: 'center',
           },
-          listItem: {
+          listItem: { // view style for the text inside flatlist 
             margin: 8,
             padding: 6,
             borderRadius: 10,

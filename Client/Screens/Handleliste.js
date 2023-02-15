@@ -7,10 +7,10 @@ import { handContext } from '../context/listeHandler';
 
 export default function Handleliste({navigation, route}) {
    // const [handleliste_tittel, setHandlelisteTittel] = useState(''); // legger til handlelister
-    const {handlelisteID} = route.params;
+    const {handlelisteID} = route.params; // getting handleliste id from previous screen
     const {handleliste_tittel, getHandlelisteName, ListVarerHandleliste, handleliste, updateHandleliste } = useContext(handContext);
 
-    const updateOrRemove = async (id, antall) => {
+    const updateOrRemove = async (id, antall) => { // update or remove item from handleliste
         let Numb = antall - 1;
         if (antall == 1) {
             removeItem(id);
@@ -22,7 +22,7 @@ export default function Handleliste({navigation, route}) {
         ListVarerHandleliste(handlelisteID);
         };
 
-    const removeItem = async (id) => {
+    const removeItem = async (id) => { // remove item from handleliste
         try {
             const body = { id };
             console.log(body);
@@ -40,13 +40,13 @@ export default function Handleliste({navigation, route}) {
         }
         };
 
-        const pressHandler = (handleliste_id) =>{
+        const pressHandler = (handleliste_id) =>{ // press handler to handle item clicks 
             navigation.navigate('Varer',{
               handlelisteID: handleliste_id
             });
           };
 
-    useEffect(() => {
+    useEffect(() => { // use effect to refresh handleliste and items
         console.log(handlelisteID);
         getHandlelisteName(handlelisteID);
         ListVarerHandleliste(handlelisteID);
@@ -60,12 +60,12 @@ export default function Handleliste({navigation, route}) {
              />
           </View>
           <View style={styles.line} />
-              <View style={styles.inputContainer}>
-                  <Text style={styles.textStyle}> {handleliste_tittel} </Text>
+              <View style={styles.titleContainer}>
+                  <Text style={styles.titleStyle}> {handleliste_tittel} </Text>
               </View>
               <View style={styles.listContainer}>
               <View>
-                <TouchableOpacity style={styles.secondButtonStyle} onPress={() => pressHandler(handlelisteID) }>
+                <TouchableOpacity style={styles.varerButtonStyle} onPress={() => pressHandler(handlelisteID) }>
                   <Text style={styles.opacityText}>Legg til varer</Text>
                 </TouchableOpacity>
               </View>
@@ -74,7 +74,6 @@ export default function Handleliste({navigation, route}) {
                 <TouchableOpacity onPress={()=> updateOrRemove(itemData.item.id, itemData.item.antall)} >
                 <View style={styles.listItem}>
                   <Text style={styles.listText}>{itemData.item.vare_navn} {itemData.item.antall}</Text>
-                  
                 </View>
                 </TouchableOpacity>
               );
@@ -88,65 +87,54 @@ export default function Handleliste({navigation, route}) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container: { // top bar container
     flex: 1,
     backgroundColor: '#66A2BA',
   },
-  image: {
+  image: { // image styling 
     width: 130,
     height: 130,
     flexDirection: 'row',
     alignSelf: 'flex-end',
   },
-  line: {
+  line: { // top line style 
     borderBottomColor: 'black',
     borderBottomWidth: StyleSheet.hairlineWidth,
     bottom: 25,
   },
-  buttonContainer: {
-    borderRadius: 10,
-    overflow: 'hidden',
-    width: 350,
-    height: 35,
-    textAlign: 'center',
-  },
-  inputContainer: {
+  titleContainer: { // title container
     justifyContent: 'center',
     alignItems: 'center',
   },
-  listContainer: {
+  listContainer: { // base container
     flex: 1,
     marginTop: 20,
     marginBottom: 20,
     backgroundColor: "#CADCFF",
     justifyContent:'center',
   },
-  textStyle: {  
+  titleStyle: {  // text style for handleliste
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 28,
+    fontWeight: 'bold',
   },
-  listText: {
+  listText: { // text style inside flatlist
     color: 'black',
     fontSize: 20,
     textAlign: 'center',
   },
-  listItem: {
+  listItem: { // view style for the text inside flatlist
     margin: 8,
     padding: 6,
     borderRadius: 10,
-    backgroundColor: '#B2BEB5',
+    backgroundColor: 'transparent',
   },
-  secondButtonStyle: {
+  varerButtonStyle: { // button for varer style
       backgroundColor: 'transparent',
     },
-    opacityText: {
+    opacityText: { // text for add items 
       color: '#646161',
       textAlign: 'center',
       fontSize: 18,
-    },
-    buttonStyleSave: {
-      height: 35,
-      width: 255, 
-      marginTop: 150,
     },
 });

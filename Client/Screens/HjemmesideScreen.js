@@ -44,17 +44,17 @@ export default function HjemmesideScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container: { // container style 
     flex: 1,
     backgroundColor: '#66A2BA',
   },
-  image: {
+  image: { //image style
     width: 130,
     height: 130,
     flexDirection: 'row',
     alignSelf: 'flex-end',
   },
-  buttonContainer: {
+  buttonContainer: { //button container for all buttons
    padding: 16,
    marginHorizontal: 8,
    flexDirection: 'column',
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
    bottom: 30,
    
   },
-  button: {
+  button: {  // button styles for all butons
     marginVertical: 15,
     borderColor: 'black',
     borderRadius: 50,
@@ -73,30 +73,30 @@ const styles = StyleSheet.create({
     fontSize: 20,
     
   },
-  line: {
+  line: { // the black line on top 
     borderBottomColor: 'black',
     borderBottomWidth: StyleSheet.hairlineWidth,
     bottom: 25,
   },
-  secondline: {
+  secondline: { // black line on bottom
     borderBottomColor: 'black',
     borderBottomWidth: StyleSheet.hairlineWidth,
     top: 40,
   },
-  textStyle: {
+  textStyle: { // text style
     color: 'black',
     marginTop: 50,
   },
-  map: {
+  map: { // map picture style
    height: 300,
    width: 300,
    top: 10,
    left: 70,
   },
-  flexBox:{
+  flexBox:{ //flexbox for the buttons
     flex: 2,
   },
-  secondFlexBox:{
+  secondFlexBox:{ //flexbox for the map 
     flex: 3,
   }
 });
