@@ -42,7 +42,7 @@ const Navigation = () => {
                 ) :
                     (
                         <>
-                            <Drawer.Screen name="Login" component={login} options={{ drawerLockMode: 'locked-closed', headerShown: false }} />
+                            <Drawer.Screen name="Login" component={login} options={{ drawerLockMode: 'locked-closed', headerShown: false, swipeEdgeWidth: 0, }} />
                             <Drawer.Screen name="Register" component={register} options={{ drawerLockMode: 'locked-closed', headerShown: false }} />
                             <Drawer.Screen name="GlemtPassord" component={GlemtPassordScreen} options={{ drawerLockMode: 'locked-closed', headerShown: false }} />
                         </>

@@ -4,7 +4,6 @@ import { StyleSheet, TextInput, View, Image, Button, Text, TouchableOpacity, Fla
 import { handContext } from '../context/listeHandler';
 
 
-
 export default function Handleliste({navigation, route}) {
    // const [handleliste_tittel, setHandlelisteTittel] = useState(''); // legger til handlelister
     const {handlelisteID} = route.params; // getting handleliste id from previous screen
@@ -46,6 +45,7 @@ export default function Handleliste({navigation, route}) {
             });
           };
 
+
     useEffect(() => { // use effect to refresh handleliste and items
         console.log(handlelisteID);
         getHandlelisteName(handlelisteID);
@@ -61,7 +61,12 @@ export default function Handleliste({navigation, route}) {
           </View>
           <View style={styles.line} />
               <View style={styles.titleContainer}>
-                  <Text style={styles.titleStyle}> {handleliste_tittel} </Text>
+              <TextInput 
+                  style={styles.textInput}
+                  placeholder=""
+                  value={handleliste_tittel}
+                  />
+                  <Button title = "Lagre endringer" />
               </View>
               <View style={styles.listContainer}>
               <View>
@@ -74,6 +79,7 @@ export default function Handleliste({navigation, route}) {
                 <TouchableOpacity onPress={()=> updateOrRemove(itemData.item.id, itemData.item.antall)} >
                 <View style={styles.listItem}>
                   <Text style={styles.listText}>{itemData.item.vare_navn} {itemData.item.antall}</Text>
+                  <Text style={styles.lineText}>___________________________________________</Text>
                 </View>
                 </TouchableOpacity>
               );
@@ -137,4 +143,18 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       fontSize: 18,
     },
+    textInput: { // text input style for input title container
+      width: 350,
+      height: 35,
+      borderColor: '#e4d0ff',
+      backgroundColor: '#CADCFF',
+      color: '#120438',
+      borderWidth: 1,
+      borderRadius: 6,
+      textAlign: 'center',
+      fontSize: 20,
+    },
+    lineText: { // line style for lines in flatlist
+      textAlign: 'center',
+    }
 });
