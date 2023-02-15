@@ -2,7 +2,7 @@
 import { StyleSheet, View, Button, Image,Text } from 'react-native';
 import React, { useContext } from 'react';
 import { AuthContext } from '../context/Authcontex';
-import LagHandlelister from './LagHandlelister';
+
 
 export default function HjemmesideScreen({ navigation }) {
   const {logout} = useContext(AuthContext);
@@ -15,7 +15,7 @@ export default function HjemmesideScreen({ navigation }) {
           />
       </View>
       <View style={styles.line} />
-        <View style={styles.test}>
+        <View style={styles.flexBox}>
           <View style={styles.buttonContainer}>
             <View style={styles.button}>
               <Button title="Lag Handleliste" color="#8FD6F2" onPress={() => navigation.navigate("LagHandlelister")}/>
@@ -31,7 +31,7 @@ export default function HjemmesideScreen({ navigation }) {
             </View>
          </View>
         </View>
-          <View style={styles.nexttest}>
+          <View style={styles.secondFlexBox}>
             <View style={styles.secondline} />
               <Text style={styles.textStyle}>Din Posisjon:</Text>
         <Image
@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     width: 130,
     height: 130,
     flexDirection: 'row',
+    alignSelf: 'flex-end',
   },
   buttonContainer: {
    padding: 16,
@@ -92,10 +93,10 @@ const styles = StyleSheet.create({
    top: 10,
    left: 70,
   },
-  test:{
+  flexBox:{
     flex: 2,
   },
-  nexttest:{
+  secondFlexBox:{
     flex: 3,
   }
 });

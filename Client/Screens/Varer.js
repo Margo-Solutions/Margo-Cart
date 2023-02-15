@@ -176,14 +176,15 @@ const styles = StyleSheet.create({
             fontSize: 20,
           },
           listText: {
-            color: 'white',
+            color: '#646161',
             fontSize: 20,
+            textAlign: 'center',
           },
           listItem: {
             margin: 8,
             padding: 6,
             borderRadius: 10,
-            backgroundColor: '#5e0acc',
+            backgroundColor: 'transparent',
           },
     });
 

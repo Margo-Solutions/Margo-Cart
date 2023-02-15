@@ -32,10 +32,10 @@ const Navigation = () => {
             }} >
                 {isAuthenticated ? (
                     <>
-                        <Drawer.Screen name="HjemmeSide" component={HjemmesideScreen}  />
-                        <Drawer.Screen name="Handleliste" component={Handleliste} />
+                        <Drawer.Screen name="HjemmeSide" component={HjemmesideScreen} />
+                        <Drawer.Screen name="Handleliste" component={Handleliste} options={{drawerItemStyle:{ display: 'none' }}} />
                         <Drawer.Screen name="LagHandlelister" component={LagHandlelister} />
-                        <Drawer.Screen name="Varer" component={Varer} />
+                        <Drawer.Screen name="Varer" component={Varer} options={{drawerItemStyle:{ display: 'none' }}} />
                         <Drawer.Screen name="Finn Butikk" component={FinnButikkKart} />
                         
                     </>
