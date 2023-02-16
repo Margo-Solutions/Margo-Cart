@@ -11,17 +11,31 @@ export default function LagHandlelister({navigation}) {
   const [handleliste, setList] = useState ([]);  // list handlelister use state
   const {ListVarerHandleliste, getHandlelisteName} = useContext(handContext);
   const {email} = useContext(AuthContext);
+  const [kunde_id, setKundeID] = useState(''); // kunde id use state
 
+  const getkundeID = async (mail) => { // getting kunde id
+    try {
+        const response = await fetch(`http://10.0.2.2:5000/margodatabase/kunder/${mail}`, {
+        });
+        const kunde_id = await response.json();
+        setKundeID(kunde_id.id);
+        } catch (err) {
+        console.error(err.message);
+        }
+    };
   const make_handleliste = async(e) => { //create a handleliste
     e.preventDefault();
     try {
-      const body = { handleliste_tittel };
+      getkundeID(await AsyncStorage.getItem('email'));
+      const body = { handleliste_tittel, kunde_id };
+      console.log(body);
       const response = await fetch("http://10.0.2.2:5000/margodatabase/handlelister/registrer", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)
       });
       window.location = "/";
+      ListHandleliste(await AsyncStorage.getItem('email'));
     } catch (err) {
       console.error(err.message);
       
@@ -61,7 +75,7 @@ export default function LagHandlelister({navigation}) {
       };
   
     useEffect(() => { // useEffect to refresh the data
-        ListHandlelister();
+        ListHandleliste(email);
     }, []);
     return (
       <View style={styles.container}>

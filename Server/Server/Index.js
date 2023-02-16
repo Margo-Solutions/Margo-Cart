@@ -144,6 +144,16 @@ app.post('/margodatabase/register', validInfo, async (req, res) => {
         }
     });
 
+    app.get('/margodatabase/kunder/:email', async (req, res) => {
+        try {
+            const { email } = req.params;
+            const kunder = await pool.query('SELECT id FROM kunder WHERE email =$1;', [email]);
+            res.json(kunder.rows[0]);
+        } catch (err) {
+            console.error(err.message);
+        }
+    });
+    
     // create a vare //
     app.post('/margodatabase/varer', async (req, res) => {
     try {
@@ -161,10 +171,11 @@ app.post('/margodatabase/register', validInfo, async (req, res) => {
 // create a handleliste //
 app.post('/margodatabase/handlelister/registrer', async (req, res) => {
     try {
-        const { handleliste_tittel} = req.body;
+        const { handleliste_tittel, kunde_id} = req.body;
+        console.log(handleliste_tittel, kunde_id);
         const newHandleliste = await pool.query(
-            'INSERT INTO handlelister(handleliste_tittel) VALUES($1) RETURNING *',  
-            [handleliste_tittel]
+            'INSERT INTO handlelister(handleliste_tittel, kunde_id) VALUES($1, $2) RETURNING *',  
+            [handleliste_tittel, kunde_id]
         );
         res.json(newHandleliste.rows[0]);
         } catch (err) {3
