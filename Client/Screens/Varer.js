@@ -30,7 +30,6 @@ export default function Varer({navigation, route}) {
             method: "GET",
         });
         const vare = await response.json();
-        console.log(vare);
         setVare(vare);
 
       } catch (err) {
@@ -63,7 +62,6 @@ export default function Varer({navigation, route}) {
         headers: { "Content-Type": "application/json" },
         });
     const handleliste = await response.json();
-    console.log(handleliste.antall);
     if (handleliste.antall > 0){
         let antall = handleliste.antall + 1;
         updateVare(antall, vare_id);
@@ -87,7 +85,6 @@ export default function Varer({navigation, route}) {
             body: JSON.stringify(body)
         });
         const parseRes = await response.json();
-        console.log(parseRes);
         ListVarerHandleliste(handlelisteID);
   
     }catch (err) {

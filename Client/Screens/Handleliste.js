@@ -16,7 +16,6 @@ export default function Handleliste({navigation, route}) {
         }
             else {
                 updateHandleliste(Numb, id, handlelisteID);
-                console.log(Numb, id, handlelisteID, "update");
             }
         ListVarerHandleliste(handlelisteID);
         };
@@ -24,14 +23,12 @@ export default function Handleliste({navigation, route}) {
     const removeItem = async (id) => { // remove item from handleliste
         try {
             const body = { id };
-            console.log(body);
             const response = await fetch(`http://10.0.2.2:5000/margodatabase/handleliste/remove/`, {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body)
             });
             const parseRes = await response.json();
-            console.log(parseRes);
             ListVarerHandleliste(handlelisteID);
             
         }catch (err) {
@@ -47,7 +44,6 @@ export default function Handleliste({navigation, route}) {
 
 
     useEffect(() => { // use effect to refresh handleliste and items
-        console.log(handlelisteID);
         getHandlelisteName(handlelisteID);
         ListVarerHandleliste(handlelisteID);
     }, []);

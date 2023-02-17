@@ -41,7 +41,7 @@ export const HandProvider = ({ children }) => {
         const updateHandleliste = async (antall, id, handleliste_id ) => {
             try {
                 const body = { handleliste_id};
-                const response = await fetch(`http://10.0.2.2:5000/Margodatabase/handlelister/update/handleliste/${antall}/${id}` ,{
+                const response = await fetch(`http://10.0.2.2:5000/Margodatabase/handleliste/update/${antall}/${id}` ,{
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body)

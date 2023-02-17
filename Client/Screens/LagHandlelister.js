@@ -24,12 +24,11 @@ export default function LagHandlelister({navigation}) {
         }
     };
   const make_handleliste = async(e) => { //create a handleliste
+    getkundeID(await AsyncStorage.getItem('email'));
     e.preventDefault();
     try {
-      getkundeID(await AsyncStorage.getItem('email'));
       const body = { handleliste_tittel, kunde_id };
-      console.log(body);
-      const response = await fetch("http://10.0.2.2:5000/margodatabase/handlelister/registrer", {
+      const response = await fetch("http://10.0.2.2:5000/margodatabase/handlelister/nyhandleliste", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)
@@ -44,7 +43,6 @@ export default function LagHandlelister({navigation}) {
 
     const ListHandlelister = async () => { //listing handlelister
     try {
-    
         const response = await fetch("http://10.0.2.2:5000/margodatabase/handlelister");
         const handleliste = await response.json();
         setList(handleliste);
