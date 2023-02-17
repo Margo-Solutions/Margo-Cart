@@ -28,10 +28,11 @@ CREATE TABLE handleliste (
   id SERIAL PRIMARY KEY,
   handleliste_id integer REFERENCES handlelister (handleliste_id),
   vare_id integer REFERENCES varer (vare_id)
-  antall VARCHAR(255)
+  antall integer
 );
 
 CREATE TABLE varer(
     vare_id SERIAL PRIMARY KEY,
     vare_navn VARCHAR(255)
 );
+
