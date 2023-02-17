@@ -21,7 +21,7 @@ export default function HjemmesideScreen({ navigation }) {
               <Button title="Lag Handleliste" color="#8FD6F2" onPress={() => navigation.navigate("LagHandlelister")}/>
             </View>
             <View style={styles.button}>
-              <Button title="Finn Vare" color="#8FD6F2" />
+              <Button title="Finn Vare" color="#8FD6F2" onPress={()=> navigation.navigate("Finn Vare")} />
             </View>
             <View style={styles.button}>
               <Button title="Innstlinger" color="#8FD6F2" />

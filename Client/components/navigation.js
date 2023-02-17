@@ -13,6 +13,7 @@ import Handleliste from "../Screens/Handleliste";
 import Varer from "../Screens/Varer";
 import HjemmesideScreen from '../Screens/HjemmesideScreen';
 import FinnButikkKart from '../Screens/FinnButikkKart';
+import FinnVare from '../Screens/FinnVare';
 
 
 
@@ -37,14 +38,15 @@ const Navigation = () => {
                         <Drawer.Screen name="LagHandlelister" component={LagHandlelister} />
                         <Drawer.Screen name="Varer" component={Varer} options={{drawerItemStyle:{ display: 'none' }}} />
                         <Drawer.Screen name="Finn Butikk" component={FinnButikkKart} />
+                        <Drawer.Screen name="Finn Vare" component={FinnVare} />
                         
                     </>
                 ) :
                     (
                         <>
                             <Drawer.Screen name="Login" component={login} options={{ drawerLockMode: 'locked-closed', headerShown: false, swipeEdgeWidth: 0, }} />
-                            <Drawer.Screen name="Register" component={register} options={{ drawerLockMode: 'locked-closed', headerShown: false }} />
-                            <Drawer.Screen name="GlemtPassord" component={GlemtPassordScreen} options={{ drawerLockMode: 'locked-closed', headerShown: false }} />
+                            <Drawer.Screen name="Register" component={register} options={{ drawerLockMode: 'locked-closed', headerShown: false, swipeEdgeWidth: 0 }} />
+                            <Drawer.Screen name="GlemtPassord" component={GlemtPassordScreen} options={{ drawerLockMode: 'locked-closed', headerShown: false, swipeEdgeWidth: 0 }} />
                         </>
                     )}
             </Drawer.Navigator>
