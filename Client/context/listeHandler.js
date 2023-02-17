@@ -48,7 +48,6 @@ export const HandProvider = ({ children }) => {
                 }
                 );
                 const vare = await response.json();
-                console.log(vare);
               } catch (err) {
                 console.error(err.message);
                 

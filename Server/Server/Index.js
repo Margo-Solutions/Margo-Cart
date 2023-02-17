@@ -308,12 +308,28 @@ app.put('/margodatabase/handleliste/update/:antall/:id', async (req, res) => {
         const { antall } = req.params;
         const { id } = req.params;
         const { handleliste_id} = req.body;
+        console.log(antall, id, handleliste_id);
         const updateHandleliste = await pool.query('UPDATE handleliste SET antall = $1 WHERE handleliste_id = $2 AND id=$3', [antall, handleliste_id, id]);
         res.json('Handleliste was updated!');
     } catch (err) {
         console.error(err.message);
     }
 });
+
+// update a handleliste //
+app.put('/margodatabase/varer/add/:antall/:vare_id', async (req, res) => {
+    try {
+        const { antall } = req.params;
+        const { vare_id } = req.params;
+        const { handleliste_id} = req.body;
+        console.log(antall, vare_id, handleliste_id);
+        const updateHandleliste = await pool.query('UPDATE handleliste SET antall = $1 WHERE handleliste_id = $2 AND vare_id=$3', [antall, handleliste_id, vare_id]);
+        res.json('Handleliste was updated!');
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
 
 // get a kunde med hvilken handleliste de har //
 app.get('/margodatabase/kunder/get/:email', async (req, res) => {

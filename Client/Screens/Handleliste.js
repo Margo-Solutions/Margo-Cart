@@ -74,7 +74,7 @@ export default function Handleliste({navigation, route}) {
               return(
                 <TouchableOpacity onPress={()=> updateOrRemove(itemData.item.id, itemData.item.antall)} >
                 <View style={styles.listItem}>
-                  <Text style={styles.listText}>{itemData.item.vare_navn} {itemData.item.antall}</Text>
+                  <Text style={styles.listText}>{itemData.item.antall}x {itemData.item.vare_navn}</Text>
                   <Text style={styles.lineText}>___________________________________________</Text>
                 </View>
                 </TouchableOpacity>

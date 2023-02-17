@@ -23,12 +23,9 @@ const Navigation = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-            
-
         
                 {isAuthenticated ? (
                     <>
-                     
                         <Stack.Screen name="HomeRoot" component={HomeRoot} options={{headerShown:false}} />
                     </>
                 ) :
