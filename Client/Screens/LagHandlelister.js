@@ -24,9 +24,9 @@ export default function LagHandlelister({navigation}) {
         }
     };
   const make_handleliste = async(e) => { //create a handleliste
-    getkundeID(await AsyncStorage.getItem('email'));
     e.preventDefault();
     try {
+      getkundeID(await AsyncStorage.getItem('email'));
       const body = { handleliste_tittel, kunde_id };
       const response = await fetch("http://10.0.2.2:5000/margodatabase/handlelister/nyhandleliste", {
           method: "POST",
