@@ -58,7 +58,7 @@ function InputAutocomplete({
   );
 }
 
-export default function App() {
+export default function App({ navigation }) {
   const [origin, setOrigin] = useState<LatLng | null>();
   const [destination, setDestination] = useState<LatLng | null>();
   const [showDirections, setShowDirections] = useState(false);
@@ -199,8 +199,8 @@ export default function App() {
         ) : null}
       </View>
       <View style={styles.butikkButtonContainer}>
-              <TouchableOpacity >
-                <Text style={styles.butikkButtonText}> Butikker </Text>
+              <TouchableOpacity onPress={() => navigation.navigate("ButikkSøk")}>
+                <Text style={styles.butikkButtonText}> Finn Butikker </Text>
               </TouchableOpacity>
             </View>
     </View>
@@ -254,11 +254,10 @@ const styles = StyleSheet.create({
   },
   butikkButtonContainer: {
     backgroundColor: '#66A2BA',
-    width: 120,
-    height: 35,
+    width: 150,
     borderRadius: 8,
-    bottom: 50,
-    left: 120,
+    bottom: 100,
+    left: 140,
     alignContent: 'center',
     paddingVertical: 3,
   },
