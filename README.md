@@ -88,6 +88,22 @@ Kommunikasjon med server
 ```
 npm i express pg cors
 ```
+#For Maps
+```
+npx expo install react-native-maps
+```
+```
+npm i react-native-google-places-autocomplete
+```
+```
+npm i react-native-maps-directions
+```
+```
+npm i react-native-maps
+```
+```
+npx expo install expo-location![image](https://user-images.githubusercontent.com/113107099/220368898-fb1b9a14-f724-4e1e-b27f-2a7b78523d80.png)
+```
 
 ## Første gang for server 
 gå inn i server mappe
