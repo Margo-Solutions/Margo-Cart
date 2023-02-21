@@ -36,3 +36,12 @@ CREATE TABLE varer(
     vare_navn VARCHAR(255)
 );
 
+CREATE TABLE Butikker(
+    butikk_id SERIAL PRIMARY KEY,
+    butikk_navn VARCHAR(255),
+    adresse VARCHAR(255),
+    latitude FLOAT,
+    longitude FLOAT   
+);
+ 
+

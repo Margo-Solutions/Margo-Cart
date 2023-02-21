@@ -69,7 +69,6 @@ export default function App() {
   const [errorMsg, setErrorMsg] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
-  const [start, setStart] = useState('');
   const mapRef = useRef<MapView>(null);
 
 
@@ -96,8 +95,9 @@ export default function App() {
   } else if (location) {
     text = JSON.stringify(location);
   }
-  console.warn("latitude: ", latitude);
-  console.warn("longitude: ", longitude);
+  //console.warn("latitude: ", latitude);
+  //console.warn("longitude: ", longitude);
+  console.warn(errorMsg);
 
 
   const moveTo = async (position: LatLng) => {
@@ -111,7 +111,6 @@ export default function App() {
 
   function gåTilPosisjon() {
     setOrigin(location)
-    setStart('Din posisjon')
     moveTo(location)
     console.log(location);
   }
@@ -135,6 +134,8 @@ export default function App() {
     if (origin && destination) {
       setShowDirections(true);
       mapRef.current?.fitToCoordinates([origin, destination], { edgePadding });
+      console.log(distance);
+      console.log(duration);
     }
   };
   const onPlaceSelected = (
