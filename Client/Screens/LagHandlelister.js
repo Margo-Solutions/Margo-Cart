@@ -10,23 +10,20 @@ export default function LagHandlelister({navigation}) {
   const [handleliste_tittel, setHandlelisteTittel] = useState(''); // handleliste tittel use state
   const [handleliste, setList] = useState ([]);  // list handlelister use state
   const {ListVarerHandleliste, getHandlelisteName} = useContext(handContext);
-  const {email} = useContext(AuthContext);
   const [kunde_id, setKundeID] = useState(''); // kunde id use state
 
-  const getkundeID = async (mail) => { // getting kunde id
+  const getkundeID = async () => { // getting kunde id
     try {
-        const response = await fetch(`http://10.0.2.2:5000/margodatabase/kunder/${mail}`, {
-        });
-        const kunde_id = await response.json();
-        setKundeID(kunde_id.id);
-        } catch (err) {
-        console.error(err.message);
-        }
+      setKundeID(await AsyncStorage.getItem('userid'));
+    } catch (err) {
+      console.error(err.message);
+    }
     };
+
   const make_handleliste = async(e) => { //create a handleliste
     e.preventDefault();
     try {
-      getkundeID(await AsyncStorage.getItem('email'));
+      getkundeID();
       const body = { handleliste_tittel, kunde_id };
       const response = await fetch("http://10.0.2.2:5000/margodatabase/handlelister/nyhandleliste", {
           method: "POST",
@@ -34,27 +31,16 @@ export default function LagHandlelister({navigation}) {
           body: JSON.stringify(body)
       });
       window.location = "/";
-      ListHandleliste(await AsyncStorage.getItem('email'));
+      ListHandleliste(await AsyncStorage.getItem('userid'));
     } catch (err) {
       console.error(err.message);
       
     }
   };
-
-    const ListHandlelister = async () => { //listing handlelister
-    try {
-        const response = await fetch("http://10.0.2.2:5000/margodatabase/handlelister");
-        const handleliste = await response.json();
-        setList(handleliste);
-    } catch (err) {
-        console.error(err.message);
-    }
-    };
-
-    const ListHandleliste = async (mail) => {
+    const ListHandleliste = async (id) => {
         try {
-            mail = await AsyncStorage.getItem('email');
-            const response = await fetch(`http://10.0.2.2:5000/margodatabase/kunder/get/${mail}`);
+            id = await AsyncStorage.getItem('userid');
+            const response = await fetch(`http://10.0.2.2:5000/margodatabase/kunder/get/${id}`);
             const handleliste = await response.json();
             setList(handleliste);
         } catch (err) {
@@ -73,7 +59,8 @@ export default function LagHandlelister({navigation}) {
       };
   
     useEffect(() => { // useEffect to refresh the data
-        ListHandleliste(email);
+      getkundeID();  
+      ListHandleliste(kunde_id);
     }, []);
     return (
       <View style={styles.container}>
