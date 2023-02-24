@@ -58,7 +58,7 @@ function InputAutocomplete({
   );
 }
 
-export default function App({ navigation }) {
+export default function App() {
   const [origin, setOrigin] = useState<LatLng | null>();
   const [destination, setDestination] = useState<LatLng | null>();
   const [showDirections, setShowDirections] = useState(false);
@@ -150,6 +150,7 @@ export default function App({ navigation }) {
     set(position);
     moveTo(position);
   };
+
   return (
     <View style={styles.container}>
       <MapView
@@ -187,10 +188,10 @@ export default function App({ navigation }) {
           <Text style={styles.buttonText}>Trace route</Text>
         </TouchableOpacity>
         <View style={styles.posisjonsButtonContainer}>
-              <TouchableOpacity onPress={gåTilPosisjon}>
-                <Text style={styles.buttonText}> Min posisjon </Text>
-              </TouchableOpacity>
-            </View>
+          <TouchableOpacity onPress={gåTilPosisjon}>
+            <Text style={styles.buttonText}> Min posisjon </Text>
+          </TouchableOpacity>
+        </View>
         {distance && duration ? (
           <View>
             <Text>Distance: {distance.toFixed(2)}</Text>
@@ -198,11 +199,6 @@ export default function App({ navigation }) {
           </View>
         ) : null}
       </View>
-      <View style={styles.butikkButtonContainer}>
-              <TouchableOpacity onPress={() => navigation.navigate("ButikkSøk")}>
-                <Text style={styles.butikkButtonText}> Finn Butikker </Text>
-              </TouchableOpacity>
-            </View>
     </View>
   );
 }

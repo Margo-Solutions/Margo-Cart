@@ -36,12 +36,29 @@ CREATE TABLE varer(
     vare_navn VARCHAR(255)
 );
 
-CREATE TABLE Butikker(
+CREATE TABLE kjeder(
+    kjede_id SERIAL PRIMARY KEY,
+    kjede_navn VARCHAR(255),
+);
+
+CREATE TABLE sted(
+    sted_id SERIAL PRIMARY KEY,
+    sted VARCHAR(255),
+    postnummer INT
+);
+
+CREATE TABLE butikker(
     butikk_id SERIAL PRIMARY KEY,
-    butikk_navn VARCHAR(255),
+    kjede_id integer REFERENCES kjeder (kjede_id),
     adresse VARCHAR(255),
     latitude FLOAT,
-    longitude FLOAT   
+    longitude FLOAT,
+    sted_id integer REFERENCES sted (sted_id)
 );
  
-
+--eksempel innhold 
+ -- butikk_id | kjede_id |             adresse              | latitude | longitude | sted_id
+-----------+----------+----------------------------------+----------+-----------+---------
+--          1 |        1 | Vikersundgata 32, 3370 Vikersund |  9.99429 |  59.96529 |       1
+--          2 |        1 | Storgata, 3320 Vestfossen        |  9.86942 |  59.73459 |       3
+--          3 |        2 | Karsches gate 3                  | 59.66886 |   9.65187 |       2

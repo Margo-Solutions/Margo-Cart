@@ -1,10 +1,67 @@
 
 import * as React from 'react';
 import { useState, useEffect, useContext } from 'react';
-import { StyleSheet, Button, View, TextInput, Image, FlatList, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Button, View, TextInput, Image, FlatList, Text, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { LatLng } from 'react-native-maps';
+import FinnButikkKart from '../Screens/FinnButikkKart';
 
-export default function FinnButikk() {
+export default function FinnKjede() {
+
+    const [kjede_navn, setKjedeNavn] = useState(''); // searching for items
+    const [kjede, setKjede] = useState([]); // listing items use state
+    const [dest, setDest] = useState();
+
+    const ListKjeder = async () => { // listing items
+        try {
+            const response = await fetch("http://10.0.2.2:5000/margodatabase/kjeder");
+            const kjede = await response.json();
+            setKjede(kjede);
+        } catch (err) {
+            console.error(err.message);
+
+        }
+    };
+    const SearchKjeder = async (kjede_navn) => { // searching for items
+        if (kjede_navn == '') {
+            ListKjeder();
+        }
+        else {
+            try {
+                const response = await fetch(`http://10.0.2.2:5000/margodatabase/kjeder/Search/${kjede_navn}`, {
+                    method: "GET",
+                });
+                const kjede = await response.json();
+                setKjede(kjede);
+
+            } catch (err) {
+                console.error(err.message);
+
+            }
+        }
+    };
+
+    const gåTilKart = async (adresse) => { // searching for items
+        try {
+            const body = {adresse}
+            const response = await fetch(`http://10.0.2.2:5000//margodatabase/butikker/adresse`,{
+                method: "GET",
+            });
+            const dest = await response.json();
+            setDest(dest)
+            console.log('text')
+        } catch (err) {
+            console.error(err.message);
+
+        }
+        
+    };
+
+    useEffect(() => { // use effect to refresh the data
+        ListKjeder();
+    }, []);
+
+
     return (
         <View style={styles.container}>
             <View>
@@ -18,25 +75,27 @@ export default function FinnButikk() {
                 <TextInput
                     style={styles.textInput}
                     placeholder=" Søk etter butikk her..."
-                //value={}
-                //onChangeText={}
+                    value={kjede_navn}
+                    onChangeText={newText => setKjedeNavn(newText)}
                 />
-                <TouchableOpacity style={styles.søkButton}>
-                    <Text > Søk 
-                    <Icon name="search" size={20} />
+                <TouchableOpacity style={styles.søkButton} onPress={() => SearchKjeder(kjede_navn)}>
+                    <Text > Søk
+                        <Icon name="search" size={20} />
                     </Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.listContainer}>
-                <FlatList data={'Butikk'} renderItem={(itemData) => {
-                    return (
-                        <TouchableOpacity>
-                            <View style={styles.listItem}>
-                                <Text style={styles.listText}>{itemData.item.Butikk_Navn}</Text>
-                            </View>
-                        </TouchableOpacity>
-                    );
-                }}
+                <FlatList
+                    data={kjede}
+                    renderItem={(itemData) => {
+                        return (
+                            <TouchableOpacity onPress={() => gåTilKart(itemData.item.adresse)}>
+                                <View style={styles.listItem}>
+                                    <Text style={styles.listText}>{itemData.item.kjede_navn}, {itemData.item.adresse}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        );
+                    }}
                     alwaysBounceVertical={false}
                 />
             </View>

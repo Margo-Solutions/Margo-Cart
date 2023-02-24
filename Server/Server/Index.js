@@ -349,3 +349,52 @@ app.listen(PORT, "0.0.0.0", () => {
     }
 );
 
+//get butikk-kjeder//
+app.get('/margodatabase/kjeder', async (req, res) => {
+    try {
+        const kjeder = await pool.query('SELECT kjeder.kjede_navn, butikker.adresse FROM butikker INNER JOIN kjeder ON butikker.kjede_id = kjeder.kjede_id');
+        res.json(kjeder.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+
+//get butikker//
+app.get('/margodatabase/butikker', async (req, res) => {
+    try {
+        const adresse = await pool.query('SELECT adresse FROM butikker');
+        res.json(butikker.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+
+// get a butikk //
+app.get('/margodatabase/kjeder/Search/:kjede_navn', async (req, res) => {
+    try {
+        const { kjede_navn } = req.params;
+        const kjeder = await pool.query("SELECT kjeder.kjede_navn, butikker.adresse FROM butikker INNER JOIN kjeder ON butikker.kjede_id = kjeder.kjede_id WHERE kjeder.kjede_navn LIKE '%" + kjede_navn + "%'");
+        res.json(kjeder.rows);
+    }     
+    catch (err) {
+        console.error(err.message);
+    }
+});
+
+//finds destination location//
+app.get('/margodatabase/butikker/adresse', async (req, res) => {
+    try {
+        const { adresse } = req.body;
+        console.log(adresse)
+        const dest = await pool.query("SELECT latitude, longitude FROM butikker WHERE adresse LIKE '%" + adresse + "%'" );
+        res.json(dest.rows);
+        console.log(dest.rows);
+    } 
+    catch (err) {
+        console.error(err.message);
+    }
+});
+
+
