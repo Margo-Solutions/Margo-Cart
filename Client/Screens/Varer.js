@@ -42,7 +42,7 @@ export default function Varer({navigation, route}) {
   const updateVare = async (antall, vare_id) => { // updating items
     try {
         const body = { handleliste_id};
-        const response = await fetch(`http://10.0.2.2:5000/Margodatabase/varer/add/${antall}/${vare_id}` ,{
+        const response = await fetch(`http://10.0.2.2:5000/Margodatabase/varer/update/add/${antall}/${vare_id}` ,{
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)

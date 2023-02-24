@@ -5,7 +5,6 @@ import { handContext } from '../context/listeHandler';
 
 
 export default function Handleliste({navigation, route}) {
-   // const [handleliste_tittel, setHandlelisteTittel] = useState(''); // legger til handlelister
     const {handlelisteID} = route.params; // getting handleliste id from previous screen
     const {handleliste_tittel, getHandlelisteName, ListVarerHandleliste, handleliste, updateHandleliste } = useContext(handContext);
 
@@ -36,12 +35,11 @@ export default function Handleliste({navigation, route}) {
         }
         };
 
-        const pressHandler = (handleliste_id) =>{ // press handler to handle item clicks 
-            navigation.navigate('Varer',{
+        const pressHandler = (handleliste_id) =>{ // press handler to handle item clicks  
+          navigation.navigate('Varer',{
               handlelisteID: handleliste_id
             });
           };
-
 
     useEffect(() => { // use effect to refresh handleliste and items
         getHandlelisteName(handlelisteID);
