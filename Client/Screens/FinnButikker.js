@@ -3,14 +3,19 @@ import * as React from 'react';
 import { useState, useEffect, useContext } from 'react';
 import { StyleSheet, Button, View, TextInput, Image, FlatList, Text, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { LatLng } from 'react-native-maps';
 import FinnButikkKart from '../Screens/FinnButikkKart';
 
 export default function FinnKjede() {
 
     const [kjede_navn, setKjedeNavn] = useState(''); // searching for items
     const [kjede, setKjede] = useState([]); // listing items use state
-    const [dest, setDest] = useState();
+    const [latitude, setLatitude] = useState();
+    const [laongitude, setLongitude] = useState();
+    //const [dest, setDest] = useState();
+    const [dest_lat, setDest_lat] = useState();
+    const [dest_long, setDest_long] = useState();
+
+
 
     const ListKjeder = async () => { // listing items
         try {
@@ -41,21 +46,23 @@ export default function FinnKjede() {
         }
     };
 
-    const gåTilKart = async (adresse) => { // searching for items
+    const gåTilKart = async (adresse) => { // listing items
         try {
-            const body = {adresse}
-            const response = await fetch(`http://10.0.2.2:5000//margodatabase/butikker/adresse`,{
-                method: "GET",
-            });
-            const dest = await response.json();
-            setDest(dest)
-            console.log('text')
-        } catch (err) {
+            const response = await fetch(`http://10.0.2.2:5000/margodatabase/butikker/${adresse}`);
+            const destinationList = await response.json();
+            const destination = destinationList[0];
+            const lat = destination.latitude;
+            const long = destination.longitude;
+            setDest_lat(lat);
+            setDest_long(long);
+            console.log(dest_long);
+        }
+        catch (err) {
             console.error(err.message);
 
         }
-        
     };
+
 
     useEffect(() => { // use effect to refresh the data
         ListKjeder();
@@ -90,7 +97,7 @@ export default function FinnKjede() {
                     renderItem={(itemData) => {
                         return (
                             <TouchableOpacity onPress={() => gåTilKart(itemData.item.adresse)}>
-                                <View style={styles.listItem}>
+                                <View style={styles.listItem} >
                                     <Text style={styles.listText}>{itemData.item.kjede_navn}, {itemData.item.adresse}</Text>
                                 </View>
                             </TouchableOpacity>
