@@ -2,23 +2,23 @@
 import React from 'react';
 import { useRef, useState, useEffect } from "react";
 import MapView, { PROVIDER_GOOGLE, LatLng, Marker } from 'react-native-maps';
-import { Dimensions, StyleSheet, View, TextInput, Text, TouchableOpacity, Platform, PermissionsAndroid } from 'react-native';
+import { Dimensions, StyleSheet, View, TextInput, Text, TouchableOpacity, Button, Linking, Platform, PermissionsAndroid } from 'react-native';
 import { GooglePlacesAutocomplete, GooglePlaceDetail } from 'react-native-google-places-autocomplete';
 import { GOOGLE_API_KEY } from '../components/environments';
 import Constants from "expo-constants";
 import MapViewDirections from "react-native-maps-directions";
-import Geolocation, { getCurrentPosition } from 'react-native-geolocation-service';
+//import Geolocation, { getCurrentPosition } from 'react-native-geolocation-service';
 import * as Location from 'expo-location';
 
 
 
 const { width, height } = Dimensions.get("window");
 const ASPECT_RATIO = width / height;
-const LATITUDE_DELTA = 0.2;
+const LATITUDE_DELTA = 10;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const INITIAL_POSITION = {
-  latitude: 59.6721,
-  longitude: 9.6460,
+  latitude: 59.913868,
+  longitude: 10.752245,
   latitudeDelta: LATITUDE_DELTA,
   longitudeDelta: LONGITUDE_DELTA,
 };
@@ -58,9 +58,10 @@ function InputAutocomplete({
   );
 }
 
-export default function App() {
+export default function Kart({ route }) {
+  const { dest_lat, dest_long, adresse } = route.params; // getting values from previous screen
   const [origin, setOrigin] = useState<LatLng | null>();
-  const [destination, setDestination] = useState<LatLng | null>();
+  const [destination, setDestination] = useState<LatLng | null>({ latitude: dest_lat, longitude: dest_long });
   const [showDirections, setShowDirections] = useState(false);
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -69,11 +70,18 @@ export default function App() {
   const [errorMsg, setErrorMsg] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
+  const [placeholderText, setplaceholderText] = useState('');
   const mapRef = useRef<MapView>(null);
+  const [adr, setAdr] = useState('');
 
+  const openMaps = () => {
+    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(adr)}`;
+    Linking.openURL(url);
+  };
 
 
   useEffect(() => {
+    console.log(dest_lat);
     (async () => {
 
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -95,8 +103,6 @@ export default function App() {
   } else if (location) {
     text = JSON.stringify(location);
   }
-  //console.warn("latitude: ", latitude);
-  //console.warn("longitude: ", longitude);
   console.warn(errorMsg);
 
 
@@ -112,6 +118,8 @@ export default function App() {
   function gåTilPosisjon() {
     setOrigin(location)
     moveTo(location)
+    setplaceholderText("Min posisjon")
+    setAdr(adresse)
     console.log(location);
   }
 
@@ -175,17 +183,20 @@ export default function App() {
       <View style={styles.searchContainer}>
         <InputAutocomplete
           label="Starts Posisjon"
+          placeholder={placeholderText}
           onPlaceSelected={(details) => {
             onPlaceSelected(details, "origin");
           }}
         />
-        <InputAutocomplete label="Destination"
+        <InputAutocomplete
+          label="Destination"
+          placeholder={adresse}
           onPlaceSelected={(details) => {
             onPlaceSelected(details, "destination");
           }}
         />
         <TouchableOpacity style={styles.button} onPress={traceRoute}>
-          <Text style={styles.buttonText}>Trace route</Text>
+          <Text style={styles.buttonText}>Trace Route</Text>
         </TouchableOpacity>
         <View style={styles.posisjonsButtonContainer}>
           <TouchableOpacity onPress={gåTilPosisjon}>
@@ -198,6 +209,12 @@ export default function App() {
             <Text>Duration: {Math.ceil(duration)} min</Text>
           </View>
         ) : null}
+
+      </View>
+      <View>
+        <TouchableOpacity style={styles.mapButton} onPress={openMaps} >
+          <Text style={styles.buttonText}>Åpne Google Maps</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -234,6 +251,14 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     marginTop: 16,
     borderRadius: 4,
+  },
+  mapButton: {
+    backgroundColor: "#bbb",
+    paddingVertical: 12,
+    marginTop: 16,
+    borderRadius: 4,
+    bottom: 150
+
   },
   buttonText: {
     textAlign: "center",

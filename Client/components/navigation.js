@@ -57,8 +57,8 @@ function HomeRoot(){
                         <Drawer.Screen name="Handleliste" component={Handleliste} options={{drawerItemStyle:{ display: 'none' }}} />
                         <Drawer.Screen name="LagHandlelister" component={LagHandlelister} />
                         <Drawer.Screen name="Varer" component={Varer} options={{drawerItemStyle:{ display: 'none' }}} />
-                        <Drawer.Screen name="Finn Butikk" component={FinnButikkKart} />
-                        <Drawer.Screen name="ButikkSøk" component={FinnButikk} options={{ headerShown: false, }}/>
+                        <Drawer.Screen name="Finn Butikk" component={FinnButikkKart} options={{drawerItemStyle:{ display: 'none' }}}/>
+                        <Drawer.Screen name="ButikkSøk" component={FinnButikk} />
                         <Drawer.Screen name="Finn Vare" component={FinnVare} />
                         
             </Drawer.Navigator>

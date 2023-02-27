@@ -5,13 +5,10 @@ import { StyleSheet, Button, View, TextInput, Image, FlatList, Text, TouchableOp
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FinnButikkKart from '../Screens/FinnButikkKart';
 
-export default function FinnKjede() {
+export default function FinnButikk({ navigation }) {
 
     const [kjede_navn, setKjedeNavn] = useState(''); // searching for items
     const [kjede, setKjede] = useState([]); // listing items use state
-    const [latitude, setLatitude] = useState();
-    const [laongitude, setLongitude] = useState();
-    //const [dest, setDest] = useState();
     const [dest_lat, setDest_lat] = useState();
     const [dest_long, setDest_long] = useState();
 
@@ -55,7 +52,7 @@ export default function FinnKjede() {
             const long = destination.longitude;
             setDest_lat(lat);
             setDest_long(long);
-            console.log(dest_long);
+            return {lat, long}; // returnerer en oppdatert verdi for dest_lat og dest_long
         }
         catch (err) {
             console.error(err.message);
@@ -63,11 +60,22 @@ export default function FinnKjede() {
         }
     };
 
+    const pressHandler = async (adresse) => { // press handler to..
+        try {
+            const { lat, long } = await gåTilKart(adresse); // venter på at gåTilKart skal fullføres og returnere en oppdatert verdi for dest_lat og dest_long
+            navigation.navigate("Finn Butikk", { dest_lat: lat, dest_long: long, adresse: adresse });
+          } 
+          catch (err) {
+            console.log(err);
+          }
+    };
+
 
     useEffect(() => { // use effect to refresh the data
         ListKjeder();
     }, []);
 
+    
 
     return (
         <View style={styles.container}>
@@ -96,7 +104,7 @@ export default function FinnKjede() {
                     data={kjede}
                     renderItem={(itemData) => {
                         return (
-                            <TouchableOpacity onPress={() => gåTilKart(itemData.item.adresse)}>
+                            <TouchableOpacity onPress={() => pressHandler(itemData.item.adresse) }>
                                 <View style={styles.listItem} >
                                     <Text style={styles.listText}>{itemData.item.kjede_navn}, {itemData.item.adresse}</Text>
                                 </View>
