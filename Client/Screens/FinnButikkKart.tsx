@@ -7,7 +7,6 @@ import { GooglePlacesAutocomplete, GooglePlaceDetail } from 'react-native-google
 import { GOOGLE_API_KEY } from '../components/environments';
 import Constants from "expo-constants";
 import MapViewDirections from "react-native-maps-directions";
-//import Geolocation, { getCurrentPosition } from 'react-native-geolocation-service';
 import * as Location from 'expo-location';
 
 
@@ -81,7 +80,6 @@ export default function Kart({ route }) {
 
 
   useEffect(() => {
-    console.log(dest_lat);
     (async () => {
 
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -103,8 +101,6 @@ export default function Kart({ route }) {
   } else if (location) {
     text = JSON.stringify(location);
   }
-  console.warn(errorMsg);
-
 
   const moveTo = async (position: LatLng) => {
     const camera = await mapRef.current?.getCamera();
@@ -120,7 +116,6 @@ export default function Kart({ route }) {
     moveTo(location)
     setplaceholderText("Min posisjon")
     setAdr(adresse)
-    console.log(location);
   }
 
   const edgePaddingValue = 70;
@@ -132,8 +127,6 @@ export default function Kart({ route }) {
   };
   const traceRouteOnReady = (args: any) => {
     if (args) {
-      // args.distance
-      // args.duration
       setDistance(args.distance);
       setDuration(args.duration);
     }
@@ -142,8 +135,6 @@ export default function Kart({ route }) {
     if (origin && destination) {
       setShowDirections(true);
       mapRef.current?.fitToCoordinates([origin, destination], { edgePadding });
-      console.log(distance);
-      console.log(duration);
     }
   };
   const onPlaceSelected = (
