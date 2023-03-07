@@ -259,11 +259,6 @@ app.get('/margodatabase/kunder/get/:id', async (req, res) => {
     }
 });
 
-// listen to port //
-app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Example app listening at http://localhost:${PORT}`)
-}
-);
 
 //get butikk-kjeder//
 app.get('/margodatabase/kjeder', async (req, res) => {
@@ -285,9 +280,6 @@ app.get('/margodatabase/butikker', async (req, res) => {
         console.error(err.message);
     }
 });
-
-/*
-// get a butikk //
 app.get('/margodatabase/kjeder/Search/:kjede_navn', async (req, res) => {
     try {
         const { kjede_navn } = req.params;
@@ -298,18 +290,6 @@ app.get('/margodatabase/kjeder/Search/:kjede_navn', async (req, res) => {
         console.error(err.message);
     }
 });
-*/
-app.get('/margodatabase/kjeder/Search/:kjede_navn', async (req, res) => {
-    try {
-        const { kjede_navn } = req.params;
-        const kjeder = await pool.query("SELECT kjeder.kjede_navn, butikker.adresse FROM butikker INNER JOIN kjeder ON butikker.kjede_id = kjeder.kjede_id WHERE kjeder.kjede_navn LIKE '%" + kjede_navn + "%'");
-        res.json(kjeder.rows);
-    }     
-    catch (err) {
-        console.error(err.message);
-    }
-});
-
 
 
 app.get('/margodatabase/butikker/:adresse', async (req, res) => {
@@ -322,21 +302,10 @@ app.get('/margodatabase/butikker/:adresse', async (req, res) => {
     }
 });
 
+// listen to port //
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Example app listening at http://localhost:${PORT}`)
+}
+);
 
-
-
-/*
-//finds destination location//
-app.get('/margodatabase/butikker/adresse', async (req, res) => {
-    console.log(adresse)
-    try {
-        const { adresse } = req.body;
-        const dest = await pool.query("SELECT longitude FROM butikker WHERE adresse=$1 ", [adresse] );
-        res.json(dest.rows);
-    } 
-    catch (err) {
-        console.error(err.message);
-    }
-});
-*/
 
