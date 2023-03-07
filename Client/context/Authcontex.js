@@ -19,6 +19,8 @@ export const AuthProvider = ({ children }) => {
       const parseRes = await response.json();
       console.log(parseRes.id);
       setuserid(parseRes.id);
+      AsyncStorage.setItem("userid", JSON.stringify(parseRes.id));
+      console.log(await AsyncStorage.getItem('userid'));
     } catch (error) {
       console.error(error.message);
     }
@@ -48,6 +50,7 @@ export const AuthProvider = ({ children }) => {
         AsyncStorage.removeItem('userid');
         setIsAuthenticated(false);
         console.log(await AsyncStorage.getItem('token'))
+        console.log(await AsyncStorage.getItem('userid'))
         console.log('logged out');
       }
 

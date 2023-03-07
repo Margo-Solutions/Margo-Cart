@@ -40,6 +40,7 @@ export default function LagHandlelister({navigation}) {
     const ListHandleliste = async (id) => {
         try {
             id = await AsyncStorage.getItem('userid');
+            console.log(id);
             const response = await fetch(`http://10.0.2.2:5000/margodatabase/kunder/get/${id}`);
             const handleliste = await response.json();
             setList(handleliste);
@@ -60,7 +61,7 @@ export default function LagHandlelister({navigation}) {
   
     useEffect(() => { // useEffect to refresh the data
       getkundeID();  
-      ListHandleliste(kunde_id);
+      ListHandleliste();
     }, []);
     return (
       <View style={styles.container}>
