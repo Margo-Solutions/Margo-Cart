@@ -62,3 +62,11 @@ CREATE TABLE butikker(
 --          1 |        1 | Vikersundgata 32, 3370 Vikersund |  9.99429 |  59.96529 |       1
 --          2 |        1 | Storgata, 3320 Vestfossen        |  9.86942 |  59.73459 |       3
 --          3 |        2 | Karsches gate 3                  | 59.66886 |   9.65187 |       2
+
+
+UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=1o4j7wBbJlYgHQyezXC_Ms1Oz-3gJxaCR' WHERE vare_id = 2; 
+
+https://drive.google.com/file/d/1o4j7wBbJlYgHQyezXC_Ms1Oz-3gJxaCR/view
+1o4j7wBbJlYgHQyezXC_Ms1Oz-3gJxaCR -- Eksempel på en key
+--For å legge til bilde til en eksisterende vare bruk denne koden. Fra google drive linken hent "key-en" som er mellom /d/ og /view og 
+--Lim inn på linken til databasen.

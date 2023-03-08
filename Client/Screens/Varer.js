@@ -119,11 +119,12 @@ export default function Varer({navigation, route}) {
           <Button title = "Søk etter vare" onPress={() =>SearchVarer(vare_navn)}/>
           </View>      
           <View style={styles.listContainer}>
-          <FlatList data={vare} renderItem={(itemData) => {
+          <FlatList data={vare} numColumns={2} renderItem={(itemData) => {
             return(
             <TouchableOpacity onPress={() => checkHandleliste(handleliste_id, itemData.item.vare_id)}>
               <View style={styles.listItem}>
-                <Text style={styles.listText}>{itemData.item.vare_navn} </Text>
+                <Image style={styles.vareImage} source={{uri: itemData.item.vare_link}} />
+                <Text style={styles.listText}>{itemData.item.vare_navn}</Text>
               </View>
               </TouchableOpacity>
             );
@@ -155,7 +156,7 @@ const styles = StyleSheet.create({
             marginTop: 20,
             marginBottom: 20,
             backgroundColor: "#CADCFF",
-            justifyContent:'center',
+            flexDirection: 'row',
           },
           searchingContainer: { // searching input bar container
             justifyContent: 'center',
@@ -173,15 +174,25 @@ const styles = StyleSheet.create({
             fontSize: 20,
           },
           listText: { //text styles inside flatlist
-            color: '#646161',
+            color: 'white',
             fontSize: 20,
             textAlign: 'center',
+            
           },
           listItem: { // view style for the text inside flatlist 
+            flex: 2,
             margin: 8,
-            padding: 6,
+            padding: 15,
             borderRadius: 10,
-            backgroundColor: 'transparent',
+            backgroundColor: '#66A2BA',
+            marginTop: 20,
+            marginLeft: 8,
+          },
+          vareImage: {
+            width: 160, //160 fixed height meny.no
+            height: 160 , //160
+            borderWidth: 1,
+            resizeMode: 'contain',
           },
     });
 
