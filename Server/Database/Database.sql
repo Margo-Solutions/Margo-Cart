@@ -34,6 +34,7 @@ CREATE TABLE handleliste (
 CREATE TABLE varer(
     vare_id SERIAL PRIMARY KEY,
     vare_navn VARCHAR(255)
+    vare_link VARCHAR(255)
 );
 
 CREATE TABLE kjeder(
@@ -64,7 +65,12 @@ CREATE TABLE butikker(
 --          3 |        2 | Karsches gate 3                  | 59.66886 |   9.65187 |       2
 
 
-UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=1o4j7wBbJlYgHQyezXC_Ms1Oz-3gJxaCR' WHERE vare_id = 2; 
+UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=1o4j7wBbJlYgHQyezXC_Ms1Oz-3gJxaCR' WHERE vare_navn = cola;
+UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=1dT07jPEGKHVHLMWG0tln9hL9wn8a1Ptx' WHERE vare_navn = laktosefrimelk;
+UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=11rHXLY_roucW_wi6yKMsk7hjodDzcCj3' WHERE vare_navn = ost;
+UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=1l0UddyX4s2tgmM70CQ_l9_iaJxHD4VOk' WHERE vare_navn = brod;
+
+
 
 https://drive.google.com/file/d/1o4j7wBbJlYgHQyezXC_Ms1Oz-3gJxaCR/view
 1o4j7wBbJlYgHQyezXC_Ms1Oz-3gJxaCR -- Eksempel på en key
