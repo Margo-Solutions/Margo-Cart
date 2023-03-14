@@ -39,7 +39,7 @@ CREATE TABLE varer(
 
 CREATE TABLE kjeder(
     kjede_id SERIAL PRIMARY KEY,
-    kjede_navn VARCHAR(255),
+    kjede_navn VARCHAR(255)
 );
 
 CREATE TABLE sted(
@@ -65,10 +65,10 @@ CREATE TABLE butikker(
 --          3 |        2 | Karsches gate 3                  | 59.66886 |   9.65187 |       2
 
 
-UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=1o4j7wBbJlYgHQyezXC_Ms1Oz-3gJxaCR' WHERE vare_navn = cola;
-UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=1dT07jPEGKHVHLMWG0tln9hL9wn8a1Ptx' WHERE vare_navn = laktosefrimelk;
-UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=11rHXLY_roucW_wi6yKMsk7hjodDzcCj3' WHERE vare_navn = ost;
-UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=1l0UddyX4s2tgmM70CQ_l9_iaJxHD4VOk' WHERE vare_navn = brod;
+UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=1o4j7wBbJlYgHQyezXC_Ms1Oz-3gJxaCR' WHERE vare_navn = 'cola';
+UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=1dT07jPEGKHVHLMWG0tln9hL9wn8a1Ptx' WHERE vare_navn = 'laktosefrimelk';
+UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=11rHXLY_roucW_wi6yKMsk7hjodDzcCj3' WHERE vare_navn = 'ost';
+UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=1l0UddyX4s2tgmM70CQ_l9_iaJxHD4VOk' WHERE vare_navn = 'brod';
 
 
 
@@ -76,3 +76,12 @@ https://drive.google.com/file/d/1o4j7wBbJlYgHQyezXC_Ms1Oz-3gJxaCR/view
 1o4j7wBbJlYgHQyezXC_Ms1Oz-3gJxaCR -- Eksempel på en key
 --For å legge til bilde til en eksisterende vare bruk denne koden. Fra google drive linken hent "key-en" som er mellom /d/ og /view og 
 --Lim inn på linken til databasen.
+
+UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=1n2KXu2rRXe-cRpdpevrgePeLjeIauVkN' WHERE vare_navn = 'mango';
+UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=1S4G-6vD3O6Lx67ZqiZrBSGKThGcyJgjF' WHERE vare_navn = 'melk';
+UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=1PR2EoDhglEd9I0Znjkd_9mFb_SmRNyUT' WHERE vare_navn = 'poteter';
+UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=1KU0ZsGjVBZPPvhFmUPUFANrNVGJehiEt' WHERE vare_navn = 'spaghetti';
+UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=1u51WxXI-9l1NJbn1pnVgesMC8dXw17gN' WHERE vare_navn = 'taco krydder';
+
+
+

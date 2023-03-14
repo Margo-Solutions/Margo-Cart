@@ -81,6 +81,12 @@ export default function Handleliste({navigation, route}) {
             }}
               alwaysBounceVertical={false}
              />
+             <View style={styles.buttonStyleNavigation}> 
+                <Button
+                    title="Naviger"
+                    color = "#8FD6F2"
+                    onPress={()=> navigation.navigate("ButikkSøk")}/>
+                </View>
               </View>
               </View>
       );
@@ -150,5 +156,13 @@ const styles = StyleSheet.create({
     },
     lineText: { // line style for lines in flatlist
       textAlign: 'center',
-    }
+    },
+    buttonStyleNavigation: {
+      height: 35,
+      width: 255, 
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 10,
+      marginLeft:80,
+    },
 });

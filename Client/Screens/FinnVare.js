@@ -121,11 +121,11 @@ const styles = StyleSheet.create({
           listItem: { // view style for the text inside flatlist 
             flex: 2,
             margin: 8,
-            padding: 15,
+            padding: 12,
             borderRadius: 10,
             backgroundColor: '#66A2BA',
             marginTop: 20,
-            marginLeft: 8,
+            marginLeft: 5,
           },
           vareImage: {
             width: 160, //160 fixed height meny.no

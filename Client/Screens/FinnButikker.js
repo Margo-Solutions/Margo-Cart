@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import { useState, useEffect, useContext } from 'react';
-import { StyleSheet, Button, View, TextInput, Image, FlatList, Text, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Button, View, TextInput, Image, FlatList, Text, TouchableOpacity, Alert, Modal } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FinnButikkKart from '../Screens/FinnButikkKart';
 
@@ -11,8 +11,22 @@ export default function FinnButikk({ navigation }) {
     const [kjede, setKjede] = useState([]); // listing items use state
     const [dest_lat, setDest_lat] = useState();
     const [dest_long, setDest_long] = useState();
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalData, setModalData] = useState();
+    const [secondModalData, setSecondModalData] = useState();
+    const [adresse, setAdresse] = useState();
 
 
+    const ListVarer = async () => { // listing items
+        try {
+          const response = await fetch("http://10.0.2.2:5000/Margodatabase/varer");
+          const vare = await response.json();
+          setVare(vare);
+        } catch (err) {
+          console.error(err.message);
+          
+        }
+      };
 
     const ListKjeder = async () => { // listing items
         try {
@@ -63,14 +77,28 @@ export default function FinnButikk({ navigation }) {
     const pressHandler = async (adresse) => { // press handler to..
         try {
             const { lat, long } = await gåTilKart(adresse); // venter på at gåTilKart skal fullføres og returnere en oppdatert verdi for dest_lat og dest_long
-            navigation.navigate("Finn Butikk", { dest_lat: lat, dest_long: long, adresse: adresse });
+            setModalVisible(!modalVisible)
+            setModalData(lat);
+            setSecondModalData(long);
+            setAdresse(adresse);
           } 
           catch (err) {
             console.log(err);
           }
     };
 
-
+    const pressHandlerTest = (modalData, secondModalData, adresse) => {
+       try {
+        setModalVisible(!modalVisible)
+        console.log(adresse);
+        console.log(secondModalData);
+        console.log(modalData); 
+        navigation.navigate("Finn Butikk", { dest_lat: modalData, dest_long: secondModalData, adresse: adresse });
+       } catch (err) {
+        console.log(err);
+       }   
+    };
+    
     useEffect(() => { // use effect to refresh the data
         ListKjeder();
     }, []);
@@ -100,11 +128,38 @@ export default function FinnButikk({ navigation }) {
                 </TouchableOpacity>
             </View>
             <View style={styles.listContainer}>
+                <Modal visible={modalVisible} transparent={true} animationType="slide" >
+                    <View style={styles.modalView}>
+                        <Text>Hello!</Text>
+                        <View style={styles.combinedModalView}>
+                        <View style={styles.firstModalButton}>
+                        <Button
+                            title="Innendørs Navigering"
+                            color= "#8FD6F2"  >
+                               
+                            </Button>  
+                            </View>
+                            <View style={styles.secondModalButton}>
+                            <Button
+                            title="Utendørs Navigering"
+                            color= "#8FD6F2" onPress={() => pressHandlerTest(modalData, secondModalData, adresse)} >
+                            </Button>
+                          </View>
+                          </View>
+                        <View style={styles.buttonStyle}>
+                            <Button
+                            title="Tilbake"
+                            color= "#8FD6F2" onPress={() =>setModalVisible(!modalVisible)}>
+                            </Button>
+                        </View>
+
+                    </View>
+                </Modal>
                 <FlatList
                     data={kjede}
                     renderItem={(itemData) => {
                         return (
-                            <TouchableOpacity onPress={() => pressHandler(itemData.item.adresse) }>
+                            <TouchableOpacity onPress={() => pressHandler(itemData.item.adresse) } >
                                 <View style={styles.listItem} >
                                     <Text style={styles.listText}>{itemData.item.kjede_navn}, {itemData.item.adresse}</Text>
                                 </View>
@@ -169,5 +224,26 @@ const styles = StyleSheet.create({
     søkButton: {
         padding: 8,
     },
+    modalView: {
+        width: "100%",
+    height: "90%",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: 'white',
+    },
+    buttonStyleSave: {
+        height: 35,
+        width: 255, 
+      },
+    firstModalButton:{
+        margin: 5,
+    },
+    secondModalButton:{
+        margin: 5,
+    },
+    combinedModalView:{
+        flexDirection: "row",
+        
+    }
 });
 
