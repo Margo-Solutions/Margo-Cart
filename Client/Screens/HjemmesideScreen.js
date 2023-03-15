@@ -1,14 +1,13 @@
-
 import { StyleSheet, View, Button, Image,Text } from 'react-native';
 import React, { useContext } from 'react';
 import { AuthContext } from '../context/Authcontex';
 
 
-export default function HjemmesideScreen({ navigation }) {
+export default function HjemmesideScreen({ navigation}) {
   const {logout} = useContext(AuthContext);
   return (
     <View style={styles.container}>
-      <View>
+      <View style={styles.imageContainer}>
         <Image
         style={styles.image}
         source={require('../assets/images/logoM.png')}
@@ -24,21 +23,15 @@ export default function HjemmesideScreen({ navigation }) {
               <Button title="Finn Vare" color="#8FD6F2" onPress={()=> navigation.navigate("Finn Vare")} />
             </View>
             <View style={styles.button}>
-              <Button title="Innstlinger" color="#8FD6F2" />
-            </View>
-            <View style={styles.button}>
-              <Button title="logout" color="#8FD6F2" onPress={logout}/>
+              <Button title="Finn Butikk" color="#8FD6F2" onPress={()=> navigation.navigate("ButikkSøk")} />
             </View>
          </View>
         </View>
-          <View style={styles.secondFlexBox}>
-            <View style={styles.secondline} />
-              <Text style={styles.textStyle}>Din Posisjon:</Text>
-        <Image
-        style={styles.map}
-        source={require('../assets/images/map.png')}
-        />
-        </View>
+        <View style={styles.logoutContainer}>
+        <View style={styles.logoutbutton}>
+              <Button title="logout" color="#8FD6F2" onPress={logout}/>
+            </View>
+            </View>
     </View>
   );
 }
@@ -48,13 +41,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#66A2BA',
   },
+  imageContainer: { 
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
   image: { //image style
-    width: 130,
-    height: 130,
-    flexDirection: 'row',
-    alignSelf: 'flex-end',
+    width: 350,
+    height: 350,
   },
   buttonContainer: { //button container for all buttons
+   //backgroundColor: '#CADCFF',
    padding: 16,
    marginHorizontal: 8,
    flexDirection: 'column',
@@ -62,7 +59,6 @@ const styles = StyleSheet.create({
    width: 200,
    left: 90,
    bottom: 30,
-   
   },
   button: {  // button styles for all butons
     marginVertical: 15,
@@ -71,12 +67,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     overflow: 'hidden',
     fontSize: 20,
-    
+  },
+  logoutContainer:{ 
+    bottom: 50,
+  },
+  logoutbutton: {  // button styles for logoutbutton
+    overflow: 'hidden',
   },
   line: { // the black line on top 
     borderBottomColor: 'black',
     borderBottomWidth: StyleSheet.hairlineWidth,
-    bottom: 25,
+    bottom: 50,
   },
   secondline: { // black line on bottom
     borderBottomColor: 'black',
@@ -96,7 +97,4 @@ const styles = StyleSheet.create({
   flexBox:{ //flexbox for the buttons
     flex: 2,
   },
-  secondFlexBox:{ //flexbox for the map 
-    flex: 3,
-  }
 });

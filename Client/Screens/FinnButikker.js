@@ -15,6 +15,7 @@ export default function FinnButikk({ navigation }) {
     const [modalData, setModalData] = useState();
     const [secondModalData, setSecondModalData] = useState();
     const [adresse, setAdresse] = useState();
+    const [kj, setKj] = useState();
 
 
     const ListVarer = async () => { // listing items
@@ -74,13 +75,14 @@ export default function FinnButikk({ navigation }) {
         }
     };
 
-    const pressHandler = async (adresse) => { // press handler to..
+    const pressHandler = async (adresse, kjede) => { // press handler to..
         try {
             const { lat, long } = await gåTilKart(adresse); // venter på at gåTilKart skal fullføres og returnere en oppdatert verdi for dest_lat og dest_long
             setModalVisible(!modalVisible)
             setModalData(lat);
             setSecondModalData(long);
             setAdresse(adresse);
+            setKj(kjede);
           } 
           catch (err) {
             console.log(err);
@@ -128,28 +130,32 @@ export default function FinnButikk({ navigation }) {
                 </TouchableOpacity>
             </View>
             <View style={styles.listContainer}>
-                <Modal visible={modalVisible} transparent={true} animationType="slide" >
+                <Modal visible={modalVisible} animationType="slide" transparent={false}  >
                     <View style={styles.modalView}>
-                        <Text>Hello!</Text>
+                    <Image
+                    style={styles.modalImage}
+                    source={require('../assets/images/navigation.png')}
+                />
+                        <Text style={styles.modalText}>Du har valgt {kj} {adresse}. {'\n'} Vennligst velg Navigasjons type.</Text>
                         <View style={styles.combinedModalView}>
                         <View style={styles.firstModalButton}>
                         <Button
                             title="Innendørs Navigering"
-                            color= "#8FD6F2"  >
+                            color= "#03025c"  >
                                
                             </Button>  
                             </View>
                             <View style={styles.secondModalButton}>
                             <Button
                             title="Utendørs Navigering"
-                            color= "#8FD6F2" onPress={() => pressHandlerTest(modalData, secondModalData, adresse)} >
+                            color= "#03025c" onPress={() => pressHandlerTest(modalData, secondModalData, adresse)} >
                             </Button>
                           </View>
                           </View>
                         <View style={styles.buttonStyle}>
                             <Button
                             title="Tilbake"
-                            color= "#8FD6F2" onPress={() =>setModalVisible(!modalVisible)}>
+                            color= "#b30b10" onPress={() =>setModalVisible(!modalVisible)}>
                             </Button>
                         </View>
 
@@ -159,7 +165,7 @@ export default function FinnButikk({ navigation }) {
                     data={kjede}
                     renderItem={(itemData) => {
                         return (
-                            <TouchableOpacity onPress={() => pressHandler(itemData.item.adresse) } >
+                            <TouchableOpacity onPress={() => pressHandler(itemData.item.adresse, itemData.item.kjede_navn) } >
                                 <View style={styles.listItem} >
                                     <Text style={styles.listText}>{itemData.item.kjede_navn}, {itemData.item.adresse}</Text>
                                 </View>
@@ -225,25 +231,38 @@ const styles = StyleSheet.create({
         padding: 8,
     },
     modalView: {
-        width: "100%",
-    height: "90%",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: 'white',
+        width: '100%',
+        height: '100%',
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: '#66A2BA',
     },
-    buttonStyleSave: {
-        height: 35,
-        width: 255, 
+    buttonStyle: {
+        height: 50,
+        width: 180, 
+        padding: 8,
       },
     firstModalButton:{
-        margin: 5,
+        height: 50,
+        width: 200,
+        padding: 8,
     },
     secondModalButton:{
-        margin: 5,
+        height: 50,
+        width: 200,
+        padding: 8,
     },
     combinedModalView:{
         flexDirection: "row",
         
-    }
+    },
+    modalText:{
+        fontSize: 20,
+    },
+    modalImage:{
+        height: 150,
+        width: 150,
+        marginBottom: 30,
+    },
 });
 
