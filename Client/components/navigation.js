@@ -14,7 +14,7 @@ import HjemmesideScreen from '../Screens/HjemmesideScreen';
 import FinnButikkKart from '../Screens/FinnButikkKart';
 import FinnButikk from '../Screens/FinnButikker';
 import FinnVare from '../Screens/FinnVare';
-
+import innendørsKart from '../Screens/innendørsKart';
 
 
 const Stack = createNativeStackNavigator();
@@ -60,6 +60,7 @@ function HomeRoot(){
                         <Drawer.Screen name="Finn Butikk" component={FinnButikkKart} options={{drawerItemStyle:{ display: 'none' }, drawerLockMode:'locked-closed', headerShown: false, swipeEdgeWidth: 0 }} />
                         <Drawer.Screen name="ButikkSøk" component={FinnButikk} />
                         <Drawer.Screen name="Finn Vare" component={FinnVare} />
+                        <Drawer.Screen name ="innendørskart" component={innendørsKart} options={{drawerItemStyle:{ display: 'none' }, drawerLockMode:'locked-closed', headerShown: false, swipeEdgeWidth: 0 }} />
                         
             </Drawer.Navigator>
     );

@@ -51,15 +51,15 @@ React paper og vector icons
 ```
 npm install react-native-paper react-native-vector-icons
 ```
+Innendørs navigation
+```
+npm install react-native-svg
+npm install react-native-fabric    
+npm install react-native-webview  
+```
+
 #for Margosolutiontest
-Verktøy som ble brukt er nvm (versjonskontroll verktøy for node.js ikke nødvendig)
-```
-https://github.com/nvm-sh/nvm
-```
-Installasjon for nvm (velger selv øsnket verson)
-```
-nvm install && nvm use 
-```
+
 Navigation drawer
 ```
 npm install @react-navigation/drawer
@@ -130,11 +130,7 @@ npx expo start
 # Dependencies for server
 express, pg, og cors er for kommunikasjon med app 
 ```
-npm install install express pg cors 
-```
-async storage lagring av lokal data
-```
- npm install @react-navigation/native @react-navigation/native-stack
+npm install express pg cors 
 ```
 dotenv brukes for å lagre enviorment variabler
 ```

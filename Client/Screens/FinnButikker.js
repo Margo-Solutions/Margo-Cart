@@ -88,6 +88,15 @@ export default function FinnButikk({ navigation }) {
             console.log(err);
           }
     };
+    const pressHandlerinndor = (modalData, secondModalData, adresse) => {
+        try {
+            setModalVisible(!modalVisible)
+            navigation.navigate("innendørskart");
+            console.log(adresse);
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     const pressHandlerTest = (modalData, secondModalData, adresse) => {
        try {
@@ -141,7 +150,7 @@ export default function FinnButikk({ navigation }) {
                         <View style={styles.firstModalButton}>
                         <Button
                             title="Innendørs Navigering"
-                            color= "#03025c"  >
+                            color= "#03025c" onPress={() => pressHandlerinndor(modalData, secondModalData, adresse)} >
                                
                             </Button>  
                             </View>

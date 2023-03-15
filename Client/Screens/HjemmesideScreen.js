@@ -1,6 +1,7 @@
 import { StyleSheet, View, Button, Image,Text } from 'react-native';
 import React, { useContext } from 'react';
 import { AuthContext } from '../context/Authcontex';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 export default function HjemmesideScreen({ navigation}) {
@@ -29,7 +30,9 @@ export default function HjemmesideScreen({ navigation}) {
         </View>
         <View style={styles.logoutContainer}>
         <View style={styles.logoutbutton}>
-              <Button title="logout" color="#8FD6F2" onPress={logout}/>
+          <TouchableOpacity onPress={logout}> 
+          <Text>Logg ut</Text>
+          </TouchableOpacity>
             </View>
             </View>
     </View>
@@ -69,7 +72,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   logoutContainer:{ 
-    bottom: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 30,
   },
   logoutbutton: {  // button styles for logoutbutton
     overflow: 'hidden',
