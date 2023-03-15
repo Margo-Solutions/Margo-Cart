@@ -60,7 +60,7 @@ export default function Varer({navigation, route}) {
           <View style={styles.listContainer}>
           <FlatList data={vare} numColumns={2} renderItem={(itemData) => {
             return(
-            <TouchableOpacity onPress={() => checkHandleliste(handleliste_id, itemData.item.vare_id)}>
+            <TouchableOpacity>
               <View style={styles.listItem}>
                 <Image style={styles.vareImage} source={{uri: itemData.item.vare_link}} />
                 <Text style={styles.listText}>{itemData.item.vare_navn}</Text>
