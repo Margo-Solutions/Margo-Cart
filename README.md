@@ -57,9 +57,6 @@ npm install react-native-svg
 npm install react-native-fabric    
 npm install react-native-webview  
 ```
-
-#for Margosolutiontest
-
 Navigation drawer
 ```
 npm install @react-navigation/drawer
@@ -147,3 +144,12 @@ For å starte server
 npx nodemon
 ```
 
+#for Margosolutiontest
+Verktøy som ble brukt er nvm (versjonskontroll verktøy for node.js ikke nødvendig)
+```
+https://github.com/nvm-sh/nvm
+```
+Installasjon for nvm (velger selv øsnket verson)
+```
+nvm install && nvm use 
+```
