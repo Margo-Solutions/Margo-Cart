@@ -4,6 +4,7 @@ import { useState, useEffect, useContext } from 'react';
 import { StyleSheet, Button, View, TextInput, Image, FlatList, Text, TouchableOpacity, Alert, Modal } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FinnButikkKart from '../Screens/FinnButikkKart';
+import {Picker} from '@react-native-picker/picker';
 
 export default function FinnButikk({ navigation }) {
 
@@ -16,6 +17,8 @@ export default function FinnButikk({ navigation }) {
     const [secondModalData, setSecondModalData] = useState();
     const [adresse, setAdresse] = useState();
     const [kj, setKj] = useState();
+    const [sortedData, setSortedData] = useState(kjede);
+    const [selectedBrand, setSelectedBrand] = useState();
 
 
     const ListVarer = async () => { // listing items
@@ -88,15 +91,6 @@ export default function FinnButikk({ navigation }) {
             console.log(err);
           }
     };
-    const pressHandlerinndor = (modalData, secondModalData, adresse) => {
-        try {
-            setModalVisible(!modalVisible)
-            navigation.navigate("innendørskart");
-            console.log(adresse);
-        } catch (err) {
-            console.log(err);
-        }
-    };
 
     const pressHandlerTest = (modalData, secondModalData, adresse) => {
        try {
@@ -109,9 +103,20 @@ export default function FinnButikk({ navigation }) {
         console.log(err);
        }   
     };
+
+    const sortDataByBrand = (brand) =>{
+        if(brand === ''){
+            setSortedData(kjede);
+        } else {
+            const sorted=[...kjede].filter(item=>item.kjede_navn === brand);
+            setSortedData(sorted);
+        }
+        setSelectedBrand(brand);
+    }
     
     useEffect(() => { // use effect to refresh the data
         ListKjeder();
+        sortDataByBrand('');
     }, []);
 
     
@@ -150,7 +155,7 @@ export default function FinnButikk({ navigation }) {
                         <View style={styles.firstModalButton}>
                         <Button
                             title="Innendørs Navigering"
-                            color= "#03025c" onPress={() => pressHandlerinndor(modalData, secondModalData, adresse)} >
+                            color= "#03025c"  >
                                
                             </Button>  
                             </View>
@@ -170,8 +175,24 @@ export default function FinnButikk({ navigation }) {
 
                     </View>
                 </Modal>
+                <View style={styles.lineSecond} />
+
+                <Picker
+        selectedValue={selectedBrand}
+        onValueChange={(itemValue) => sortDataByBrand(itemValue)}
+        style={styles.picker}
+        >
+            <Picker.Item label="Alle Butikker" value="" />
+            <Picker.Item label="KIWI" value="KIWI" />
+            <Picker.Item label="REMA 1000" value="REMA1000" />
+            <Picker.Item label="MENY" value="MENY" />
+            <Picker.Item label="EXTRA" value="EXTRA" />
+            <Picker.Item label="SPAR" value="SPAR" />
+
+                {/* Add more brands as needed */}
+                </Picker>
                 <FlatList
-                    data={kjede}
+                    data={sortedData}
                     renderItem={(itemData) => {
                         return (
                             <TouchableOpacity onPress={() => pressHandler(itemData.item.adresse, itemData.item.kjede_navn) } >
@@ -273,5 +294,14 @@ const styles = StyleSheet.create({
         width: 150,
         marginBottom: 30,
     },
+    picker:{
+    backgroundColor: '#66A2BA',
+    width: 160,
+},
+lineSecond:{
+ borderBottomColor: 'black',
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        bottom: 2,
+},
 });
 
