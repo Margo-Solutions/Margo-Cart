@@ -98,7 +98,7 @@ export default function FinnButikk({ navigation }) {
         console.log(adresse);
         console.log(secondModalData);
         console.log(modalData); 
-        navigation.navigate("Finn Butikk", { dest_lat: modalData, dest_long: secondModalData, adresse: adresse });
+        navigation.navigate("Veibeskrivelse", { dest_lat: modalData, dest_long: secondModalData, adresse: adresse });
        } catch (err) {
         console.log(err);
        }   
@@ -134,7 +134,7 @@ export default function FinnButikk({ navigation }) {
                 <TextInput
                     style={styles.textInput}
                     placeholder=" Søk etter butikk her..."
-                    value={kjede_navn}
+                    value={adresse}
                     onChangeText={newText => setKjedeNavn(newText)}
                 />
                 <TouchableOpacity style={styles.søkButton} onPress={() => SearchKjeder(kjede_navn)}>
@@ -150,7 +150,7 @@ export default function FinnButikk({ navigation }) {
                     style={styles.modalImage}
                     source={require('../assets/images/navigation.png')}
                 />
-                        <Text style={styles.modalText}>Du har valgt {kj} {adresse}. {'\n'} Vennligst velg Navigasjons type.</Text>
+                        <Text style={styles.modalText}>Du har valgt {kj} {adresse}. {'\n'}</Text>
                         <View style={styles.combinedModalView}>
                         <View style={styles.firstModalButton}>
                         <Button
@@ -161,7 +161,7 @@ export default function FinnButikk({ navigation }) {
                             </View>
                             <View style={styles.secondModalButton}>
                             <Button
-                            title="Utendørs Navigering"
+                            title="Veibeskrivelse"
                             color= "#03025c" onPress={() => pressHandlerTest(modalData, secondModalData, adresse)} >
                             </Button>
                           </View>
@@ -176,7 +176,7 @@ export default function FinnButikk({ navigation }) {
                     </View>
                 </Modal>
                 <View style={styles.lineSecond} />
-
+<View style={styles.pickerContainer}>
                 <Picker
         selectedValue={selectedBrand}
         onValueChange={(itemValue) => sortDataByBrand(itemValue)}
@@ -191,6 +191,25 @@ export default function FinnButikk({ navigation }) {
 
                 {/* Add more brands as needed */}
                 </Picker>
+                <Picker
+                selectedValue={selectedBrand}
+                onValueChange={(itemValue) => sortDataByBrand(itemValue)}
+                style={styles.picker}
+        >
+            <Picker.Item label="Sted" />
+            <Picker.Item label="Kongsberg" value="Kongsberg" />
+                {/* legg til steder fra stedsdatabasen*/}
+                </Picker>
+                <Picker
+                selectedValue={selectedBrand}
+                onValueChange={(itemValue) => sortDataByBrand(itemValue)}
+                style={styles.picker}
+        >
+            <Picker.Item label="Pris" />
+            <Picker.Item label="Kongsberg" value="Kongsberg" />
+                {/* legg til steder fra stedsdatabasen*/}
+                </Picker>
+                </View>
                 <FlatList
                     data={sortedData}
                     renderItem={(itemData) => {
@@ -294,9 +313,16 @@ const styles = StyleSheet.create({
         width: 150,
         marginBottom: 30,
     },
+    pickerContainer:{
+        flexDirection: 'row',
+        
+    },
     picker:{
     backgroundColor: '#66A2BA',
-    width: 160,
+    width: '33.3333333%',
+},
+pickerText:{
+    color: 'black',
 },
 lineSecond:{
  borderBottomColor: 'black',

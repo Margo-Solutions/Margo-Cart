@@ -18,13 +18,13 @@ export default function HjemmesideScreen({ navigation}) {
         <View style={styles.flexBox}>
           <View style={styles.buttonContainer}>
             <View style={styles.button}>
-              <Button title="Lag Handleliste" color="#8FD6F2" onPress={() => navigation.navigate("LagHandlelister")}/>
+              <Button title="Dine Handlelister" color="#8FD6F2" onPress={() => navigation.navigate("Dine Handlelister")}/>
             </View>
             <View style={styles.button}>
               <Button title="Finn Vare" color="#8FD6F2" onPress={()=> navigation.navigate("Finn Vare")} />
             </View>
             <View style={styles.button}>
-              <Button title="Finn Butikk" color="#8FD6F2" onPress={()=> navigation.navigate("ButikkSøk")} />
+              <Button title="Finn Butikk" color="#8FD6F2" onPress={()=> navigation.navigate("Finn Butikk")} />
             </View>
          </View>
         </View>

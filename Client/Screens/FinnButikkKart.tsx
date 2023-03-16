@@ -165,7 +165,7 @@ export default function Kart({ route }) {
             origin={origin}
             destination={destination}
             apikey={GOOGLE_API_KEY}
-            strokeColor="#66A2BA"
+            strokeColor="#03025c"
             strokeWidth={4}
             onReady={traceRouteOnReady}
           />
@@ -187,11 +187,11 @@ export default function Kart({ route }) {
           }}
         />
         <TouchableOpacity style={styles.button} onPress={traceRoute}>
-          <Text style={styles.buttonText}>Trace Route</Text>
+          <Text style={styles.buttonText}>Finn Rute</Text>
         </TouchableOpacity>
         <View style={styles.posisjonsButtonContainer}>
           <TouchableOpacity onPress={gåTilPosisjon}>
-            <Text style={styles.buttonText}> Min posisjon </Text>
+            <Text style={styles.Text}> Min posisjon </Text>
           </TouchableOpacity>
         </View>
         {distance && duration ? (
@@ -202,9 +202,9 @@ export default function Kart({ route }) {
         ) : null}
 
       </View>
-      <View>
+      <View style={styles.mapButtonContainer} >
         <TouchableOpacity style={styles.mapButton} onPress={openMaps} >
-          <Text style={styles.buttonText}>Åpne Google Maps</Text>
+          <Text style={styles.buttonText}>Åpne i Google Maps</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -238,21 +238,29 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   button: {
-    backgroundColor: "#bbb",
+    backgroundColor: "#03025c",
     paddingVertical: 12,
     marginTop: 16,
     borderRadius: 4,
+  },
+  mapButtonContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   mapButton: {
-    backgroundColor: "#bbb",
+    backgroundColor: "#03025c",
     paddingVertical: 12,
     marginTop: 16,
+    width: 200,
     borderRadius: 4,
-    bottom: 150
-
+    bottom: 150,
   },
   buttonText: {
+    color: 'white',
     textAlign: "center",
+  },
+  Text: {
+    color: 'black',
   },
   posisjonsButtonContainer: {
     left: 215,
