@@ -12,7 +12,7 @@ export default function Varer({navigation, route}) {
 
   const ListVarer = async () => { // listing items
     try {
-      const response = await fetch("http://10.0.2.2:5000/Margodatabase/varer");
+      const response = await fetch("http://10.0.2.2:5000/margodatabase/varer");
       const vare = await response.json();
       setVare(vare);
     } catch (err) {
@@ -26,7 +26,7 @@ export default function Varer({navigation, route}) {
     }
     else{
     try {
-        const response = await fetch(`http://10.0.2.2:5000/Margodatabase/varer/Search/${vare_navn}`, {
+        const response = await fetch(`http://10.0.2.2:5000/margodatabase/varer/Search/${vare_navn}`, {
             method: "GET",
         });
         const vare = await response.json();
@@ -42,7 +42,7 @@ export default function Varer({navigation, route}) {
   const updateVare = async (antall, vare_id) => { // updating items
     try {
         const body = { handleliste_id};
-        const response = await fetch(`http://10.0.2.2:5000/Margodatabase/varer/update/add/${antall}/${vare_id}` ,{
+        const response = await fetch(`http://10.0.2.2:5000/margodatabase/varer/update/add/${antall}/${vare_id}` ,{
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
@@ -80,7 +80,7 @@ export default function Varer({navigation, route}) {
     try {
         const antall = 1;
         const body = { handleliste_id, vare_id, antall };
-        const response = await fetch("http://10.0.2.2:5000/Margodatabase/handleliste/varer", {
+        const response = await fetch("http://10.0.2.2:5000/margodatabase/handleliste/varer", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)

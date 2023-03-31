@@ -295,8 +295,27 @@ app.get('/margodatabase/kjeder/Search/:kjede_navn', async (req, res) => {
 app.get('/margodatabase/butikker/:adresse', async (req, res) => {
     try {
         const {adresse} = req.params;
-        const dest = await pool.query("SELECT latitude, longitude FROM butikker WHERE adresse = $1", [adresse]);
+        const dest = await pool.query("SELECT latitude, longitude, butikk_id FROM butikker WHERE adresse = $1", [adresse]);
         res.json(dest.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.get('/margodatabase/koordinater', async (req, res) => {
+    try {
+        const koordinater = await pool.query('SELECT * from koordinater');
+        res.json(koordinater.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.get('/margodatabase/koordinater/varer/:butikk_id/:vare_id', async (req, res) => {
+    try {
+        const {butikk_id, vare_id} = req.params;
+        const koordinater = await pool.query('SELECT varer.vare_navn, varehyller.coord_id, koordinater.x, koordinater.y FROM vareliste INNER JOIN varer ON vareliste.vare_id = varer.vare_id INNER JOIN varehyller ON vareliste.varehylle_id = varehyller.varehylle_id INNER JOIN koordinater ON varehyller.coord_id = koordinater.coord_id WHERE butikk_id = $1 AND varer.vare_navn =$2;', [butikk_id, vare_id]);
+        res.json(koordinater.rows[0]);
     } catch (err) {
         console.error(err.message);
     }

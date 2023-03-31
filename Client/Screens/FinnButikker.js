@@ -5,9 +5,10 @@ import { StyleSheet, Button, View, TextInput, Image, FlatList, Text, TouchableOp
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FinnButikkKart from '../Screens/FinnButikkKart';
 import {Picker} from '@react-native-picker/picker';
+import { handContext } from '../context/listeHandler';
+import { set } from 'react-native-reanimated';
 
-export default function FinnButikk({ navigation }) {
-
+export default function FinnButikk({ navigation,}) {
     const [kjede_navn, setKjedeNavn] = useState(''); // searching for items
     const [kjede, setKjede] = useState([]); // listing items use state
     const [dest_lat, setDest_lat] = useState();
@@ -19,23 +20,14 @@ export default function FinnButikk({ navigation }) {
     const [kj, setKj] = useState();
     const [sortedData, setSortedData] = useState(kjede);
     const [selectedBrand, setSelectedBrand] = useState();
+    const [butikk_id, setButikkID] = useState();
 
-
-    const ListVarer = async () => { // listing items
-        try {
-          const response = await fetch("http://10.0.2.2:5000/Margodatabase/varer");
-          const vare = await response.json();
-          setVare(vare);
-        } catch (err) {
-          console.error(err.message);
-          
-        }
-      };
 
     const ListKjeder = async () => { // listing items
         try {
             const response = await fetch("http://10.0.2.2:5000/margodatabase/kjeder");
             const kjede = await response.json();
+            setSortedData(kjede);
             setKjede(kjede);
         } catch (err) {
             console.error(err.message);
@@ -70,6 +62,7 @@ export default function FinnButikk({ navigation }) {
             const long = destination.longitude;
             setDest_lat(lat);
             setDest_long(long);
+            setButikkID(destination.butikk_id);
             return {lat, long}; // returnerer en oppdatert verdi for dest_lat og dest_long
         }
         catch (err) {
@@ -103,6 +96,15 @@ export default function FinnButikk({ navigation }) {
         console.log(err);
        }   
     };
+    const pressHandlerTest2 = (modalData, secondModalData, adresse) => {
+        try {
+         setModalVisible(!modalVisible)
+            console.log(adresse);
+         navigation.navigate("innendørskart", { dest_lat: modalData, dest_long: secondModalData, adresse: adresse, butikk_id: butikk_id});
+        } catch (err) {
+         console.log(err);
+        }   
+     };
 
     const sortDataByBrand = (brand) =>{
         if(brand === ''){
@@ -119,7 +121,6 @@ export default function FinnButikk({ navigation }) {
         sortDataByBrand('');
     }, []);
 
-    
 
     return (
         <View style={styles.container}>
@@ -155,7 +156,7 @@ export default function FinnButikk({ navigation }) {
                         <View style={styles.firstModalButton}>
                         <Button
                             title="Innendørs Navigering"
-                            color= "#03025c"  >
+                            color= "#03025c" onPress={() => pressHandlerTest2(modalData, secondModalData, adresse)} >
                                
                             </Button>  
                             </View>
@@ -196,7 +197,7 @@ export default function FinnButikk({ navigation }) {
                 onValueChange={(itemValue) => sortDataByBrand(itemValue)}
                 style={styles.picker}
         >
-            <Picker.Item label="Sted" />
+            <Picker.Item label="Avstand" />
             <Picker.Item label="Kongsberg" value="Kongsberg" />
                 {/* legg til steder fra stedsdatabasen*/}
                 </Picker>

@@ -7,7 +7,7 @@ import { handContext } from '../context/listeHandler';
 export default function Handleliste({navigation, route}) {
     const {handlelisteID} = route.params; // getting handleliste id from previous screen
     const {handleliste_tittel, getHandlelisteName, ListVarerHandleliste, handleliste, updateHandleliste } = useContext(handContext);
-
+    
     const updateOrRemove = async (id, antall) => { // update or remove item from handleliste
         let Numb = antall - 1;
         if (antall == 1) {
@@ -85,7 +85,7 @@ export default function Handleliste({navigation, route}) {
                 <Button
                     title="Naviger"
                     color = "#8FD6F2"
-                    onPress={()=> navigation.navigate("ButikkSøk")}/>
+                    onPress={()=> navigation.navigate("Finn Butikk")}/>
                 </View>
               </View>
               </View>

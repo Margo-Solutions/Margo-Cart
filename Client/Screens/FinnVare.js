@@ -8,7 +8,7 @@ export default function Varer({navigation, route}) {
 
   const ListVarer = async () => { // listing items
     try {
-      const response = await fetch("http://10.0.2.2:5000/Margodatabase/varer");
+      const response = await fetch("http://10.0.2.2:5000/margodatabase/varer");
       const vare = await response.json();
       setVare(vare);
     } catch (err) {
@@ -22,7 +22,7 @@ export default function Varer({navigation, route}) {
     }
     else{
     try {
-        const response = await fetch(`http://10.0.2.2:5000/Margodatabase/varer/Search/${vare_navn}`, {
+        const response = await fetch(`http://10.0.2.2:5000/margodatabase/varer/Search/${vare_navn}`, {
             method: "GET",
         });
         const vare = await response.json();
@@ -60,7 +60,7 @@ export default function Varer({navigation, route}) {
           <View style={styles.listContainer}>
           <FlatList data={vare} numColumns={2} renderItem={(itemData) => {
             return(
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=> navigation.navigate("Finn Butikk")}>
               <View style={styles.listItem}>
                 <Image style={styles.vareImage} source={{uri: itemData.item.vare_link}} />
                 <Text style={styles.listText}>{itemData.item.vare_navn}</Text>

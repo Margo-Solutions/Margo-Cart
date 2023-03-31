@@ -9,6 +9,7 @@ export const HandProvider = ({ children }) => {
     const [vare_navn, setVareNavn] = useState(''); // legger til varer
     const [vare, setVare] = useState([]); // lister varer
     const [handleliste_id, setHandlelisteID] = useState('');  
+    const [Listcoords, setListcoords] = useState([]); // lister varer
 
     const getHandlelisteName = async (id) => {
         try {
@@ -40,7 +41,7 @@ export const HandProvider = ({ children }) => {
         const updateHandleliste = async (antall, id, handleliste_id ) => {
             try {
                 const body = { handleliste_id};
-                const response = await fetch(`http://10.0.2.2:5000/Margodatabase/handleliste/update/remove/${antall}/${id}` ,{
+                const response = await fetch(`http://10.0.2.2:5000/margodatabase/handleliste/update/remove/${antall}/${id}` ,{
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body)
@@ -52,7 +53,17 @@ export const HandProvider = ({ children }) => {
                 
               }
             };
-    
+            const Listcord = async () => { // listing items
+                try {
+                  const response = await fetch("http://10.0.2.2:5000/margodatabase/koordinater");
+                  const cord = await response.json();
+                  setListcoords(cord);
+                } catch (err) {
+                  console.error(err.message);
+                  
+                }
+              }; 
+
     return (
         <handContext.Provider
             value={{
