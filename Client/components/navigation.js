@@ -14,6 +14,7 @@ import HjemmesideScreen from '../Screens/HjemmesideScreen';
 import FinnButikkKart from '../Screens/FinnButikkKart';
 import FinnButikk from '../Screens/FinnButikker';
 import FinnVare from '../Screens/FinnVare';
+import MinProfil from '../Screens/MinProfil';
 import innendørsKart from '../Screens/innendørsKart';
 
 
@@ -60,6 +61,7 @@ function HomeRoot(){
                         <Drawer.Screen name="Veibeskrivelse" component={FinnButikkKart} options={{drawerItemStyle:{ display: 'none' }, drawerLockMode:'locked-closed', headerShown: false, swipeEdgeWidth: 0 }} />
                         <Drawer.Screen name="Finn Butikk" component={FinnButikk} />
                         <Drawer.Screen name="Finn Vare" component={FinnVare} />
+                        <Drawer.Screen name="Min profil" component={MinProfil} />
                         <Drawer.Screen name ="innendørskart" component={innendørsKart} options={{drawerItemStyle:{ display: 'none' }, drawerLockMode:'locked-closed', headerShown: false, swipeEdgeWidth: 0 }} />
                         
             </Drawer.Navigator>
