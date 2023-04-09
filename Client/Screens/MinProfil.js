@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TextInput, View, Text, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, TextInput, View, Text, TouchableOpacity, Alert, Image, Button } from 'react-native';
 
 
 const slettData = async (adresse) => {
@@ -15,21 +15,20 @@ const slettData = async (adresse) => {
 export default function MinProfil({ navigation }) {
     return (
         <View style={styles.Container}>
+            <View style={styles.imageContainer}>
+                <Image
+                    style={styles.image}
+                    source={require('../assets/images/logoM.png')}
+                />
+            </View>
+            <View style={styles.line} />
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button}
-                    onPress={() => alert('slett data')}>
-                    <Text
-                        style={styles.slettDataText}>
-                        Slett all data
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
-                    onPress={() => alert('slett profil')}>
-                    <Text
-                        style={styles.slettDataText}>
-                        Slett profil
-                    </Text>
-                </TouchableOpacity>
+                <View style={styles.button}>
+                    <Button title='Slett all data' color="#8FD6F2" onPress={() => alert('slett data')} />
+                </View>
+                <View style={styles.button}>
+                    <Button title='Slett profil' color="#8FD6F2" onPress={() => alert('slett profil')} />
+                </View>
             </View>
         </View>
     );
@@ -40,14 +39,31 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#66A2BA',
     },
+    imageContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+    },
+    image: { //image style
+        width: 350,
+        height: 350,
+    },
+    line: { // the black line on top 
+        borderBottomColor: 'black',
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        bottom: 50,
+    },
     buttonContainer: {
         flexDirection: 'row',
-        top:'20%'
+        top: '20%',
+        justifyContent: 'center'
     },
-    button: {
-        width: 150,
+    button: {  // button styles for all buttons
+        overflow: 'hidden',
         borderRadius: 50,
-        padding: 25
+        fontSize: 20,
+        padding: 25,
+        width: 150,
     },
     slettDataText: {
         color: 'white',
