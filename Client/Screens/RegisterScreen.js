@@ -14,32 +14,37 @@ export default function RegisterScreen({ navigation }) {
     const [email, setemail] = useState('');
     const [passord, setpassord] = useState('');
     const [bekreftpassord, setbekreftpassord] = useState('');
-    const {setAuth} = useContext(AuthContext);
+    const { setAuth, getuserid, userid } = useContext(AuthContext);
     const
         onsubmitform = async (e) => {
             e.preventDefault();
             try {
-                if(passord != bekreftpassord){
+                if (passord != bekreftpassord) {
                     Alert.alert("passorene er ikke like!.")
                     throw null;
                 }
-                if(navn == 0 | email == 0 | passord == 0){Alert.alert("Alle felt på fylles inn.")};
+                if (navn == 0 | email == 0 | passord == 0) { Alert.alert("Alle felt på fylles inn.") };
 
                 const body = { navn, email, passord };
-                 const response = await fetch("http://10.0.2.2:5000/margodatabase/register", {
+                const response = await fetch("http://10.0.2.2:5000/margodatabase/register", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body)
                 });
                 const parseRes = await response.json();
-                
+
                 if (parseRes.token) {
-                AsyncStorage.setItem("token", parseRes.token);
-                setAuth(true);
-            }
-          else {
-              console.log("error");
-          }
+                    getuserid(email);
+                    AsyncStorage.setItem("token", parseRes.token);
+                    setAuth(true);
+                    AsyncStorage.setItem("userid", JSON.stringify(userid));
+                }
+                else {
+                    console.log("no token");
+                }
+
+
+
                 // console.log(response);  
             }
             catch (err) {
@@ -47,7 +52,7 @@ export default function RegisterScreen({ navigation }) {
             }
         }
 
- 
+
 
     return (
         <View style={styles.Container}>

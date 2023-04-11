@@ -4,7 +4,7 @@ const cors = require('cors');
 const pool = require('./db');
 app.use(express.static('public'));
 const bcrypt = require('bcrypt');
-let PORT =process.env.PORT || 5000;
+let PORT = process.env.PORT || 5000;
 const jwtGenerator = require('./utils/jwtGenerator');
 const validInfo = require('./middleware/validInfo');
 const authorization = require('./middleware/authorization');
@@ -285,7 +285,7 @@ app.get('/margodatabase/kjeder/Search/:kjede_navn', async (req, res) => {
         const { kjede_navn } = req.params;
         const kjeder = await pool.query("SELECT kjeder.kjede_navn, butikker.adresse FROM butikker INNER JOIN kjeder ON butikker.kjede_id = kjeder.kjede_id WHERE kjeder.kjede_navn LIKE '%" + kjede_navn + "%'");
         res.json(kjeder.rows);
-    }     
+    }
     catch (err) {
         console.error(err.message);
     }
@@ -294,7 +294,7 @@ app.get('/margodatabase/kjeder/Search/:kjede_navn', async (req, res) => {
 
 app.get('/margodatabase/butikker/:adresse', async (req, res) => {
     try {
-        const {adresse} = req.params;
+        const { adresse } = req.params;
         const dest = await pool.query("SELECT latitude, longitude, butikk_id FROM butikker WHERE adresse = $1", [adresse]);
         res.json(dest.rows);
     } catch (err) {
@@ -313,7 +313,7 @@ app.get('/margodatabase/koordinater', async (req, res) => {
 
 app.get('/margodatabase/koordinater/varer/:butikk_id/:vare_id', async (req, res) => {
     try {
-        const {butikk_id, vare_id} = req.params;
+        const { butikk_id, vare_id } = req.params;
         const koordinater = await pool.query('SELECT varer.vare_navn, varehyller.coord_id, koordinater.x, koordinater.y FROM vareliste INNER JOIN varer ON vareliste.vare_id = varer.vare_id INNER JOIN varehyller ON vareliste.varehylle_id = varehyller.varehylle_id INNER JOIN koordinater ON varehyller.coord_id = koordinater.coord_id WHERE butikk_id = $1 AND varer.vare_navn =$2;', [butikk_id, vare_id]);
         res.json(koordinater.rows[0]);
     } catch (err) {
@@ -326,5 +326,30 @@ app.listen(PORT, "0.0.0.0", () => {
     console.log(`Example app listening at http://localhost:${PORT}`)
 }
 );
+
+
+//slett data//
+app.get('/margodatabase/slettData/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        await pool.query('DELETE FROM handlelister WHERE kunde_id = $1;', [id]);
+        res.send('all data slettet');
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+
+//slett profil //
+app.get('/margodatabase/slettProfil/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        await pool.query('DELETE FROM Kunder WHERE id = $1;', [id]);
+        res.send('Profil slettet');
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
 
 

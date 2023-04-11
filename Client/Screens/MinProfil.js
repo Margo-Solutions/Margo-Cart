@@ -1,18 +1,58 @@
 import React from 'react';
+import { useState, useContext } from 'react';
 import { StyleSheet, TextInput, View, Text, TouchableOpacity, Alert, Image, Button } from 'react-native';
-
-
-const slettData = async (adresse) => {
-    try {
-        const response = await fetch(`http://10.0.2.2:5000/margodatabase/slettData`);
-    }
-    catch (err) {
-        console.error(err.message);
-
-    }
-};
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from '../context/Authcontex';
 
 export default function MinProfil({ navigation }) {
+
+    const { logout } = useContext(AuthContext);
+
+    const handleSlettData = async () => {
+        Alert.alert(
+            'Slett all data',
+            'Er du sikker på at du vil slette all data? Dette kan ikke angres.',
+            [
+                { text: 'Avbryt', style: 'cancel' },
+                { text: 'Slett', style: 'destructive', onPress: slettData },
+            ],
+        );
+    };
+
+    const slettData = async (id) => {
+        try {
+            id = await AsyncStorage.getItem('userid');
+            const response = await fetch(`http://10.0.2.2:5000/margodatabase/slettData/${id}`)
+        }
+        catch (err) {
+            console.error(err.message);
+
+        }
+    };
+
+    const handleSlettProfil = async () => {
+        Alert.alert(
+            'Slett profil',
+            'Er du sikker på at du vil slette profilen? Dette kan ikke angres.',
+            [
+                { text: 'Avbryt', style: 'cancel' },
+                { text: 'Slett', style: 'destructive', onPress: slettProfil },
+            ],
+        );
+    };
+
+    const slettProfil = async (id) => {
+        try {
+            id = await AsyncStorage.getItem('userid');
+            const response = await fetch(`http://10.0.2.2:5000/margodatabase/slettProfil/${id}`)
+            logout();
+        }
+        catch (err) {
+            console.error(err.message);
+
+        }
+    };
+
     return (
         <View style={styles.Container}>
             <View style={styles.imageContainer}>
@@ -24,10 +64,10 @@ export default function MinProfil({ navigation }) {
             <View style={styles.line} />
             <View style={styles.buttonContainer}>
                 <View style={styles.button}>
-                    <Button title='Slett all data' color="#8FD6F2" onPress={() => alert('slett data')} />
+                    <Button title='Slett all data' color="#8FD6F2" onPress={() => handleSlettData()} />
                 </View>
                 <View style={styles.button}>
-                    <Button title='Slett profil' color="#8FD6F2" onPress={() => alert('slett profil')} />
+                    <Button title='Slett profil' color="#8FD6F2" onPress={() => handleSlettProfil()} />
                 </View>
             </View>
         </View>

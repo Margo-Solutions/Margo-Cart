@@ -6,10 +6,10 @@ import { handContext } from '../context/listeHandler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-export default function LagHandlelister({navigation}) {
+export default function LagHandlelister({ navigation }) {
   const [handleliste_tittel, setHandlelisteTittel] = useState(''); // handleliste tittel use state
-  const [handleliste, setList] = useState ([]);  // list handlelister use state
-  const {ListVarerHandleliste, getHandlelisteName} = useContext(handContext);
+  const [handleliste, setList] = useState([]);  // list handlelister use state
+  const { ListVarerHandleliste, getHandlelisteName } = useContext(handContext);
   const [kunde_id, setKundeID] = useState(''); // kunde id use state
 
   const getkundeID = async () => { // getting kunde id
@@ -18,86 +18,94 @@ export default function LagHandlelister({navigation}) {
     } catch (err) {
       console.error(err.message);
     }
-    };
+  };
 
-  const make_handleliste = async(e) => { //create a handleliste
+  const make_handleliste = async (e) => { //create a handleliste
     e.preventDefault();
     try {
       getkundeID();
       const body = { handleliste_tittel, kunde_id };
       const response = await fetch("http://10.0.2.2:5000/margodatabase/handlelister/nyhandleliste", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body)
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
       });
       window.location = "/";
       ListHandleliste(await AsyncStorage.getItem('userid'));
     } catch (err) {
       console.error(err.message);
-      
+
     }
   };
-    const ListHandleliste = async (id) => {
-        try {
-            id = await AsyncStorage.getItem('userid');
-            console.log(id);
-            const response = await fetch(`http://10.0.2.2:5000/margodatabase/kunder/get/${id}`);
-            const handleliste = await response.json();
-            setList(handleliste);
-        } catch (err) {
-            console.error(err.message);
-        }
-        };
+  const ListHandleliste = async (id) => {
+    try {
+      id = await AsyncStorage.getItem('userid');
+      console.log(id);
+      const response = await fetch(`http://10.0.2.2:5000/margodatabase/kunder/get/${id}`);
+      const handleliste = await response.json();
+      setList(handleliste);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
 
-    const pressHandler = (handleliste_id, handleliste_tittel) =>{ // press handler to handle handleliter button press
-        ListVarerHandleliste(handleliste_id)
-        getHandlelisteName(handleliste_id)
-        navigation.navigate('Handleliste',{
-          handlelisteID: handleliste_id,
-          handlelisteTittel: handleliste_tittel,
-        });
-      };
-  
-    useEffect(() => { // useEffect to refresh the data
-      getkundeID();  
-      ListHandleliste();
-    }, []);
-    return (
-      <View style={styles.container}>
-        <View>
-          <Image
-            style={styles.image}
-            source={require('../assets/images/logoM.png')}
-             />
-          </View>
-          <View style={styles.line} />
-          <View style={styles.inputContainer}>
-            <TextInput 
-                  style={styles.textInput}
-                  placeholder=""
-                  value={handleliste_tittel}
-                  onChangeText = {newText => setHandlelisteTittel(newText)}
-  
-                  />
-            <Button title = "Legg til Handleliste" onPress={make_handleliste} />
-            </View>     
-              <View style={styles.listContainer}>
-              <FlatList data={handleliste} renderItem={(itemData) => {
-              return(
-                <TouchableOpacity onPress={()=>pressHandler(itemData.item.handleliste_id, itemData.item.handleliste_tittel)}>
-                <View style={styles.listItem}>
-                  <Text style={styles.listText}>{itemData.item.handleliste_tittel}</Text>
-                </View>
-                </TouchableOpacity>
-              );
-              
-            }}
-              alwaysBounceVertical={false}
-             />
+  const pressHandler = (handleliste_id, handleliste_tittel) => { // press handler to handle handleliter button press
+    ListVarerHandleliste(handleliste_id)
+    getHandlelisteName(handleliste_id)
+    navigation.navigate('Handleliste', {
+      handlelisteID: handleliste_id,
+      handlelisteTittel: handleliste_tittel,
+    });
+  };
+
+  const refreshData = async () => {
+    getkundeID();
+    ListHandleliste(await AsyncStorage.getItem('userid'));
+  };
+
+  useEffect(() => { // useEffect to refresh the data when the screen is focused
+    const unsubscribe = navigation.addListener('focus', () => {
+      refreshData();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
+  return (
+    <View style={styles.container}>
+      <View>
+        <Image
+          style={styles.image}
+          source={require('../assets/images/logoM.png')}
+        />
+      </View>
+      <View style={styles.line} />
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.textInput}
+          placeholder=""
+          value={handleliste_tittel}
+          onChangeText={newText => setHandlelisteTittel(newText)}
+
+        />
+        <Button title="Legg til Handleliste" onPress={make_handleliste} />
+      </View>
+      <View style={styles.listContainer}>
+        <FlatList data={handleliste} renderItem={(itemData) => {
+          return (
+            <TouchableOpacity onPress={() => pressHandler(itemData.item.handleliste_id, itemData.item.handleliste_tittel)}>
+              <View style={styles.listItem}>
+                <Text style={styles.listText}>{itemData.item.handleliste_tittel}</Text>
               </View>
-              </View>
-      );
+            </TouchableOpacity>
+          );
+
+        }}
+          alwaysBounceVertical={false}
+        />
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -136,7 +144,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20,
     backgroundColor: "#CADCFF",
-    justifyContent:'center',
+    justifyContent: 'center',
   },
   listText: { // text style inside flatlist
     color: '#646161',

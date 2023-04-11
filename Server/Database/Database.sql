@@ -20,16 +20,35 @@ CREATE TABLE kunder (
 ------------------------------------
 CREATE TABLE handlelister(
     handleliste_id SERIAL PRIMARY KEY,
-    kunde_id integer REFERENCES kunder (id),
+    kunde_id integer REFERENCES kunder (id) ON DELETE CASCADE,
     handleliste_tittel VARCHAR(255)
 );
 
+
 CREATE TABLE handleliste (
   id SERIAL PRIMARY KEY,
-  handleliste_id integer REFERENCES handlelister (handleliste_id),
-  vare_id integer REFERENCES varer (vare_id)
+  handleliste_id integer REFERENCES handlelister (handleliste_id) ON DELETE CASCADE,
+  vare_id integer REFERENCES varer (vare_id),
   antall integer
 );
+
+------hvis du har implementert den gamle handleister og handleliste table: 
+ALTER TABLE handleliste
+DROP CONSTRAINT handleliste_handleliste_id_fkey;
+
+ALTER TABLE handleliste
+ADD CONSTRAINT handlelister_handleliste_id_fkey
+FOREIGN KEY (handleliste_id) REFERENCES handlelister (handleliste_id)
+ON DELETE CASCADE;
+------------------------------
+ALTER TABLE handlelister
+DROP CONSTRAINT handlelister_kunde_id_fkey;
+
+ALTER TABLE handlelister ADD CONSTRAINT handlelister_kunde_id_fkey
+    FOREIGN KEY (kunde_id)
+    REFERENCES kunder (id)
+    ON DELETE CASCADE;
+------------------------------------
 
 CREATE TABLE varer(
     vare_id SERIAL PRIMARY KEY,
@@ -82,10 +101,11 @@ CREATE TABLE koordinater(
     y INT
 );
 
-UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=1o4j7wBbJlYgHQyezXC_Ms1Oz-3gJxaCR' WHERE vare_navn = cola;
+UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=1o4j7wBbJlYgHQyezXC_Ms1Oz-3gJxaCR' WHERE vare_navn = 'cola';
 UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=1dT07jPEGKHVHLMWG0tln9hL9wn8a1Ptx' WHERE vare_navn = 'lettmelk';
 UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=11rHXLY_roucW_wi6yKMsk7hjodDzcCj3' WHERE vare_navn = 'ost';
 UPDATE varer SET vare_link='https://drive.google.com/uc?export=view&id=1l0UddyX4s2tgmM70CQ_l9_iaJxHD4VOk' WHERE vare_navn = 'brod';
+UPDATE varer SET vare_link='https://drive.google.com/file/d/1b6QRnde2ui4Tg0OQ_3PumHiJjYfxLXZ3/view?usp=share_link' WHERE vare_navn = 'Kapers';
 https://drive.google.com/file/d/1b6QRnde2ui4Tg0OQ_3PumHiJjYfxLXZ3/view?usp=share_link
 
 INSERT varer(vare_navn, vare_link) VALUES('cola', 'https://drive.google.com/uc?export=view&id=1b6QRnde2ui4Tg0OQ_3PumHiJjYfxLXZ3')
