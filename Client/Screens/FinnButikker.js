@@ -4,11 +4,12 @@ import { useState, useEffect, useContext } from 'react';
 import { StyleSheet, Button, View, TextInput, Image, FlatList, Text, TouchableOpacity, Alert, Modal } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FinnButikkKart from '../Screens/FinnButikkKart';
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 import { handContext } from '../context/listeHandler';
 import { set } from 'react-native-reanimated';
 
-export default function FinnButikk({ navigation,}) {
+export default function FinnButikk({ navigation }) {
+    const [sted_navn, setStedNavn] = useState(''); 
     const [kjede_navn, setKjedeNavn] = useState(''); // searching for items
     const [kjede, setKjede] = useState([]); // listing items use state
     const [dest_lat, setDest_lat] = useState();
@@ -34,17 +35,18 @@ export default function FinnButikk({ navigation,}) {
 
         }
     };
-    const SearchKjeder = async (kjede_navn) => { // searching for items
-        if (kjede_navn == '') {
+    const SearchKjeder = async (sted_navn) => { // searching for items
+        if (sted_navn == '') {
             ListKjeder();
         }
         else {
             try {
-                const response = await fetch(`http://10.0.2.2:5000/margodatabase/kjeder/Search/${kjede_navn}`, {
+                const response = await fetch(`http://10.0.2.2:5000/margodatabase/kjeder/Search/${sted_navn}`, {
                     method: "GET",
                 });
-                const kjede = await response.json();
-                setKjede(kjede);
+                const sted = await response.json();
+                setSortedData(sted);
+                setKjede(sted);
 
             } catch (err) {
                 console.error(err.message);
@@ -63,7 +65,7 @@ export default function FinnButikk({ navigation,}) {
             setDest_lat(lat);
             setDest_long(long);
             setButikkID(destination.butikk_id);
-            return {lat, long}; // returnerer en oppdatert verdi for dest_lat og dest_long
+            return { lat, long }; // returnerer en oppdatert verdi for dest_lat og dest_long
         }
         catch (err) {
             console.error(err.message);
@@ -79,43 +81,43 @@ export default function FinnButikk({ navigation,}) {
             setSecondModalData(long);
             setAdresse(adresse);
             setKj(kjede);
-          } 
-          catch (err) {
+        }
+        catch (err) {
             console.log(err);
-          }
+        }
     };
 
     const pressHandlerTest = (modalData, secondModalData, adresse) => {
-       try {
-        setModalVisible(!modalVisible)
-        console.log(adresse);
-        console.log(secondModalData);
-        console.log(modalData); 
-        navigation.navigate("Veibeskrivelse", { dest_lat: modalData, dest_long: secondModalData, adresse: adresse });
-       } catch (err) {
-        console.log(err);
-       }   
+        try {
+            setModalVisible(!modalVisible)
+            console.log(adresse);
+            console.log(secondModalData);
+            console.log(modalData);
+            navigation.navigate("Veibeskrivelse", { dest_lat: modalData, dest_long: secondModalData, adresse: adresse });
+        } catch (err) {
+            console.log(err);
+        }
     };
     const pressHandlerTest2 = (modalData, secondModalData, adresse) => {
         try {
-         setModalVisible(!modalVisible)
+            setModalVisible(!modalVisible)
             console.log(adresse);
-         navigation.navigate("innendørskart", { dest_lat: modalData, dest_long: secondModalData, adresse: adresse, butikk_id: butikk_id});
+            navigation.navigate("innendørskart", { dest_lat: modalData, dest_long: secondModalData, adresse: adresse, butikk_id: butikk_id });
         } catch (err) {
-         console.log(err);
-        }   
-     };
+            console.log(err);
+        }
+    };
 
-    const sortDataByBrand = (brand) =>{
-        if(brand === ''){
+    const sortDataByBrand = (brand) => {
+        if (brand === '') {
             setSortedData(kjede);
         } else {
-            const sorted=[...kjede].filter(item=>item.kjede_navn === brand);
+            const sorted = [...kjede].filter(item => item.kjede_navn === brand);
             setSortedData(sorted);
         }
         setSelectedBrand(brand);
     }
-    
+
     useEffect(() => { // use effect to refresh the data
         ListKjeder();
         sortDataByBrand('');
@@ -135,10 +137,9 @@ export default function FinnButikk({ navigation,}) {
                 <TextInput
                     style={styles.textInput}
                     placeholder=" Søk etter butikk her..."
-                    value={adresse}
-                    onChangeText={newText => setKjedeNavn(newText)}
+                    onChangeText={newText => setStedNavn(newText)}
                 />
-                <TouchableOpacity style={styles.søkButton} onPress={() => SearchKjeder(kjede_navn)}>
+                <TouchableOpacity style={styles.søkButton} onPress={() => SearchKjeder(sted_navn)}>
                     <Text > Søk
                         <Icon name="search" size={20} />
                     </Text>
@@ -147,75 +148,75 @@ export default function FinnButikk({ navigation,}) {
             <View style={styles.listContainer}>
                 <Modal visible={modalVisible} animationType="slide" transparent={false}  >
                     <View style={styles.modalView}>
-                    <Image
-                    style={styles.modalImage}
-                    source={require('../assets/images/navigation.png')}
-                />
+                        <Image
+                            style={styles.modalImage}
+                            source={require('../assets/images/navigation.png')}
+                        />
                         <Text style={styles.modalText}>Du har valgt {kj} {adresse}. {'\n'}</Text>
                         <View style={styles.combinedModalView}>
-                        <View style={styles.firstModalButton}>
-                        <Button
-                            title="Innendørs Navigering"
-                            color= "#03025c" onPress={() => pressHandlerTest2(modalData, secondModalData, adresse)} >
-                               
-                            </Button>  
+                            <View style={styles.firstModalButton}>
+                                <Button
+                                    title="Innendørs Navigering"
+                                    color="#03025c" onPress={() => pressHandlerTest2(modalData, secondModalData, adresse)} >
+
+                                </Button>
                             </View>
                             <View style={styles.secondModalButton}>
-                            <Button
-                            title="Veibeskrivelse"
-                            color= "#03025c" onPress={() => pressHandlerTest(modalData, secondModalData, adresse)} >
-                            </Button>
-                          </View>
-                          </View>
+                                <Button
+                                    title="Veibeskrivelse"
+                                    color="#03025c" onPress={() => pressHandlerTest(modalData, secondModalData, adresse)} >
+                                </Button>
+                            </View>
+                        </View>
                         <View style={styles.buttonStyle}>
                             <Button
-                            title="Tilbake"
-                            color= "#b30b10" onPress={() =>setModalVisible(!modalVisible)}>
+                                title="Tilbake"
+                                color="#b30b10" onPress={() => setModalVisible(!modalVisible)}>
                             </Button>
                         </View>
 
                     </View>
                 </Modal>
                 <View style={styles.lineSecond} />
-<View style={styles.pickerContainer}>
-                <Picker
-        selectedValue={selectedBrand}
-        onValueChange={(itemValue) => sortDataByBrand(itemValue)}
-        style={styles.picker}
-        >
-            <Picker.Item label="Alle Butikker" value="" />
-            <Picker.Item label="KIWI" value="KIWI" />
-            <Picker.Item label="REMA 1000" value="REMA1000" />
-            <Picker.Item label="MENY" value="MENY" />
-            <Picker.Item label="EXTRA" value="EXTRA" />
-            <Picker.Item label="SPAR" value="SPAR" />
+                <View style={styles.pickerContainer}>
+                    <Picker
+                        selectedValue={selectedBrand}
+                        onValueChange={(itemValue) => sortDataByBrand(itemValue)}
+                        style={styles.picker}
+                    >
+                        <Picker.Item label="Alle Butikker" value="" />
+                        <Picker.Item label="KIWI" value="KIWI" />
+                        <Picker.Item label="REMA 1000" value="REMA1000" />
+                        <Picker.Item label="MENY" value="MENY" />
+                        <Picker.Item label="EXTRA" value="EXTRA" />
+                        <Picker.Item label="SPAR" value="SPAR" />
 
-                {/* Add more brands as needed */}
-                </Picker>
-                <Picker
-                selectedValue={selectedBrand}
-                onValueChange={(itemValue) => sortDataByBrand(itemValue)}
-                style={styles.picker}
-        >
-            <Picker.Item label="Avstand" />
-            <Picker.Item label="Kongsberg" value="Kongsberg" />
-                {/* legg til steder fra stedsdatabasen*/}
-                </Picker>
-                <Picker
-                selectedValue={selectedBrand}
-                onValueChange={(itemValue) => sortDataByBrand(itemValue)}
-                style={styles.picker}
-        >
-            <Picker.Item label="Pris" />
-            <Picker.Item label="Kongsberg" value="Kongsberg" />
-                {/* legg til steder fra stedsdatabasen*/}
-                </Picker>
+                        {/* Add more brands as needed */}
+                    </Picker>
+                    <Picker
+                        selectedValue={selectedBrand}
+                        onValueChange={(itemValue) => sortDataByBrand(itemValue)}
+                        style={styles.picker}
+                    >
+                        <Picker.Item label="Avstand" />
+                        <Picker.Item label="Kongsberg" value="Kongsberg" />
+                        {/* legg til steder fra stedsdatabasen*/}
+                    </Picker>
+                    <Picker
+                        selectedValue={selectedBrand}
+                        onValueChange={(itemValue) => sortDataByBrand(itemValue)}
+                        style={styles.picker}
+                    >
+                        <Picker.Item label="Pris" />
+                        <Picker.Item label="Kongsberg" value="Kongsberg" />
+                        {/* legg til steder fra stedsdatabasen*/}
+                    </Picker>
                 </View>
                 <FlatList
                     data={sortedData}
                     renderItem={(itemData) => {
                         return (
-                            <TouchableOpacity onPress={() => pressHandler(itemData.item.adresse, itemData.item.kjede_navn) } >
+                            <TouchableOpacity onPress={() => pressHandler(itemData.item.adresse, itemData.item.kjede_navn)} >
                                 <View style={styles.listItem} >
                                     <Text style={styles.listText}>{itemData.item.kjede_navn}, {itemData.item.adresse}</Text>
                                 </View>
@@ -289,46 +290,46 @@ const styles = StyleSheet.create({
     },
     buttonStyle: {
         height: 50,
-        width: 180, 
+        width: 180,
         padding: 8,
-      },
-    firstModalButton:{
+    },
+    firstModalButton: {
         height: 50,
         width: 200,
         padding: 8,
     },
-    secondModalButton:{
+    secondModalButton: {
         height: 50,
         width: 200,
         padding: 8,
     },
-    combinedModalView:{
+    combinedModalView: {
         flexDirection: "row",
-        
+
     },
-    modalText:{
+    modalText: {
         fontSize: 20,
     },
-    modalImage:{
+    modalImage: {
         height: 150,
         width: 150,
         marginBottom: 30,
     },
-    pickerContainer:{
+    pickerContainer: {
         flexDirection: 'row',
-        
+
     },
-    picker:{
-    backgroundColor: '#66A2BA',
-    width: '33.3333333%',
-},
-pickerText:{
-    color: 'black',
-},
-lineSecond:{
- borderBottomColor: 'black',
+    picker: {
+        backgroundColor: '#66A2BA',
+        width: '33.3333333%',
+    },
+    pickerText: {
+        color: 'black',
+    },
+    lineSecond: {
+        borderBottomColor: 'black',
         borderBottomWidth: StyleSheet.hairlineWidth,
         bottom: 2,
-},
+    },
 });
 

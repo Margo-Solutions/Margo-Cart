@@ -280,11 +280,12 @@ app.get('/margodatabase/butikker', async (req, res) => {
         console.error(err.message);
     }
 });
-app.get('/margodatabase/kjeder/Search/:kjede_navn', async (req, res) => {
+app.get('/margodatabase/kjeder/Search/:sted_navn', async (req, res) => {
     try {
-        const { kjede_navn } = req.params;
-        const kjeder = await pool.query("SELECT kjeder.kjede_navn, butikker.adresse FROM butikker INNER JOIN kjeder ON butikker.kjede_id = kjeder.kjede_id WHERE kjeder.kjede_navn LIKE '%" + kjede_navn + "%'");
-        res.json(kjeder.rows);
+        const { sted_navn } = req.params;
+        const query = "SELECT kjeder.kjede_navn, butikker.adresse FROM kjeder JOIN butikker ON kjeder.kjede_id = butikker.kjede_id JOIN sted ON butikker.sted_id = sted.sted_id WHERE sted.sted LIKE $1";
+        const sted = await pool.query(query, [`%${sted_navn}%`]);
+        res.json(sted.rows);
     }
     catch (err) {
         console.error(err.message);
@@ -293,6 +294,7 @@ app.get('/margodatabase/kjeder/Search/:kjede_navn', async (req, res) => {
 
 app.get('/margodatabase/butikker/:adresse', async (req, res) => {
     try {
+        console.log('!!');
         const { adresse } = req.params;
         const dest = await pool.query("SELECT latitude, longitude, butikk_id FROM butikker WHERE adresse = $1", [adresse]);
         res.json(dest.rows);

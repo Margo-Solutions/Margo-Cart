@@ -77,17 +77,33 @@ CREATE TABLE butikker(
 );
  
 --eksempel innhold 
- -- butikk_id | kjede_id |             adresse              | latitude | longitude | sted_id
------------+----------+----------------------------------+----------+-----------+---------
---          1 |        1 | Vikersundgata 32, 3370 Vikersund |  9.99429 |  59.96529 |       1
---          2 |        1 | Storgata, 3320 Vestfossen        |  9.86942 |  59.73459 |       3
---          3 |        2 | Karsches gate 3                  | 59.66886 |   9.65187 |       2
+ butikk_id | kjede_id |      adresse      | latitude | longitude | sted_id
+-----------+----------+-------------------+----------+-----------+---------
+         1 |        1 | Vikersundgata 32  | 59.96529 |   9.99429 |       2
+         2 |        1 | Storgata          | 59.73459 |   9.86942 |       1
+         3 |        2 | Karsches gate 3   | 59.66886 |   9.65187 |       3
+
+INSERT INTO sted (sted, postnummer) VALUES ('Vestfossen', 3320);
+INSERT INTO sted (sted, postnummer) VALUES ('Vikersund', 3370);
+INSERT INTO sted (sted, postnummer) VALUES ('Kongsberg', 3611);
+INSERT INTO sted (sted, postnummer) VALUES ('Hokksund', 3300);
+
+INSERT INTO kjeder (kjede_navn) VALUES ('KIWI');
+INSERT INTO kjeder (kjede_navn) VALUES ('MENY');
+INSERT INTO kjeder (kjede_navn) VALUES ('REMA 1000');
+INSERT INTO kjeder (kjede_navn) VALUES ('SPAR');
+INSERT INTO kjeder (kjede_navn) VALUES ('EXTRA');
+
+INSERT INTO butikker(kjede_id, adresse, latitude, longitude, sted_id) VALUES(1, 'Vikersundgata 32 ',59.96529, 9.99429, 2 );
+INSERT INTO butikker(kjede_id, adresse, latitude, longitude, sted_id) VALUES(1, 'Storgata', 59.73459 , 9.86942 , 1 );
+INSERT INTO butikker(kjede_id, adresse, latitude, longitude, sted_id) VALUES(2, 'Karsches gate 3', 59.66886, 9.65187, 3 );
 
 
 CREATE TABLE vareliste(
     vareliste_id SERIAL PRIMARY KEY,
     vare_id integer REFERENCES varer (vare_id),
     butikk_id integer REFERENCES butikker (butikk_id),
+    pris float,
     varehylle_id integer REFERENCES varehyller (varehylle_id)
 );
 CREATE TABLE varehyller(
