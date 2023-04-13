@@ -291,7 +291,6 @@ app.get('/margodatabase/kjeder/Search/:kjede_navn', async (req, res) => {
     }
 });
 
-
 app.get('/margodatabase/butikker/:adresse', async (req, res) => {
     try {
         const { adresse } = req.params;
@@ -312,21 +311,15 @@ app.get('/margodatabase/koordinater', async (req, res) => {
 });
 
 app.get('/margodatabase/koordinater/varer/:butikk_id/:vare_id', async (req, res) => {
+    const test = false;
     try {
-        const { butikk_id, vare_id } = req.params;
+        const {butikk_id, vare_id} = req.params;
         const koordinater = await pool.query('SELECT varer.vare_navn, varehyller.coord_id, koordinater.x, koordinater.y FROM vareliste INNER JOIN varer ON vareliste.vare_id = varer.vare_id INNER JOIN varehyller ON vareliste.varehylle_id = varehyller.varehylle_id INNER JOIN koordinater ON varehyller.coord_id = koordinater.coord_id WHERE butikk_id = $1 AND varer.vare_navn =$2;', [butikk_id, vare_id]);
         res.json(koordinater.rows[0]);
     } catch (err) {
         console.error(err.message);
     }
 });
-
-// listen to port //
-app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Example app listening at http://localhost:${PORT}`)
-}
-);
-
 
 //slett data//
 app.get('/margodatabase/slettData/:id', async (req, res) => {
@@ -350,6 +343,14 @@ app.get('/margodatabase/slettProfil/:id', async (req, res) => {
         console.error(err.message);
     }
 });
+
+
+// listen to port //
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Example app listening at http://localhost:${PORT}`)
+}
+);
+
 
 
 
