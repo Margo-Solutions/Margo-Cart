@@ -101,6 +101,13 @@ npm i react-native-maps
 ```
 npx expo install expo-location![image](https://user-images.githubusercontent.com/113107099/220368898-fb1b9a14-f724-4e1e-b27f-2a7b78523d80.png)
 ```
+# for innendørs kart
+```
+npm install react-native-svg
+npm install react-native-fabric
+npm install react-native-webview
+```
+mulig versonsfeil når du laster ned fabric eller webview så må du laste ned riktig verson, react sier i fra når du starter appen på nytt
 
 ## Første gang for server 
 gå inn i server mappe

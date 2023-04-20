@@ -2,10 +2,12 @@
 import * as React from 'react';
 import { useState, useEffect, useContext } from 'react';
 import { StyleSheet, Button, View, TextInput, Image, FlatList, Text, TouchableOpacity } from 'react-native';
+import { array } from 'yup';
+import { handContext } from '../context/listeHandler';
 export default function Varer({navigation, route}) {
   const [vare_navn, setVareNavn] = useState(''); // searching for items
   const [vare, setVare] = useState([]); // listing items use state
-
+  const {setHandleliste} = useContext(handContext);
   const ListVarer = async () => { // listing items
     try {
       const response = await fetch("http://10.0.2.2:5000/margodatabase/varer");
@@ -34,6 +36,14 @@ export default function Varer({navigation, route}) {
       }
     }
     };
+    const pressHandler = (vare_navn) => { // press handler to handle item clicks  
+     const temp = Array({vare_navn: " ", antall : 1, id: 0 });
+      temp[0].vare_navn = vare_navn;
+      temp[0].id = 0;
+      setHandleliste(temp);
+      navigation.navigate('Finn Butikk', {
+      });
+    };
         
   useEffect(() => { // use effect to refresh the data
     ListVarer();
@@ -60,7 +70,7 @@ export default function Varer({navigation, route}) {
           <View style={styles.listContainer}>
           <FlatList data={vare} numColumns={2} renderItem={(itemData) => {
             return(
-            <TouchableOpacity onPress={()=> navigation.navigate("Finn Butikk")}>
+            <TouchableOpacity onPress={()=> pressHandler(itemData.item.vare_navn)}>
               <View style={styles.listItem}>
                 <Image style={styles.vareImage} source={{uri: itemData.item.vare_link}} />
                 <Text style={styles.listText}>{itemData.item.vare_navn}</Text>

@@ -5,6 +5,7 @@ import Svg, { Path, Rect, Polyline, Marker } from 'react-native-svg';
 import Astar from '../utils/Astar';
 //import sortertHandleliste from '../utils/sorterHandleliste';
 import { handContext } from '../context/listeHandler';
+import { array } from 'yup';
 export default function InnendørsKart({ route }) {
   const { butikk_id } = route.params; // henter ut butikk_id fra forrige skjerm som bruker til å hente varer
   const { handleliste} = useContext(handContext); // henter ut handleliste fra context
@@ -171,18 +172,104 @@ export default function InnendørsKart({ route }) {
   const addhylle = async (data) => {
     try {
       var arr = Array(data.length).fill(0);
+      let temp = [];
+      var nr = 0;
+      let tempx = [];
+      let tempy = [];
+
       for (var i = 0; i < data.length; i++) {
         var x = data[i].x;
         var y = data[i].y;
         Grid[x][y].hylle = true;
-        //console.log(Grid[x][y].hylle);
 
         var cord_x = x * 20; // 1 * 20 = 20, 2 * 20 = 40, 3 * 20 = 60
         var cord_y = y * 20; // 1 * 20 = 20, 2 * 20 = 40, 3 * 20 = 60
         var key = i;
-        arr[i] = { key: key, x: cord_x, y: cord_y };
+        arr[i] = { key: key, x: cord_x, y: cord_y, width: 20, height: 20};
       }
-      sethylle(arr);
+      for (var i = 0; i < 20; i++) {
+        for (var j = 0; j < 20; j++) {
+          if ( j === 0) {
+            if(tempx.length === 5) {
+              tempx[0].height = 20 * 5;
+              temp.push(tempx[0]);
+              tempx = [];
+              nr++;
+            } 
+            // tempx.push({key: nr, x: i * 20, y: j * 20, width: 20, height: 20});
+           // nr++;
+          } 
+         else if (Grid[i][j].hylle === true) {
+          if(tempx.length === 5) {
+            tempx[0].height = 20 * 5;
+            temp.push(tempx[0]);
+            tempx = [];
+            tempx.push({key: nr, x: i * 20, y: j * 20, width: 20, height: 20});
+            nr++;
+          }
+          else if (Grid[i][j -1].hylle === true && Grid[i][j].hylle === true || Grid[i][j + 1].hylle === true && Grid[i][j].hylle === true) {
+            tempx.push({key: nr, x: i * 20, y: j * 20, width: 20, height: 20});
+            nr++;
+          } 
+          else if (tempx.length > 1) {
+            tempx[0].height = 20 * tempx.length;
+            temp.push(tempx[0]);
+            tempx = [];
+          } 
+          else {
+            tempx = [];
+          }     
+         // console.log(tempx);
+      }
+    }
+  }
+  for (var i = 0; i < 20; i++) {
+    for (var j = 0; j < 20; j++) {
+      if ( j === 0) {
+        if(tempx.length === 5) {
+          tempx[0].width = 20 * 5;
+          temp.push(tempx[0]);
+          tempx = [];
+          nr++;
+        } else {
+          if (tempx.length > 1) {
+            tempx[0].width = 20 * tempx.length;
+            temp.push(tempx[0]);
+            tempx = [];
+          } else {
+            tempx = [];
+          }
+        }
+      } 
+     else if (Grid[j][i].hylle === true) {
+      if(tempx.length === 5) {
+        tempx[0].width = 20 * 5;
+        temp.push(tempx[0]);
+        tempx = [];
+        tempx.push({key: nr, x: j * 20, y: i * 20, width: 20, height: 20});
+        nr++;
+      }
+      else if (Grid[j + 1][i].hylle === true && tempx.length === 0) {
+        tempx.push({key: nr, x: j * 20, y: i * 20, width: 20, height: 20});
+        nr++;
+      }
+      else if (Grid[j - 1][i].hylle === true && Grid[j][i].hylle === true) {
+        tempx.push({key: nr, x: j * 20, y: i * 20, width: 20, height: 20});
+        nr++;
+      } 
+      else if (tempx.length > 1) {
+        tempx[0].width = 20 * tempx.length;
+        temp.push(tempx[0]);
+        tempx = [];
+      } 
+      else {
+        tempx = [];
+      }
+    }
+  }
+}
+     // console.log(temp); 10 
+      sethylle(temp);
     } catch (err) {
       console.error(err.message);
 
@@ -284,7 +371,7 @@ export default function InnendørsKart({ route }) {
       </View>
       <Svg height="100%" width="100%" style={styles.Kart}>
         {hylle.map((hylle) => (
-          <Rect key={hylle.key} x={hylle.x} y={hylle.y} width={20} height={20} stroke="black" strokeWidth="2" fill="white" />
+          <Rect key={hylle.key} x={hylle.x} y={hylle.y} width={hylle.width} height={hylle.height} stroke="black" strokeWidth="2" fill="white" />
         ))}
         <Marker
           id="arrow"
