@@ -6,6 +6,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import login from '../Screens/LoginScreen';
 import register from '../Screens/RegisterScreen';
 import GlemtPassordScreen from '../Screens/GlemtPassordScreen';
+import LagNyttPassordScreen from '../Screens/LagNyttPassordScreen';
 import LagHandlelister from "../Screens/LagHandlelister";
 import { AuthContext } from '../context/Authcontex';
 import Handleliste from "../Screens/Handleliste";
@@ -16,6 +17,7 @@ import FinnButikk from '../Screens/FinnButikker';
 import FinnVare from '../Screens/FinnVare';
 import MinProfil from '../Screens/MinProfil';
 import innendørsKart from '../Screens/innendørsKart';
+
 
 
 const Stack = createNativeStackNavigator();
@@ -80,6 +82,7 @@ function AuthRoot(){
             <Drawer.Screen name="Login" component={login} options={{ drawerLockMode: 'locked-closed', headerShown: false, swipeEdgeWidth: 0, }} />
                             <Drawer.Screen name="Register" component={register} options={{ drawerLockMode: 'locked-closed', headerShown: false, swipeEdgeWidth: 0 }} />
                             <Drawer.Screen name="GlemtPassord" component={GlemtPassordScreen} options={{ drawerLockMode: 'locked-closed', headerShown: false, swipeEdgeWidth: 0 }} />
+                            <Drawer.Screen name="LagNyttPassord" component={LagNyttPassordScreen} options={{ drawerLockMode: 'locked-closed', headerShown: false, swipeEdgeWidth: 0 }} />
             </Drawer.Navigator>
     );
 }

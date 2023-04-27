@@ -14,31 +14,31 @@ export default function LoginScreen({ navigation }) {
     const [passwordVisible, setPasswordVisible] = useState(true);
     const { setAuth, getuserid, userid } = useContext(AuthContext);
     const
-      onsubmitform = async (e) => {
-        e.preventDefault();
-        try {
-          const body = {email, passord };
-          const response = await fetch("http://10.0.2.2:5000/margodatabase/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body)
-          });
-          const parseRes = await response.json();
-       // console.log(parseRes);   
-       if (parseRes.token) {
-            getuserid(email);
-            AsyncStorage.setItem("token", parseRes.token);
-              setAuth(true);
-            AsyncStorage.setItem("userid", JSON.stringify(userid) );
-          }
-          else {
-              console.log("no token");
-          }
-          }
-        catch (err) {
-          console.error(err.message);
+        onsubmitform = async (e) => {
+            e.preventDefault();
+            try {
+                const body = { email, passord };
+                const response = await fetch("http://10.0.2.2:5000/margodatabase/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(body)
+                });
+                const parseRes = await response.json();
+                // console.log(parseRes);   
+                if (parseRes.token) {
+                    getuserid(email);
+                    AsyncStorage.setItem("token", parseRes.token);
+                    setAuth(true);
+                    AsyncStorage.setItem("userid", JSON.stringify(userid));
+                }
+                else {
+                    console.log("no token");
+                }
+            }
+            catch (err) {
+                console.error(err.message);
+            }
         }
-      }
 
     return (
         <View style={styles.Container}>
@@ -88,10 +88,10 @@ export default function LoginScreen({ navigation }) {
                     <TouchableOpacity
                         style={styles.buttonGlemtPassord}
                         onPress={() => navigation.navigate("GlemtPassord")}
-                        >
+                    >
                         <Text
                             style={styles.glemtPassordText}>
-                            Glemt passord eller brukernavn
+                            Glemt passord
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -187,7 +187,8 @@ const styles = StyleSheet.create({
         padding: 25,
         marginBottom: '10%',
         width: 400,
-        left: '42%',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     glemtPassordText: {
         color: "#CADCFF",

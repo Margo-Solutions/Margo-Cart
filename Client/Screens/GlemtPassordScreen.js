@@ -1,25 +1,53 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, Alert } from 'react-native';
 import { StackActions } from '@react-navigation/native';
+import { useState } from 'react';
 
 
 export default function GlemtPassordScreen({ navigation }) {
+    const [email, setemail] = useState('');
+
+    const SendMail = async (email) => {
+        try {
+            const response = await fetch(`http://10.0.2.2:5000/margodatabase/glemtPassord/${email}`);
+            const passord = await response.json();
+        }
+        catch (err) {
+            console.error(err.message);
+        }
+    }
+
+
+    const pressHandler = async (email) => {
+        try {
+          const response = await fetch(`http://10.0.2.2:5000/margodatabase/sjekkEmail/${email}`);
+          const { exists } = await response.json();
+          if (exists) {
+            navigation.navigate("LagNyttPassord");
+          } else {
+            Alert.alert("Ingen bruker er koblet til denne epostadressen");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
 
     function mybutton() {
         Alert.alert('you clicked', 'Send E-post', [{ text: 'OK' }]);
     }
 
+
+
     return (
         <View style={styles.Container}>
             <View style={styles.textContainer}>
                 <Text style={styles.topText}>
-                    Tilbakestill passord
+                    Glemt passord
                 </Text>
                 <Text style={styles.underText}>
                     Skriv inn e-postadressen din. Vi sender deg en e-post for å nullstille passordet
                 </Text>
             </View>
-            
             <View style={styles.mittContainer}>
                 <View style={styles.logiInfoncontainer}>
                     <View style={styles.iconContainer}>
@@ -29,16 +57,18 @@ export default function GlemtPassordScreen({ navigation }) {
                         />
                         <TextInput
                             style={styles.textInput}
-                            placeholder="E-mail"
+                            placeholder=" skriv inn E-mail"
+                            value={email}
+                            onChangeText={newText => setemail(newText)}
                         />
                     </View>
                 </View>
                 <View >
                     <TouchableOpacity
                         style={styles.buttonContainer}
-                        onPress={mybutton}>
+                        onPress={() => pressHandler(email)}>
                         <Text style={styles.TextStyle}>
-                            Send E-post
+                            Send
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -46,7 +76,6 @@ export default function GlemtPassordScreen({ navigation }) {
         </View>
     );
 };
-
 
 const styles = StyleSheet.create({
     Container: {
@@ -99,7 +128,6 @@ const styles = StyleSheet.create({
     mittContainer: {
         justifyContent: 'center',
         padding: 10,
-        
     },
     buttonContainer: {
         alignItems: 'center',

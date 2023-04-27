@@ -94,6 +94,33 @@ app.get('/margodatabase/kunder/:email', async (req, res) => {
     }
 });
 
+//-----------------------Glemt passord-----------------------------
+//glemtpassord//
+
+app.get('/margodatabase/glemtPassord/:email', async (req, res) => {
+    try {
+        const { email } = req.params;
+        const passord = await pool.query('SELECT passord FROM kunder WHERE email = $1', [email]);
+        res.json(passord.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.get('/margodatabase/sjekkEmail/:email', async (req, res) => {
+    try {
+        const { email } = req.params;
+        const result = await pool.query('SELECT COUNT(*) FROM kunder WHERE email = $1', [email]);
+        const exists = result.rows[0].count > 0;
+        res.json({ exists });
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+
+
+
 // ---------------------------------------handleliste---------------------------------------//
 
 // create a vare in vare table//
