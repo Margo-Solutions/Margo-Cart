@@ -18,7 +18,7 @@ app.use(express.json());
 // register and login route // :)
 app.post('/margodatabase/register', validInfo, async (req, res) => {
     try {
-        const { navn, email, passord } = req.body;
+        const { navn, email, passord, kjonn, alder} = req.body;
 
         const user = await pool.query(
             'SELECT * FROM kunder WHERE email = $1', [email]
@@ -29,10 +29,9 @@ app.post('/margodatabase/register', validInfo, async (req, res) => {
         const saltrounds = 10;
         const salt = await bcrypt.genSalt(saltrounds);
         const bcryptPassword = await bcrypt.hash(passord, salt);
-
         const newUser = await pool.query(
-            'INSERT INTO kunder (navn, email, passord) VALUES($1, $2, $3) RETURNING *',
-            [navn, email, bcryptPassword]
+            'INSERT INTO kunder (navn, email, passord, kjonn, alder) VALUES($1, $2, $3, $4, $5) RETURNING *',
+            [navn, email, bcryptPassword, kjonn, alder]
         );
         const token = jwtGenerator(newUser.rows[0].id);
         res.json({ token });

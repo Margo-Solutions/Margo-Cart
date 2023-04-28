@@ -6,12 +6,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../context/Authcontex';
 import { TextInput } from 'react-native-paper';
 import { StackActions } from '@react-navigation/native';
+import { Picker } from "@react-native-picker/picker";
 
 export default function RegisterScreen({ navigation }) {
 
     const [passwordVisible, setPasswordVisible] = useState(true);
     const [navn, setnavn] = useState('');
     const [email, setemail] = useState('');
+    const [kjonn, setkjonn] = useState('');
+    const [alder, setalder] = useState('');
     const [passord, setpassord] = useState('');
     const [bekreftpassord, setbekreftpassord] = useState('');
     const { setAuth, getuserid, userid } = useContext(AuthContext);
@@ -23,16 +26,19 @@ export default function RegisterScreen({ navigation }) {
                     Alert.alert("passorene er ikke like!.")
                     throw null;
                 }
-                if (navn == 0 | email == 0 | passord == 0) { Alert.alert("Alle felt på fylles inn.") };
+                if (navn == 0 | email == 0 | passord == 0 | kjonn == 0 | alder == 0) { 
+                    Alert.alert("Alle felt må fylles inn.");
+                    return; 
+                  };
 
-                const body = { navn, email, passord };
+                const body = { navn, email, passord, kjonn, alder};
                 const response = await fetch("http://10.0.2.2:5000/margodatabase/register", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body)
                 });
                 const parseRes = await response.json();
-
+                
                 if (parseRes.token) {
                     getuserid(email);
                     AsyncStorage.setItem("token", parseRes.token);
@@ -42,8 +48,6 @@ export default function RegisterScreen({ navigation }) {
                 else {
                     console.log("no token");
                 }
-
-
 
                 // console.log(response);  
             }
@@ -87,6 +91,27 @@ export default function RegisterScreen({ navigation }) {
                             value={email}
                             onChangeText={newText => setemail(newText)}
                         />
+                    </View>
+                    <View style={styles.alderKjønncontainer}>
+                        <TextInput
+                            style={styles.textInputAlder}
+                            placeholder="Alder"
+                            value={alder}
+                            onChangeText={newText => setalder(newText)}
+                        />
+                        <View style={styles.pickerContainer}>
+                            <Picker
+                                selectedValue={kjonn}
+                                onValueChange={(value, index) => setkjonn(value)}
+                                mode="dropdown" // Android only
+                                style={styles.picker}
+                            >
+                                <Picker.Item label="Velg kjønn" value="Unknown" />
+                                <Picker.Item label="Mann" value="Mann" />
+                                <Picker.Item label="Kvinne" value="Kvinne" />
+                                <Picker.Item label="Annet" value="Annet" />
+                            </Picker>
+                        </View>
                     </View>
                     <View style={styles.iconContainer}>
                         <Image
@@ -184,6 +209,20 @@ const styles = StyleSheet.create({
         margin: '15%',
         right: '40%'
     },
+    textInputAlder: {
+        borderWidth: 1,
+        borderColor: '#000000',
+        backgroundColor: '#8FD6F2',
+        fontSize: 20,
+        textAlign: 'center',
+        alignSelf: 'center',
+        borderRadius: 5,
+        height: 30,
+        width: 105,
+        padding: 5,
+        margin: '15%',
+        right: '40%'
+    },
     brukercontainer: {
         flexDirection: 'row',
     },
@@ -204,6 +243,32 @@ const styles = StyleSheet.create({
     },
     outIconContainer: {
         left: '42%'
+    },
+    alderKjønncontainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        marginVertical: -72,
+        marginHorizontal: -178,
+    },
+    pickerContainer: {
+        borderWidth: 1,
+        borderColor: '#000000', // Setter bordercolor til rød
+        borderRadius: 5,
+        overflow: 'hidden',
+        height: 40,
+        width: 145,
+        marginVertical: 10,
+        marginHorizontal: -75,
+        justifyContent: 'center',
+        alignItems: 'center',
+        right: 60
+    },
+    picker: {
+        color: '#434343',
+        backgroundColor: '#8FD6F2',
+        height: 20,
+        width: 150,
     },
     personIconImage: {
         marginleft: 10,
