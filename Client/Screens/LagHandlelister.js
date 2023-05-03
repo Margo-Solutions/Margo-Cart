@@ -40,7 +40,6 @@ export default function LagHandlelister({ navigation }) {
   const ListHandleliste = async (id) => {
     try {
       id = await AsyncStorage.getItem('userid');
-      console.log(id);
       const response = await fetch(`http://10.0.2.2:5000/margodatabase/kunder/get/${id}`);
       const handleliste = await response.json();
       setList(handleliste);
@@ -49,10 +48,19 @@ export default function LagHandlelister({ navigation }) {
     }
   };
 
+  const deleteHandleliste = async (handleliste_id) => {
+    try {
+      const response = await fetch(`http://10.0.2.2:5000/margodatabase/handlelister/sletthandleliste/${kunde_id}/${handleliste_id}`, {
+        method: "DELETE",
+      });
+      ListHandleliste(await AsyncStorage.getItem('userid'));
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
   const pressHandler = (handleliste_id, handleliste_tittel) => { // press handler to handle handleliter button press
-    ListVarerHandleliste(handleliste_id)
-    getHandlelisteName(handleliste_id)
+    ListVarerHandleliste(handleliste_id);
     navigation.navigate('Handleliste', {
       handlelisteID: handleliste_id,
       handlelisteTittel: handleliste_tittel,
@@ -91,16 +99,23 @@ export default function LagHandlelister({ navigation }) {
         <Button title="Legg til Handleliste" onPress={make_handleliste} />
       </View>
       <View style={styles.listContainer}>
-        <FlatList data={handleliste} renderItem={(itemData) => {
-          return (
-            <TouchableOpacity onPress={() => pressHandler(itemData.item.handleliste_id, itemData.item.handleliste_tittel)}>
-              <View style={styles.listItem}>
-                <Text style={styles.listText}>{itemData.item.handleliste_tittel}</Text>
+        <FlatList
+          data={handleliste}
+          renderItem={(itemData) => {
+            return (
+              <View style={styles.listItemContainer}>
+                <TouchableOpacity onPress={() => pressHandler(itemData.item.handleliste_id, itemData.item.handleliste_tittel)}>
+                  <View style={styles.listItem}>
+                    <Text style={styles.listText}>{itemData.item.handleliste_tittel}</Text>
+                    <Text style={styles.listText}>__________________</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => deleteHandleliste(itemData.item.handleliste_id)} style={styles.deleteButton}>
+                  <Text style={styles.deleteButtonText}>Slett</Text>
+                </TouchableOpacity>
               </View>
-            </TouchableOpacity>
-          );
-
-        }}
+            );
+          }}
           alwaysBounceVertical={false}
         />
       </View>
@@ -152,9 +167,25 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   listItem: { // view style for the text inside flatlist
-    margin: 8,
+    margin: 20,
     padding: 6,
     borderRadius: 10,
     backgroundColor: 'transparent',
+  },
+  listItemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: -10,
+    paddingHorizontal: 20,
+  },
+  deleteButton: {
+    //backgroundColor: '#03025c',
+    padding: 8,
+    borderRadius: 8,
+  },
+  deleteButtonText: {
+    color: 'black',
+    fontWeight: 'bold',
   },
 });

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { AuthContext } from '../context/Authcontex';
 
@@ -11,8 +11,20 @@ export default function LagNyttPassordScreen({ navigation }) {
   const [passwordConfirmationVisible, setPasswordConfirmationVisible] = useState(true);
   const { setAuth } = useContext(AuthContext);
 
-  const onSubmitForm = () => {
-    // handle submitting form here
+  const onSubmitForm = async () => {
+    try {
+      if (password != passwordConfirmation) {
+        Alert.alert("passorene er ikke like!.")
+        throw null;
+      }
+      else {
+        const response = await fetch(`http://10.0.2.2:5000/margodatabase/nyttpassord/${email}/${password}`);
+        const parseRes = await response.json();
+        navigation.navigate("Login");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -29,7 +41,7 @@ export default function LagNyttPassordScreen({ navigation }) {
           autoCompleteType="email"
         />
         <TextInput
-          label="Passord"
+          label=" Nytt passord"
           value={password}
           onChangeText={(text) => setPassword(text)}
           style={styles.input}
@@ -42,7 +54,7 @@ export default function LagNyttPassordScreen({ navigation }) {
           }
         />
         <TextInput
-          label="Bekreft passord"
+          label="Bekreft nytt passord"
           value={passwordConfirmation}
           onChangeText={(text) => setPasswordConfirmation(text)}
           style={styles.input}
@@ -83,7 +95,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginBottom: 20,
-    
+
   },
   input: {
     marginBottom: 10,

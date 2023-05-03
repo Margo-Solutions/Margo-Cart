@@ -8,6 +8,9 @@ let PORT = process.env.PORT || 5000;
 const jwtGenerator = require('./utils/jwtGenerator');
 const validInfo = require('./middleware/validInfo');
 const authorization = require('./middleware/authorization');
+const nodemailer = require('nodemailer')
+const sendEmail = require('./utils/SendEmail')
+
 
 //const path = require('path');
 app.use(cors());
@@ -18,7 +21,7 @@ app.use(express.json());
 // register and login route // :)
 app.post('/margodatabase/register', validInfo, async (req, res) => {
     try {
-        const { navn, email, passord, kjonn, alder} = req.body;
+        const { navn, email, passord, kjonn, alder } = req.body;
 
         const user = await pool.query(
             'SELECT * FROM kunder WHERE email = $1', [email]
@@ -96,15 +99,6 @@ app.get('/margodatabase/kunder/:email', async (req, res) => {
 //-----------------------Glemt passord-----------------------------
 //glemtpassord//
 
-app.get('/margodatabase/glemtPassord/:email', async (req, res) => {
-    try {
-        const { email } = req.params;
-        const passord = await pool.query('SELECT passord FROM kunder WHERE email = $1', [email]);
-        res.json(passord.rows[0]);
-    } catch (err) {
-        console.error(err.message);
-    }
-});
 
 app.get('/margodatabase/sjekkEmail/:email', async (req, res) => {
     try {
@@ -117,7 +111,33 @@ app.get('/margodatabase/sjekkEmail/:email', async (req, res) => {
     }
 });
 
+app.get('/margodatabase/sendEmail/:email/:number', async (req, res) => {
+    try {
+        const { email, number } = req.params;
+        sendEmail(email, number)
+            .then(response => res.send(response.message))
+            .catch(error => res.status(500).send(error.message))
+        //console.log(Number);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+//-----------------------Nytt passord-----------------------------
+// først get kunde_id så endre passord //
 
+app.get('/margodatabase/nyttpassord/:email/:password', async (req, res) => {
+    try {
+        const { email, password } = req.params;
+        const saltrounds = 10;
+        const salt = await bcrypt.genSalt(saltrounds);
+        const bcryptPassword = await bcrypt.hash(password, salt);
+        const kunde = await pool.query('UPDATE kunder SET passord =$1 WHERE email = $2;', [bcryptPassword, email]);
+        const token = jwtGenerator(kunde.rows[0].id);
+        res.json({ token });
+    } catch (err) {
+        console.error(err.message);
+    }
+});
 
 
 // ---------------------------------------handleliste---------------------------------------//
@@ -164,6 +184,19 @@ app.post('/margodatabase/handleliste/varer', async (req, res) => {
         console.error(err.message);
     }
 });
+
+// slett handleliste //
+app.delete('/margodatabase/handlelister/sletthandleliste/:kunde_id/:handleliste_id', async (req, res) => {
+    try {
+        const { kunde_id, handleliste_id } = req.params;
+        await pool.query('DELETE FROM handlelister WHERE kunde_id = $1 AND handleliste_id = $2', [kunde_id, handleliste_id]);
+        res.send(`Handleliste ${handleliste_id} slettet for kunde ${kunde_id}`);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Noe gikk galt ved sletting av handleliste');
+    }
+});
+
 
 // get alle varer from vare table //
 app.get('/margodatabase/varer', async (req, res) => {
@@ -320,7 +353,6 @@ app.get('/margodatabase/kjeder/Search/:sted_navn', async (req, res) => {
 
 app.get('/margodatabase/butikker/:adresse', async (req, res) => {
     try {
-        console.log('!!');
         const { adresse } = req.params;
         const dest = await pool.query("SELECT latitude, longitude, butikk_id FROM butikker WHERE adresse = $1", [adresse]);
         res.json(dest.rows);
@@ -341,7 +373,7 @@ app.get('/margodatabase/koordinater', async (req, res) => {
 app.get('/margodatabase/koordinater/varer/:butikk_id/:vare_id', async (req, res) => {
     const test = false;
     try {
-        const {butikk_id, vare_id} = req.params;
+        const { butikk_id, vare_id } = req.params;
         const koordinater = await pool.query('SELECT varer.vare_navn, varehyller.coord_id, koordinater.x, koordinater.y FROM vareliste INNER JOIN varer ON vareliste.vare_id = varer.vare_id INNER JOIN varehyller ON vareliste.varehylle_id = varehyller.varehylle_id INNER JOIN koordinater ON varehyller.coord_id = koordinater.coord_id WHERE butikk_id = $1 AND varer.vare_navn =$2;', [butikk_id, vare_id]);
         res.json(koordinater.rows[0]);
     } catch (err) {

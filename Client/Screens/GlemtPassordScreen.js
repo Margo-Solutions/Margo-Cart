@@ -1,42 +1,41 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, Alert } from 'react-native';
-import { StackActions } from '@react-navigation/native';
 import { useState } from 'react';
-
+import React from 'react';
+import qs from 'qs';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, Alert, Linking } from 'react-native';
 
 export default function GlemtPassordScreen({ navigation }) {
     const [email, setemail] = useState('');
+    const [number, setNumber] = React.useState(1);
+    const subject = 'Tilbakestill Passord';
 
-    const SendMail = async (email) => {
-        try {
-            const response = await fetch(`http://10.0.2.2:5000/margodatabase/glemtPassord/${email}`);
-            const passord = await response.json();
-        }
-        catch (err) {
-            console.error(err.message);
-        }
+
+
+    const getRandomNumber = () => {
+        const randomNumber = Math.floor(Math.random() * 9000) + 1000;
+        setNumber(randomNumber);
     }
 
-
-    const pressHandler = async (email) => {
+    const pressHandler = async (email, number) => {
+        getRandomNumber();
         try {
-          const response = await fetch(`http://10.0.2.2:5000/margodatabase/sjekkEmail/${email}`);
-          const { exists } = await response.json();
-          if (exists) {
-            navigation.navigate("LagNyttPassord");
-          } else {
-            Alert.alert("Ingen bruker er koblet til denne epostadressen");
-          }
+            const response = await fetch(`http://10.0.2.2:5000/margodatabase/sjekkEmail/${email}`);
+            const { exists } = await response.json();
+            if (exists) {
+                try {
+                    const response = await fetch(`http://10.0.2.2:5000/margodatabase/sendEmail/${email}/${number}`);
+                } catch (error) {
+                    console.log(error);
+                }
+                navigation.navigate("KodeScreen", { number: number });
+            }
+            else {
+                Alert.alert("Ingen bruker er koblet til denne epostadressen");
+            }
+
         } catch (error) {
-          console.log(error);
+            console.log(error);
         }
-      };
-
-    function mybutton() {
-        Alert.alert('you clicked', 'Send E-post', [{ text: 'OK' }]);
-    }
-
-
+    };
 
     return (
         <View style={styles.Container}>
@@ -66,7 +65,7 @@ export default function GlemtPassordScreen({ navigation }) {
                 <View >
                     <TouchableOpacity
                         style={styles.buttonContainer}
-                        onPress={() => pressHandler(email)}>
+                        onPress={() => pressHandler(email, number)}>
                         <Text style={styles.TextStyle}>
                             Send
                         </Text>

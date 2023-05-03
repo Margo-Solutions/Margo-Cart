@@ -20,7 +20,7 @@ alder INT NOT NULL
 
 -- for å endre kunde databasen om du allerede har laget den med den gammle settningen uten kjønn og alder:
 ALTER TABLE kunder
-ADD COLUMN kjønn VARCHAR(6) NOT NULL CHECK (kjønn IN ('Kvinne', 'Mann', 'Annet')),
+ADD COLUMN kjonn VARCHAR(6) NOT NULL CHECK (kjonn IN ('Kvinne', 'Mann', 'Annet')),
 ADD COLUMN alder INT NOT NULL;
 
 
