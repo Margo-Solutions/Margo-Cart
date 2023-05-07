@@ -2,7 +2,7 @@
 import React from 'react';
 import { useRef, useState, useEffect } from "react";
 import MapView, { PROVIDER_GOOGLE, LatLng, Marker } from 'react-native-maps';
-import { Dimensions, StyleSheet, View, TextInput, Text, TouchableOpacity, Button, Linking, Platform, PermissionsAndroid } from 'react-native';
+import { Dimensions, StyleSheet, View, TextInput, Text, TouchableOpacity, Button, Linking, Platform, PermissionsAndroid,} from 'react-native';
 import { GooglePlacesAutocomplete, GooglePlaceDetail } from 'react-native-google-places-autocomplete';
 import { GOOGLE_API_KEY } from '../components/environments';
 import Constants from "expo-constants";
@@ -57,8 +57,8 @@ function InputAutocomplete({
   );
 }
 
-export default function Kart({ route }) {
-  const { dest_lat, dest_long, adresse } = route.params; // getting values from previous screen
+export default function Kart({ route, navigation }) {
+  const { dest_lat, dest_long, adresse, butikk_id } = route.params; // getting values from previous screen
   const [origin, setOrigin] = useState<LatLng | null>();
   const [destination, setDestination] = useState<LatLng | null>({ latitude: dest_lat, longitude: dest_long });
   const [showDirections, setShowDirections] = useState(false);
@@ -72,13 +72,19 @@ export default function Kart({ route }) {
   const [placeholderText, setplaceholderText] = useState('');
   const mapRef = useRef<MapView>(null);
   const [adr, setAdr] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
 
   const openMaps = () => {
     const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(adr)}`;
     Linking.openURL(url);
   };
 
-
+  useEffect(() => {
+    if (distance < 0.100 && showDirections) {
+      navigation.navigate("innendørskart",{butikk_id:butikk_id});
+    } 
+  }, [distance])
+ 
   useEffect(() => {
     (async () => {
 
@@ -150,7 +156,9 @@ export default function Kart({ route }) {
     moveTo(position);
   };
 
+
   return (
+    
     <View style={styles.container}>
       <MapView
         ref={mapRef}

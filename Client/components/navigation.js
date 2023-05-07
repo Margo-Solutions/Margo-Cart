@@ -18,6 +18,7 @@ import FinnVare from '../Screens/FinnVare';
 import MinProfil from '../Screens/MinProfil';
 import innendørsKart from '../Screens/innendørsKart';
 import KodeScreen from '../Screens/KodeScreen';
+import SluttScreen from '../Screens/SluttScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -65,7 +66,8 @@ function HomeRoot(){
                         <Drawer.Screen name="Finn Vare" component={FinnVare} />
                         <Drawer.Screen name="Min profil" component={MinProfil} />
                         <Drawer.Screen name ="innendørskart" component={innendørsKart} options={{drawerItemStyle:{ display: 'none' }, drawerLockMode:'locked-closed', headerShown: false, swipeEdgeWidth: 0 }} />
-                        
+                        <Drawer.Screen name ="Slutt" component={SluttScreen} options={verticalAnimation}/>
+
             </Drawer.Navigator>
     );
 }
@@ -87,3 +89,20 @@ function AuthRoot(){
             </Drawer.Navigator>
     );
 }
+export const verticalAnimation = {
+    gestureDirection: 'vertical',
+    cardStyleInterpolator: ({ current, layouts }) => {
+      return {
+        cardStyle: {
+          transform: [
+            {
+              translateY: current.progress.interpolate({
+                inputRange: [0, 1],
+                outputRange: [layouts.screen.height, 0],
+              }),
+            },
+          ],
+        },
+      };
+    },
+  };

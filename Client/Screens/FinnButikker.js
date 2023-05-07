@@ -93,7 +93,8 @@ export default function FinnButikk({ navigation }) {
             console.log(adresse);
             console.log(secondModalData);
             console.log(modalData);
-            navigation.navigate("Veibeskrivelse", { dest_lat: modalData, dest_long: secondModalData, adresse: adresse });
+            console.log(butikk_id)
+            navigation.navigate("Veibeskrivelse", { dest_lat: modalData, dest_long: secondModalData, adresse: adresse, butikk_id: butikk_id });
         } catch (err) {
             console.log(err);
         }
