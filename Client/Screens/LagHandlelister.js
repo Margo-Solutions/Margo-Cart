@@ -48,17 +48,16 @@ export default function LagHandlelister({ navigation }) {
     }
   };
 
-  const removeItem = async (handleliste_id) => {
+  const deleteHandleliste = async (handleliste_id) => {
     try {
-        const response = await fetch(`http://10.0.2.2:5000/margodatabase/handlelister/removeItem/${handleliste_id}`)
-        console.log(handleliste_id);
-        ListHandleliste(await AsyncStorage.getItem('userid'));
+      const response = await fetch(`http://10.0.2.2:5000/margodatabase/handlelister/sletthandleliste/${kunde_id}/${handleliste_id}`, {
+        method: "DELETE",
+      });
+      ListHandleliste(await AsyncStorage.getItem('userid'));
+    } catch (err) {
+      console.error(err.message);
     }
-    catch (err) {
-        console.error(err.message);
-
-    }
-};
+  };
 
   const pressHandler = (handleliste_id, handleliste_tittel) => { // press handler to handle handleliter button press
     ListVarerHandleliste(handleliste_id);
@@ -89,7 +88,7 @@ export default function LagHandlelister({ navigation }) {
         />
       </View>
       <View style={styles.line} />
-      <View style={styles.titleContainer}>
+      <View style={styles.inputContainer}>
         <TextInput
           style={styles.textInput}
           placeholder=""
@@ -100,21 +99,23 @@ export default function LagHandlelister({ navigation }) {
         <Button title="Legg til Handleliste" onPress={make_handleliste} />
       </View>
       <View style={styles.listContainer}>
-        <FlatList data={handleliste}  renderItem={(itemData) => {
-          return (
-            <TouchableOpacity onPress={() => pressHandler(itemData.item.handleliste_id, itemData.item.handleliste_tittel)}>
-              <View style={styles.listItem}>
-                <Text style={styles.listText}>{itemData.item.handleliste_tittel}</Text>
-                <View style={styles.inputContainer}>
-                  <View style={styles.button}>
-                    <Button title="Slett" color="#b30b10" onPress={() => removeItem(itemData.item.handleliste_id)}></Button>
+        <FlatList
+          data={handleliste}
+          renderItem={(itemData) => {
+            return (
+              <View style={styles.listItemContainer}>
+                <TouchableOpacity onPress={() => pressHandler(itemData.item.handleliste_id, itemData.item.handleliste_tittel)}>
+                  <View style={styles.listItem}>
+                    <Text style={styles.listText}>{itemData.item.handleliste_tittel}</Text>
+                    <Text style={styles.listText}>__________________</Text>
                   </View>
-                </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => deleteHandleliste(itemData.item.handleliste_id)} style={styles.deleteButton}>
+                  <Text style={styles.deleteButtonText}>Slett</Text>
+                </TouchableOpacity>
               </View>
-            </TouchableOpacity>
-          );
-
-        }}
+            );
+          }}
           alwaysBounceVertical={false}
         />
       </View>
@@ -138,10 +139,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     bottom: 25,
   },
-  titleContainer: { // view style for input title container
+  inputContainer: { // view style for input title container
     justifyContent: 'center',
     alignItems: 'center',
-    
   },
   textInput: { // text input style for input title container
     width: 350,
@@ -167,24 +167,25 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   listItem: { // view style for the text inside flatlist
-    margin: 8,
+    margin: 20,
     padding: 6,
     borderRadius: 10,
     backgroundColor: 'transparent',
+  },
+  listItemContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: -10,
+    paddingHorizontal: 20,
   },
-  button: {
-    height:50,
-    width:80, 
+  deleteButton: {
+    //backgroundColor: '#03025c',
     padding: 8,
+    borderRadius: 8,
   },
-  inputContainer: {
-    //backgroundColor: '#66A2BA',
-    //borderRadius: 20,
-    flexDirection: "row",
-    alignItems: "center",
-    right: 10,
-    position: 'absolute'
+  deleteButtonText: {
+    color: 'black',
+    fontWeight: 'bold',
   },
 });

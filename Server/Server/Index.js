@@ -254,17 +254,15 @@ app.delete('/margodatabase/handleliste/remove/', async (req, res) => {
 });
 
 // delete a handleliste from handlelister table //
-// delete a handleliste from handlelister table //
-app.get('/margodatabase/handlelister/removeItem/:handleliste_id', async (req, res) => {
+app.delete('/margodatabase/handlelister/remove/:handleliste_id', async (req, res) => {
     try {
         const { handleliste_id } = req.params;
-        await pool.query('DELETE FROM handlelister WHERE handleliste_id = $1;', [handleliste_id]);
-        res.json('Deleted!');
+        const deleteHandleliste = await pool.query('DELETE FROM handlelister WHERE handleliste_id = $1', [handleliste_id]);
+        res.json('handleliste was deleted!');
     } catch (err) {
         console.error(err.message);
     }
 });
-
 
 // check if vare is in handleliste //
 app.get('/margodatabase/handleliste/check/:handleliste_id/:vare_id', async (req, res) => {
